@@ -1,6 +1,6 @@
-"""İktisad: Zero-waste, frugal runtime & quota engine for AI agents.
+"""İktisad: Zero-waste, frugal runtime & token defense engine for AI agents.
 
-Token Governors, Bandwidth Circuit Breakers & Low-Quota Caching.
+Token Governors, AST Skeletonizers, Circuit Breakers & Native MCP Server.
 Rooted in the 19th Lem'a (İktisad Risalesi) and Stafford Beer's Algedonic Filter.
 """
 
@@ -57,6 +57,11 @@ from iktisad.gateway import (
     serve_gateway,
     skeletonize_python_source,
 )
+from iktisad.mcp_server import (
+    MCP_AVAILABLE_TOOLS,
+    handle_mcp_request,
+    run_stdio_server,
+)
 
 __version__ = "0.1.0"
 __all__ = [
@@ -73,6 +78,7 @@ __all__ = [
     "GatewayConfig",
     "GatewayUsageStats",
     "IktisadResourceCheck",
+    "MCP_AVAILABLE_TOOLS",
     "PythonASTSkeleton",
     "QuotaExceededError",
     "SymbolSpan",
@@ -93,6 +99,7 @@ __all__ = [
     "fetch_url_efficiently",
     "get_daily_usage",
     "get_gateway_daily_stats",
+    "handle_mcp_request",
     "hash_url",
     "http_upstream_forwarder",
     "init_bandwidth_db",
@@ -103,6 +110,7 @@ __all__ = [
     "process_chat_completion",
     "record_bandwidth_usage",
     "record_gateway_token_usage",
+    "run_stdio_server",
     "select_model_dynamically",
     "serve_gateway",
     "skeletonize_python_source",

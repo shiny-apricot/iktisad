@@ -106,6 +106,12 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Run gateway server without blocking main thread",
     )
+    # Native MCP Server argument
+    parser.add_argument(
+        "--mcp",
+        action="store_true",
+        help="Launch native Model Context Protocol (MCP) server over stdio for Cursor/Claude Code/Windsurf",
+    )
     return parser
 
 
@@ -113,6 +119,11 @@ def main(args: list[str] | None = None) -> int:
     """Run iktisad CLI."""
     parser = build_parser()
     parsed_args = parser.parse_args(args)
+
+    if parsed_args.mcp:
+        from iktisad.mcp_server import run_stdio_server
+        run_stdio_server()
+        return 0
 
     if parsed_args.serve_gateway:
         config = GatewayConfig(

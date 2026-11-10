@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "iktisad"
 version = "0.1.0"
-description = "Zero-waste, frugal runtime & quota engine for AI agents — Token Governors, Bandwidth Circuit Breakers & Low-Quota Caching"
+description = "Zero-waste, frugal token defense engine & native MCP server for AI coding agents — Token Bill Defense, Rate Limit Armor & Context Retention"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
@@ -16,10 +16,12 @@ keywords = [
     "ai-agents",
     "token-efficiency",
     "frugalgpt",
-    "bandwidth-guard",
+    "model-context-protocol",
+    "mcp-server",
+    "rate-limit-armor",
     "circuit-breaker",
     "llm-routing",
-    "context-window",
+    "context-retention",
     "iktisad",
 ]
 classifiers = [
@@ -38,6 +40,7 @@ dependencies = []
 [project.scripts]
 iktisad = "iktisad.cli:main"
 iktisad-guard = "iktisad.cli:main"
+iktisad-mcp = "iktisad.mcp_server:main"
 
 [project.urls]
 Homepage = "https://github.com/shiny-apricot/iktisad"
