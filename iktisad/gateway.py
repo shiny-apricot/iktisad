@@ -714,7 +714,7 @@ def create_gateway_handler(
                 body = {
                     "status": "healthy",
                     "service": "kenz-cloud-gateway",
-                    "version": "0.1.0",
+                    "version": "0.1.1",
                     "daily_stats": asdict(stats),
                 }
                 body_bytes = json.dumps(body, indent=2).encode("utf-8")

@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 import sys
+from typing import Any
 
 from iktisad.core import (
     BandwidthGuard,
@@ -18,6 +20,44 @@ from iktisad.gateway import (
     GatewayConfig,
     serve_gateway,
 )
+
+POLAR_PRO_PRICE = "$10/mo"
+POLAR_PRO_CHECKOUT_URL = "https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA"
+POLAR_PRO_SUPPORT_EMAIL = "kenzailabs@gmail.com"
+
+
+def get_pro_presets() -> dict[str, Any]:
+    """Generate ready-to-use client presets for Cursor, Claude Code, Windsurf, and Gateway."""
+    return {
+        "cursor": {
+            "name": "iktisad",
+            "type": "stdio",
+            "command": "iktisad",
+            "args": ["--mcp"],
+        },
+        "claude_code": {
+            "mcpServers": {
+                "iktisad": {
+                    "command": "iktisad",
+                    "args": ["--mcp"],
+                }
+            }
+        },
+        "windsurf": {
+            "mcpServers": {
+                "iktisad": {
+                    "command": "iktisad",
+                    "args": ["--mcp"],
+                }
+            }
+        },
+        "local_gateway": {
+            "base_url": "http://127.0.0.1:8000/v1",
+            "route": "/v1/chat/completions",
+            "daily_token_budget": 1_000_000,
+            "frugal_mode": True,
+        },
+    }
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -112,6 +152,17 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Launch native Model Context Protocol (MCP) server over stdio for Cursor/Claude Code/Windsurf",
     )
+    # Polar.sh Pro Tier and Presets
+    parser.add_argument(
+        "--pro",
+        action="store_true",
+        help="Display Kenz Labs / Polar Pro Tier ($10/mo) benefits, status, and checkout URL",
+    )
+    parser.add_argument(
+        "--export-presets",
+        action="store_true",
+        help="Export ready-to-use JSON presets for Cursor, Claude Code, Windsurf, and Local Gateway",
+    )
     return parser
 
 
@@ -119,6 +170,28 @@ def main(args: list[str] | None = None) -> int:
     """Run iktisad CLI."""
     parser = build_parser()
     parsed_args = parser.parse_args(args)
+
+    if parsed_args.pro:
+        presets = get_pro_presets()
+        print("======================================================================")
+        print("⚡ Kenz Labs — iktisad Polar Pro Tier ($10/mo)")
+        print("======================================================================")
+        print("Plan: Polar Pro Tier ($10/mo)")
+        print("Status: Active & Available Worldwide")
+        print(f"Checkout URL: {POLAR_PRO_CHECKOUT_URL}")
+        print("\nIncluded Pro Benefits:")
+        print("  ✓ Commercial Team Usage License: Full commercial enterprise deployment clearance")
+        print(f"  ✓ Direct Priority Support: Direct developer support via {POLAR_PRO_SUPPORT_EMAIL}")
+        print("  ✓ Custom Gateway Proxy Presets: Local & reverse-proxy configs with token budgeting")
+        print("  ✓ Priority Issue Queue: Expedited issue triage (<24h SLA) on GitHub")
+        print("\nReady-to-use Client Presets (JSON):")
+        print(json.dumps(presets, indent=2))
+        return 0
+
+    if parsed_args.export_presets:
+        presets = get_pro_presets()
+        print(json.dumps(presets, indent=2))
+        return 0
 
     if parsed_args.mcp:
         from iktisad.mcp_server import run_stdio_server

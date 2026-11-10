@@ -846,7 +846,7 @@ def fetch_url_efficiently(
     # Estimate 50KB transfer quota check before initiating network call
     check_quota_available(db_path, anticipated_bytes=50 * 1024, max_daily_mb=max_daily_mb)
 
-    req_headers = {"User-Agent": "IktisadRuntime/0.1.0"}
+    req_headers = {"User-Agent": "IktisadRuntime/0.1.1"}
     if headers:
         req_headers.update(headers)
 

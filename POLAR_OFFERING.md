@@ -126,6 +126,6 @@ curl http://127.0.0.1:8000/v1/health
 ## 6. Polar.sh Sponsor Listing Copy
 
 **Title**: Kenz Cloud Gateway Pro Developer  
-**Price**: $10 / month  
+**Price**: $10 / month ($10/mo)  
 **Summary**: Drop-in OpenAI-compatible reverse proxy cutting >85% of LLM token waste in agent loops with AST code skeletons and CLI output firewalls. 100% Halal *İcâre* contract with zero interest.  
-**URL**: `https://polar.sh/autonomy-corp/subscriptions`
+**Canonical Checkout URL**: [Subscribe on Polar Pro ($10/mo)](https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA)

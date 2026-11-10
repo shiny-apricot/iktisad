@@ -46,7 +46,7 @@ from iktisad.gateway import (
 MCP_PROTOCOL_VERSION = "2024-11-05"
 SERVER_INFO = {
     "name": "iktisad-mcp",
-    "version": "0.1.0",
+    "version": "0.1.1",
 }
 
 # ---------------------------------------------------------------------------
@@ -150,6 +150,23 @@ MCP_AVAILABLE_TOOLS: list[dict[str, Any]] = [
                     "type": "integer",
                     "description": "Daily token budget cap (default: 1,000,000).",
                     "default": 1000000,
+                },
+            },
+        },
+    },
+    {
+        "name": "run_release_preflight_audit",
+        "description": (
+            "Audits repository and package artifacts for version alignment, Polar.sh link integrity, "
+            "canonical pricing ($10/mo), and interactive visualizer math concordances before deployment or release."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "base_dir": {
+                    "type": "string",
+                    "description": "Base directory of the repository (default: current working directory).",
+                    "default": ".",
                 },
             },
         },
@@ -326,6 +343,66 @@ def run_check_circuit_breaker(arguments: dict[str, Any]) -> str:
     return json.dumps(payload, indent=2)
 
 
+def run_release_preflight_audit(arguments: dict[str, Any]) -> str:
+    """Execute pre-release concordance checks across artifacts."""
+    base_dir = Path(arguments.get("base_dir", ".")).resolve()
+    # Find iktisad package root
+    pkg_dir = base_dir if (base_dir / "pyproject.toml").exists() else base_dir / "products" / "iktisad"
+    if not (pkg_dir / "pyproject.toml").exists() and (base_dir.parent / "products" / "iktisad").exists():
+        pkg_dir = base_dir.parent / "products" / "iktisad"
+
+    errors: list[str] = []
+    checks_passed: list[str] = []
+
+    # 1. Version concordance
+    pyproject_file = pkg_dir / "pyproject.toml"
+    init_file = pkg_dir / "iktisad" / "__init__.py"
+
+    ver_pyproject = None
+    if pyproject_file.exists():
+        for line in pyproject_file.read_text(encoding="utf-8").splitlines():
+            if line.strip().startswith("version ="):
+                ver_pyproject = line.split("=")[1].strip().strip('"\'')
+                break
+
+    ver_init = None
+    if init_file.exists():
+        for line in init_file.read_text(encoding="utf-8").splitlines():
+            if line.strip().startswith("__version__ ="):
+                ver_init = line.split("=")[1].strip().strip('"\'')
+                break
+
+    ver_mcp = SERVER_INFO["version"]
+    if ver_pyproject == ver_init == ver_mcp and ver_pyproject is not None:
+        checks_passed.append(f"Version concordance verified: {ver_pyproject}")
+    else:
+        errors.append(f"Version mismatch: pyproject={ver_pyproject}, __init__={ver_init}, mcp={ver_mcp}")
+
+    # 2. Polar URL & Price check
+    expected_url = "https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA"
+    expected_price = "$10/mo"
+
+    for rel_path in ["pyproject.toml", "iktisad/cli.py", "README.md", "POLAR_OFFERING.md", "docs/index.html"]:
+        target_path = pkg_dir / rel_path
+        if target_path.exists():
+            text = target_path.read_text(encoding="utf-8")
+            if expected_url not in text:
+                errors.append(f"Missing canonical checkout URL in {rel_path}")
+            elif expected_price not in text and "$10" not in text:
+                errors.append(f"Missing canonical price ($10/mo) in {rel_path}")
+            else:
+                checks_passed.append(f"Polar concordance verified in {rel_path}")
+
+    status = "PASS" if not errors else "FAIL"
+    payload = {
+        "status": status,
+        "version": ver_mcp,
+        "checks_passed": checks_passed,
+        "errors": errors,
+    }
+    return json.dumps(payload, indent=2)
+
+
 # ---------------------------------------------------------------------------
 # 4. JSON-RPC Request Handler
 # ---------------------------------------------------------------------------
@@ -394,6 +471,8 @@ def handle_mcp_request(request: dict[str, Any] | str) -> dict[str, Any]:
                 content_text = run_select_frugal_model(arguments)
             elif tool_name == "check_circuit_breaker":
                 content_text = run_check_circuit_breaker(arguments)
+            elif tool_name == "run_release_preflight_audit":
+                content_text = run_release_preflight_audit(arguments)
             else:
                 return {
                     "jsonrpc": "2.0",

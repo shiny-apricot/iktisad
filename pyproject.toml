@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "iktisad"
-version = "0.1.0"
+version = "0.1.1"
 description = "Zero-waste, frugal token defense engine & native MCP server for AI coding agents — Token Bill Defense, Rate Limit Armor & Context Retention"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -43,6 +43,8 @@ iktisad-guard = "iktisad.cli:main"
 iktisad-mcp = "iktisad.mcp_server:main"
 
 [project.urls]
-Homepage = "https://github.com/shiny-apricot/iktisad"
+Homepage = "https://shiny-apricot.github.io/iktisad/"
+Documentation = "https://shiny-apricot.github.io/iktisad/"
 Repository = "https://github.com/shiny-apricot/iktisad"
-Funding = "https://polar.sh/autonomy-corp"
+"Polar Pro ($10/mo)" = "https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA"
+"Bug Tracker" = "https://github.com/shiny-apricot/iktisad/issues"

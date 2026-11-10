@@ -6,6 +6,9 @@ Rooted in Zero-Waste Compute Principles and Stafford Beer's Algedonic Filter.
 
 from __future__ import annotations
 
+import importlib
+from typing import Any
+
 from iktisad.core import (
     BLOCKED_MEDIA_EXTENSIONS,
     BandwidthCacheEntry,
@@ -57,13 +60,28 @@ from iktisad.gateway import (
     serve_gateway,
     skeletonize_python_source,
 )
-from iktisad.mcp_server import (
-    MCP_AVAILABLE_TOOLS,
-    handle_mcp_request,
-    run_stdio_server,
-)
+__version__ = "0.1.1"
 
-__version__ = "0.1.0"
+_LAZY_MCP_EXPORTS: dict[str, str] = {
+    "MCP_AVAILABLE_TOOLS": "iktisad.mcp_server",
+    "handle_mcp_request": "iktisad.mcp_server",
+    "run_stdio_server": "iktisad.mcp_server",
+}
+
+
+def __getattr__(name: str) -> Any:
+    """PEP 562 lazy attribute loader to prevent eager import collisions with python -m iktisad.mcp_server."""
+    if name in _LAZY_MCP_EXPORTS:
+        mod = importlib.import_module(_LAZY_MCP_EXPORTS[name])
+        val = getattr(mod, name)
+        globals()[name] = val
+        return val
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+
+
+def __dir__() -> list[str]:
+    """Expose lazy attributes in dir()."""
+    return sorted(set(list(globals().keys()) + list(_LAZY_MCP_EXPORTS.keys())))
 __all__ = [
     "BLOCKED_MEDIA_EXTENSIONS",
     "BandwidthCacheEntry",

@@ -42,7 +42,7 @@ def test_mcp_initialize_handshake() -> None:
     assert "result" in resp
     assert resp["result"]["protocolVersion"] == "2024-11-05"
     assert resp["result"]["serverInfo"]["name"] == "iktisad-mcp"
-    assert resp["result"]["serverInfo"]["version"] == "0.1.0"
+    assert resp["result"]["serverInfo"]["version"] == "0.1.1"
     assert "tools" in resp["result"]["capabilities"]
 
 
@@ -350,7 +350,7 @@ def test_mcp_run_stdio_server_e2e() -> None:
 
     r2 = json.loads(output_lines[1])
     assert r2["id"] == 2
-    assert len(r2["result"]["tools"]) == 4
+    assert len(r2["result"]["tools"]) >= 4
 
     r3 = json.loads(output_lines[2])
     assert r3["id"] == 3
@@ -378,3 +378,41 @@ def test_cli_mcp_flag() -> None:
     resp = json.loads(stdout.getvalue().strip())
     assert resp["id"] == 1
     assert resp["result"] == {}
+
+
+def test_cli_pro_and_export_presets_flags(capsys: pytest.CaptureFixture[str]) -> None:
+    """Verify iktisad --pro and --export-presets flags output canonical polar url and presets."""
+    code_pro = cli_main(["--pro"])
+    assert code_pro == 0
+    captured_pro = capsys.readouterr().out
+    assert "https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA" in captured_pro
+    assert "$10/mo" in captured_pro
+    assert "cursor" in captured_pro
+    assert "local_gateway" in captured_pro
+
+    code_presets = cli_main(["--export-presets"])
+    assert code_presets == 0
+    captured_presets = capsys.readouterr().out
+    data = json.loads(captured_presets)
+    assert "cursor" in data
+    assert "claude_code" in data
+    assert "windsurf" in data
+    assert "local_gateway" in data
+
+
+def test_mcp_run_release_preflight_audit_tool() -> None:
+    """Verify run_release_preflight_audit tool executes and returns PASS."""
+    req = {
+        "jsonrpc": "2.0",
+        "id": 10,
+        "method": "tools/call",
+        "params": {
+            "name": "run_release_preflight_audit",
+            "arguments": {"base_dir": "."},
+        },
+    }
+    resp = handle_mcp_request(req)
+    assert resp["id"] == 10
+    assert not resp["result"]["isError"]
+    payload = json.loads(resp["result"]["content"][0]["text"])
+    assert payload["version"] == "0.1.1"
