@@ -52,7 +52,7 @@ https://github.com/shiny-apricot/iktisad
 ```markdown
 Hi HN,
 
-I built **iktisad** (Arabic/Turkish for *frugality / economy*), a lightweight, zero-dependency Python tool to solve the single biggest money-waster in autonomous AI coding agents: **terminal log hemorrhaging and Thinking Token Bloat**.
+I built **iktisad**, a lightweight, zero-dependency Python tool to solve the single biggest money-waster in autonomous AI coding agents: **terminal log hemorrhaging and Thinking Token Bloat**.
 
 ### The Problem in 2026: Thinking Token Bloat & Runaway Bills
 If you run coding agents (Claude Code, Cursor, Windsurf, SWE-bench runners, OpenHands, Aider, or multi-agent loops), you don't care about internet megabytes—you have fiber. What hurts is:
