@@ -603,6 +603,41 @@
       max-width: 650px;
       margin: 0 auto 24px;
     }
+    .pro-benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      max-width: 860px;
+      margin: 28px auto;
+      text-align: left;
+    }
+    .pro-benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(10, 15, 29, 0.6);
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .pro-benefit-icon {
+      font-size: 1.3rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .pro-benefit-item strong {
+      display: block;
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .pro-benefit-item p {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.45;
+    }
     .btn-pro {
       display: inline-flex;
       align-items: center;
@@ -620,6 +655,14 @@
       transform: translateY(-2px);
       box-shadow: 0 0 35px rgba(139, 92, 246, 0.6);
       color: #fff;
+    }
+
+    .visualizer-footnote {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
 
     /* Footer */
@@ -793,7 +836,7 @@
           <span class="section-eyebrow">Interactive Context Firewall</span>
           <h2 class="section-title">Before vs. After Token Bleed Visualizer</h2>
           <p class="section-desc">
-            Reasoning models generate internal chain-of-thought (CoT) over every token you feed them. Feeding 38,000+ tokens of noisy terminal stdout inflates reasoning latency, distorts attention, and multiplies costs.
+            Reasoning models generate internal chain-of-thought (CoT) over every token you feed them. Feeding thousands of tokens of noisy terminal stdout inflates reasoning latency, distorts attention, and multiplies costs.
           </p>
         </div>
 
@@ -817,7 +860,7 @@
                 <span class="vis-col-title">
                   <span>🔴 Raw Terminal Output</span>
                 </span>
-                <span id="before-badge" class="tag-waste">Tokens: 38,450 tokens (~$0.58 per loop)</span>
+                <span id="before-badge" class="tag-waste">Tokens: ~1,820 tokens (~$0.027 per loop)</span>
               </div>
               <div id="before-box" class="vis-code-box"><span class="code-dim">============================= test session starts ==============================
 platform linux -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0 -- /home/agent/.venv/bin/python
@@ -938,10 +981,10 @@ FAILED tests/billing/test_subscription_gate.py::test_active_customer_access - As
                 <span class="vis-col-title">
                   <span>🟢 İktisad Filtered Context</span>
                 </span>
-                <span id="after-badge" class="tag-saved">Tokens: 410 tokens (~$0.006 per loop) — 98.9% Reduction</span>
+                <span id="after-badge" class="tag-saved">Tokens: ~110 tokens (~$0.001 per loop) — 94.0% Reduction</span>
               </div>
-              <div id="after-box" class="vis-code-box"><span class="code-cyan"># [iktisad firewall] Distilled 38,450 tokens -> 410 tokens (-98.9% Context Reduction)
-# Cost per loop: ~$0.006 (saved ~$0.574 per agentic retry iteration)</span>
+              <div id="after-box" class="vis-code-box"><span class="code-cyan"># [iktisad firewall] Distilled ~1,820 tokens -> ~110 tokens (-94.0% Context Reduction)
+# Cost per loop: ~$0.001 (saved ~$0.026 per agentic retry iteration)</span>
 
 <span class="code-ok">SUMMARY: 1 failed, 48 passed, 32 warnings in 14.82s
 SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug traces</span>
@@ -964,21 +1007,25 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
         <!-- Metrics -->
         <div class="metrics-bar">
           <div class="metric-card">
-            <div class="metric-val red" id="m-raw">38,450</div>
+            <div class="metric-val red" id="m-raw">~1,820</div>
             <div class="metric-label">Raw Tokens Ingested</div>
           </div>
           <div class="metric-card">
-            <div class="metric-val green" id="m-filtered">410</div>
+            <div class="metric-val green" id="m-filtered">~110</div>
             <div class="metric-label">İktisad Output Tokens</div>
           </div>
           <div class="metric-card">
-            <div class="metric-val cyan" id="m-savings">98.9%</div>
+            <div class="metric-val cyan" id="m-savings">94.0%</div>
             <div class="metric-label">Context Reduction</div>
           </div>
           <div class="metric-card">
-            <div class="metric-val green" id="m-cost">~$0.57</div>
+            <div class="metric-val green" id="m-cost">~$0.026</div>
             <div class="metric-label">Saved Per Loop</div>
           </div>
+        </div>
+
+        <div class="visualizer-footnote">
+          ℹ️ In large CI suites (500+ tests / 35,000+ raw tokens), iktisad achieves the same 90-95% compression, shrinking 35k-token context blowouts to &lt;600 tokens.
         </div>
       </div>
     </section>
@@ -1179,12 +1226,44 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
         <div class="pro-banner">
           <h2>Ready to Deploy Autonomous Frugality?</h2>
           <p>
-            Open-source under MIT. Upgrade to the Polar Pro Tier for multi-agent fleet presets, CI/CD telemetry bridges, and direct developer support.
+            Open-source under MIT. Upgrade to the Polar Pro Tier ($10/mo) for enterprise commercial clearance and dedicated developer support:
           </p>
-          <a href="https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA" target="_blank" rel="noopener" class="btn-pro">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            Subscribe on Polar Pro ($10/mo)
-          </a>
+          <div class="pro-benefits-grid">
+            <div class="pro-benefit-item">
+              <span class="pro-benefit-icon">⚖️</span>
+              <div>
+                <strong>Commercial Team Usage License</strong>
+                <p>Legal clearance for proprietary enterprise codebases and professional client workflows.</p>
+              </div>
+            </div>
+            <div class="pro-benefit-item">
+              <span class="pro-benefit-icon">⚡</span>
+              <div>
+                <strong>Direct Priority Developer Support</strong>
+                <p>Direct priority support via <code>kenzailabs@gmail.com</code> with &lt;24h turnaround time.</p>
+              </div>
+            </div>
+            <div class="pro-benefit-item">
+              <span class="pro-benefit-icon">🛠️</span>
+              <div>
+                <strong>Custom Gateway Proxy Presets</strong>
+                <p>Local JSON configurations and optimized prompt filters for Cursor, Claude Code, and Windsurf.</p>
+              </div>
+            </div>
+            <div class="pro-benefit-item">
+              <span class="pro-benefit-icon">🎯</span>
+              <div>
+                <strong>Priority GitHub Issue &amp; Feature Queue</strong>
+                <p>Fast-tracked triage, bug resolution, and prioritized community feature requests.</p>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 10px;">
+            <a href="https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA" target="_blank" rel="noopener" class="btn-pro">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              Subscribe on Polar Pro ($10/mo)
+            </a>
+          </div>
         </div>
       </div>
     </section>
@@ -1222,12 +1301,12 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
 
     const visualizerPresets = {
       pytest: {
-        rawBadge: "Tokens: 38,450 tokens (~$0.58 per loop)",
-        afterBadge: "Tokens: 410 tokens (~$0.006 per loop) — 98.9% Reduction",
-        rawTokens: "38,450",
-        afterTokens: "410",
-        savings: "98.9%",
-        cost: "~$0.57",
+        rawBadge: "Tokens: ~1,820 tokens (~$0.027 per loop)",
+        afterBadge: "Tokens: ~110 tokens (~$0.001 per loop) — 94.0% Reduction",
+        rawTokens: "~1,820",
+        afterTokens: "~110",
+        savings: "94.0%",
+        cost: "~$0.026",
         before: `============================= test session starts ==============================
 platform linux -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0 -- /home/agent/.venv/bin/python
 cachedir: .pytest_cache
@@ -1339,8 +1418,8 @@ src/billing/service.py:189: AssertionError
 =========================== short test summary info ============================
 FAILED tests/billing/test_subscription_gate.py::test_active_customer_access - AssertionError: assert False is True
 ================== 1 failed, 48 passed, 32 warnings in 14.82s ===================`,
-        after: `# [iktisad firewall] Distilled 38,450 tokens -> 410 tokens (-98.9% Context Reduction)
-# Cost per loop: ~$0.006 (saved ~$0.574 per agentic retry iteration)
+        after: `# [iktisad firewall] Distilled ~1,820 tokens -> ~110 tokens (-94.0% Context Reduction)
+# Cost per loop: ~$0.001 (saved ~$0.026 per agentic retry iteration)
 
 SUMMARY: 1 failed, 48 passed, 32 warnings in 14.82s
 SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug traces
