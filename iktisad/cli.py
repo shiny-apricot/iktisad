@@ -17,8 +17,10 @@ from iktisad.core import (
     select_model_dynamically,
 )
 from iktisad.gateway import (
+    BudgetEnforcer,
     GatewayConfig,
     serve_gateway,
+    verify_polar_license,
 )
 
 POLAR_PRO_PRICE = "$10/mo"
@@ -61,7 +63,7 @@ def get_pro_presets() -> dict[str, Any]:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    """Build CLI argument parser."""
+    """Build CLI argument parser with root flags and gateway subcommand."""
     parser = argparse.ArgumentParser(
         prog="iktisad",
         description="Zero-waste, frugal runtime & quota engine for AI agents",
@@ -118,7 +120,7 @@ def build_parser() -> argparse.ArgumentParser:
         default=".cache/iktisad_cache.db",
         help="SQLite database path for bandwidth accounting (default: .cache/iktisad_cache.db)",
     )
-    # Kenz Cloud Gateway arguments
+    # Kenz Cloud Gateway root arguments (backward-compatibility)
     parser.add_argument(
         "--serve-gateway",
         action="store_true",
@@ -142,6 +144,33 @@ def build_parser() -> argparse.ArgumentParser:
         help="Daily token budget before circuit breaker trips (default: 1,000,000)",
     )
     parser.add_argument(
+        "--license-key",
+        default="",
+        help="Polar Pro / Enterprise license key for commercial deployment",
+    )
+    parser.add_argument(
+        "--max-budget-usd",
+        type=float,
+        default=None,
+        help="Hard spending budget limit in USD before circuit breaker cuts proxying",
+    )
+    parser.add_argument(
+        "--alert-webhook",
+        default=None,
+        help="Webhook URL to dispatch budget breach and circuit breaker alerts",
+    )
+    parser.add_argument(
+        "--max-prompt-tokens",
+        type=int,
+        default=32_000,
+        help="Safe prompt token ceiling for context blowout detection (default: 32,000)",
+    )
+    parser.add_argument(
+        "--require-license",
+        action="store_true",
+        help="Require valid Polar license before proxying",
+    )
+    parser.add_argument(
         "--no-block",
         action="store_true",
         help="Run gateway server without blocking main thread",
@@ -163,6 +192,68 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Export ready-to-use JSON presets for Cursor, Claude Code, Windsurf, and Local Gateway",
     )
+
+    # Subcommand: iktisad gateway ...
+    subparsers = parser.add_subparsers(dest="subcommand")
+    gateway_parser = subparsers.add_parser(
+        "gateway",
+        help="Launch Kenz Cloud Gateway reverse-proxy server with token budget armor",
+    )
+    gateway_parser.add_argument(
+        "--port",
+        type=int,
+        default=8000,
+        help="Port to bind Kenz Cloud Gateway (default: 8000)",
+    )
+    gateway_parser.add_argument(
+        "--host",
+        default="127.0.0.1",
+        help="Host interface to bind Kenz Cloud Gateway (default: 127.0.0.1)",
+    )
+    gateway_parser.add_argument(
+        "--daily-token-budget",
+        type=int,
+        default=1_000_000,
+        help="Daily token budget before circuit breaker trips (default: 1,000,000)",
+    )
+    gateway_parser.add_argument(
+        "--license-key",
+        default="",
+        help="Polar Pro / Enterprise license key for commercial deployment",
+    )
+    gateway_parser.add_argument(
+        "--max-budget-usd",
+        type=float,
+        default=None,
+        help="Hard spending budget limit in USD before circuit breaker cuts proxying",
+    )
+    gateway_parser.add_argument(
+        "--alert-webhook",
+        default=None,
+        help="Webhook URL to dispatch budget breach and circuit breaker alerts",
+    )
+    gateway_parser.add_argument(
+        "--max-prompt-tokens",
+        type=int,
+        default=32_000,
+        help="Safe prompt token ceiling for context blowout detection (default: 32,000)",
+    )
+    gateway_parser.add_argument(
+        "--require-license",
+        action="store_true",
+        help="Require valid Polar license before proxying",
+    )
+    gateway_parser.add_argument(
+        "--db-path",
+        default=".cache/iktisad_gateway.db",
+        help="SQLite database path for gateway ledger (default: .cache/iktisad_gateway.db)",
+    )
+    gateway_parser.add_argument(
+        "--no-block",
+        action="store_true",
+        help="Run gateway server without blocking main thread",
+    )
+
     return parser
 
 
@@ -198,15 +289,48 @@ def main(args: list[str] | None = None) -> int:
         run_stdio_server()
         return 0
 
-    if parsed_args.serve_gateway:
+    # Gateway launch (either `iktisad gateway` subcommand or `iktisad --serve-gateway`)
+    is_gateway = (parsed_args.subcommand == "gateway") or getattr(parsed_args, "serve_gateway", False)
+    if is_gateway:
+        license_key = getattr(parsed_args, "license_key", "") or ""
+        require_license = getattr(parsed_args, "require_license", False)
+        max_budget_usd = getattr(parsed_args, "max_budget_usd", None)
+        alert_webhook = getattr(parsed_args, "alert_webhook", None)
+        max_prompt_tokens = getattr(parsed_args, "max_prompt_tokens", 32_000)
+        db_path = getattr(parsed_args, "db_path", ".cache/iktisad_gateway.db")
+
+        if license_key or require_license:
+            lic = verify_polar_license(license_key)
+            if lic.valid:
+                print(f"  [Polar License] Active ({lic.plan.upper()}) - {lic.message}")
+            else:
+                print(f"  [Polar License Warning] {lic.message} (status: {lic.status})")
+                if require_license:
+                    print("  Error: Required commercial license verification failed. Halting.", file=sys.stderr)
+                    return 1
+
         config = GatewayConfig(
             host=parsed_args.host,
             port=parsed_args.port,
             daily_token_budget=parsed_args.daily_token_budget,
-            db_path=parsed_args.db_path,
+            db_path=db_path,
+            license_key=license_key,
+            require_license=require_license,
+            max_budget_usd=max_budget_usd,
+            alert_webhook=alert_webhook,
+            max_prompt_tokens=max_prompt_tokens,
         )
+
+        enforcer = None
+        if max_budget_usd is not None or alert_webhook is not None:
+            enforcer = BudgetEnforcer(
+                max_budget_usd=max_budget_usd,
+                alert_webhook=alert_webhook,
+                db_path=db_path,
+            )
+
         block = not parsed_args.no_block
-        serve_gateway(config=config, block=block)
+        serve_gateway(config=config, block=block, enforcer=enforcer)
         return 0
 
     if parsed_args.compress_log:

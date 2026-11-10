@@ -42,7 +42,7 @@ def test_mcp_initialize_handshake() -> None:
     assert "result" in resp
     assert resp["result"]["protocolVersion"] == "2024-11-05"
     assert resp["result"]["serverInfo"]["name"] == "iktisad-mcp"
-    assert resp["result"]["serverInfo"]["version"] == "0.1.1"
+    assert resp["result"]["serverInfo"]["version"] == "0.2.0"
     assert "tools" in resp["result"]["capabilities"]
 
 
@@ -415,4 +415,4 @@ def test_mcp_run_release_preflight_audit_tool() -> None:
     assert resp["id"] == 10
     assert not resp["result"]["isError"]
     payload = json.loads(resp["result"]["content"][0]["text"])
-    assert payload["version"] == "0.1.1"
+    assert payload["version"] == "0.2.0"
