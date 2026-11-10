@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "iktisad"
+version = "0.1.0"
+description = "Zero-waste, frugal runtime & quota engine for AI agents — Token Governors, Bandwidth Circuit Breakers & Low-Quota Caching"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Kenz Labs", email = "oss@kenz.tech"}
+]
+keywords = [
+    "ai-agents",
+    "token-efficiency",
+    "frugalgpt",
+    "bandwidth-guard",
+    "circuit-breaker",
+    "llm-routing",
+    "context-window",
+    "iktisad",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Networking :: Monitoring",
+]
+dependencies = []
+
+[project.scripts]
+iktisad = "iktisad.cli:main"
+iktisad-guard = "iktisad.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/autonomy-corp/iktisad"
+Repository = "https://github.com/autonomy-corp/iktisad"
+Funding = "https://polar.sh/autonomy-corp"
