@@ -25,12 +25,12 @@ Autonomous AI agent workflows (SWE-bench agents, coding assistants, CI/CD autode
 | Tier | Price | Monthly Token Defense | Upstream Forwarding | Ast Skeletonizer & CLI Firewall | Support & SLA |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Open-Source Community** | **$0 / mo** (Free) | Self-hosted (unlimited) | Self-hosted local proxy | Full standard library access via `pip install iktisad` | Best-effort GitHub Discussions |
-| **Pro Developer (Recommended)** | **$19 / mo** | Up to 10,000,000 tokens/mo | Hosted Kenz Cloud Gateway endpoint (`https://gateway.kenz.tech/v1`) | Real-time AST pruning + CLI log firewall + Quota circuit breaker | Priority issue triage on GitHub & Polar (<24h SLA) |
+| **Pro Developer (Recommended)** | **$10 / mo** | Up to 10,000,000 tokens/mo | Hosted Kenz Cloud Gateway endpoint (`https://gateway.kenz.tech/v1`) | Real-time AST pruning + CLI log firewall + Quota circuit breaker | Priority issue triage on GitHub & Polar (<24h SLA) |
 | **Enterprise / Custom** | **$99 / mo** | Up to 100,000,000 tokens/mo | Dedicated proxy instance + custom upstream API routing | Multi-language AST filters (Python, TypeScript, Go) | Bilateral SLA, custom circuit breakers & private Slack/Discord |
 
 ---
 
-## 3. "Pro Developer" Tier Details ($19 / month)
+## 3. "Pro Developer" Tier Details ($10 / month)
 
 ### Core Benefits
 1. **Hosted Kenz Cloud Gateway Access**:
@@ -64,7 +64,7 @@ Autonomous AI agent workflows (SWE-bench agents, coding assistants, CI/CD autode
 Every commercial tier of Kenz Labs is strictly audited and ratified by the **İslami İktisat ve Fıkıh Denetim Kurulu (`@dept-islamic-sharia-board`)** in accordance with *Fiqh al-Mu'amalat* (Islamic Commercial Jurisprudence):
 
 ### 1. Lawful Contract Structure: *Aqd al-İcâre* (عقد الإجارة - Service Lease)
-- The $19/mo subscription constitutes an **İcâre** (leasing of a known service for a defined fee and duration).
+- The $10/mo subscription constitutes an **İcâre** (leasing of a known service for a defined fee and duration).
 - The scope of work (hosted proxy gateway, AST filtering, priority triage) is explicitly defined, eliminating ambiguity.
 
 ### 2. Absolute Prohibition of Riba (Zero Interest / Faiz)
@@ -132,6 +132,6 @@ curl http://127.0.0.1:8000/v1/health
 ## 6. Polar.sh Sponsor Listing Copy
 
 **Title**: Kenz Cloud Gateway Pro Developer  
-**Price**: $19 / month  
+**Price**: $10 / month  
 **Summary**: Drop-in OpenAI-compatible reverse proxy cutting >85% of LLM token waste in agent loops with AST code skeletons and CLI output firewalls. 100% Halal *İcâre* contract with zero interest.  
 **URL**: `https://polar.sh/autonomy-corp/subscriptions`
