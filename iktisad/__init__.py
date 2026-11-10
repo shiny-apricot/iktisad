@@ -1,7 +1,7 @@
 """İktisad: Zero-waste, frugal runtime & token defense engine for AI agents.
 
 Token Governors, AST Skeletonizers, Circuit Breakers & Native MCP Server.
-Rooted in the 19th Lem'a (İktisad Risalesi) and Stafford Beer's Algedonic Filter.
+Rooted in Zero-Waste Compute Principles and Stafford Beer's Algedonic Filter.
 """
 
 from __future__ import annotations

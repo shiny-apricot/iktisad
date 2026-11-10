@@ -11,7 +11,7 @@ Table of Contents:
 =============================================================================
 
 Zero external dependencies: pure Python standard library (http.server, urllib, sqlite3).
-Rooted in Corporate Law V and 19th Lem'a (İktisad Risalesi).
+Rooted in Zero-Waste Compute Principles and Autonomous Frugality.
 """
 
 from __future__ import annotations

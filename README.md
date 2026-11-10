@@ -1,7 +1,7 @@
 # İktisad (`iktisad`)
 
 > **Zero-waste, frugal token defense engine & native MCP server for AI coding agents — Token Bill Defense, Rate Limit Armor & Context Retention.**  
-> *Doctrinal & Fiqh Basis: Bey' al-Mülk & 19. Lem'a (İktisad Risalesi) — Build once, run autonomously with zero wasted tokens, zero thinking bloat, and zero runaway loop spend.*
+> *Architectural Philosophy: Autonomous Frugality & Zero-Waste Compute — Build once, run autonomously with zero wasted tokens, zero thinking bloat, and zero runaway loop spend.*
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -33,7 +33,7 @@ Developers running autonomous coding agents (Claude Code, Cursor, Windsurf, SWE-
 - 🚪 **The Bezos Sandwich Protocol (2026 Edition)**: Dynamic Type-1 (irreversible) vs. Type-2 (reversible) routing. Routes mechanical, reversible tasks to ultra-frugal models (`Gemini 3.8 Flash`, local models) while reserving expensive 2026 frontier reasoning models (`Claude Fable`, `Claude Opus 5.5`, `o3`, `DeepSeek-R1`) for high-stakes decisions under the Sandwich Protocol (`<600`-token distilled brief prep -> 1-shot Frontier reasoning decision -> frugal execution).
 - ⚡ **Rate Limit Armor & Token Circuit Breaker**: Local SQLite token ledger tracking hourly and daily token velocity, killing runaway agent loops before they drain API budgets or trigger HTTP 429 rate limit exceptions.
 - 🔌 **Native Model Context Protocol (MCP) Server**: Zero-dependency stdio JSON-RPC server allowing Cursor, Claude Code, Windsurf, and Antigravity agents to invoke `iktisad` tools natively.
-- ⚖️ **19. Lem'a Zaruret vs. İsraf Gate**: Strictly enforces token conservation: if an AST parser or deterministic regex can solve it locally at $0.00, calling a cloud LLM is prohibited as waste (*israf*).
+- ⚖️ **Zero-Waste Compute Protocol (Necessity vs. Waste Gate)**: Default to zero compute and zero token consumption. Always exhaust local deterministic alternatives (AST parsing, regex, SQLite caching) before spending tokens on expensive frontier reasoning APIs.
 
 ---
 
@@ -190,7 +190,7 @@ if stats.circuit_breaker_tripped:
 
 ## 🏛️ Theoretical Foundations
 
-1. **Risale-i Nur (19. Lem'a - İktisad Risalesi)**: Prohibits resource squandering (*israf*) and demands strict necessity (*zaruret*) before compute/token consumption. Local deterministic alternatives (AST, regex) must always precede cloud API calls.
+1. **Zero-Waste Compute Protocol (The Autonomous Frugality Gate)**: Default to zero compute and zero token consumption. Demands strict necessity before allocating compute or tokens; local deterministic alternatives (AST parsing, regex, SQLite caching) must always precede cloud reasoning APIs.
 2. **Stafford Beer's Cybernetic Algedonic Filter**: Collapses operational routine noise and escalates only anomalous pain signals (tracebacks, assertion errors) to the executive decision core.
 3. **Bezos Two-Way Door Heuristic (2026 Edition)**: Fast-paths reversible (Type-2) queries to sub-cent lightweight models (`Gemini 3.8 Flash`) while reserving 2026 frontier reasoning models (`Claude Fable`, `Claude Opus 5.5`, `o3`, `DeepSeek-R1`) for irreversible (Type-1) decisions under the **Sandwich Protocol**.
 

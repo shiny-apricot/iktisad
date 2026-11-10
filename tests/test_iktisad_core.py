@@ -258,13 +258,13 @@ def test_audit_transcript_health_levels(tmp_path: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# 5. 19. Lem'a Zaruret vs. İsraf Evaluator Tests
+# 5. Zero-Waste Compute Protocol Evaluator Tests
 # ---------------------------------------------------------------------------
 
 
 def test_evaluate_iktisad_resource_skepticism() -> None:
-    """Check israf rejection on deterministic alternatives, unverified sources, and zaruret approval."""
-    # Prohibited israf: local deterministic alternative exists
+    """Check rejection on deterministic alternatives, unverified sources, and necessity approval."""
+    # Prohibited waste: local deterministic alternative exists
     check_alt = evaluate_iktisad_resource_skepticism(
         resource_type="API_TOKENS",
         proposed_units=5000,
@@ -300,7 +300,7 @@ def test_evaluate_iktisad_resource_skepticism() -> None:
     assert check_zero_ev.approved is False
     assert check_zero_ev.verdict == "REJECTED_NEGATIVE_EXPECTED_UTILITY"
 
-    # Approved zaruret
+    # Approved necessity
     check_approved = evaluate_iktisad_resource_skepticism(
         resource_type="API_TOKENS",
         proposed_units=1500,

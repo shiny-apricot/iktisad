@@ -23,7 +23,7 @@ Table of Contents:
    - select_model_dynamically
 5. Transcript Health & Context Compaction
    - audit_transcript_health
-6. 19th Lem'a Zaruret vs. İsraf Resource Evaluator
+6. Zero-Waste Compute Protocol (Necessity vs. Waste Gate)
    - evaluate_iktisad_resource_skepticism
 7. Bandwidth Circuit Breaker & Low-Quota Caching
    - init_bandwidth_db
@@ -137,7 +137,7 @@ class TranscriptHealthReport:
 
 @dataclass(frozen=True)
 class IktisadResourceCheck:
-    """19th Lem'a İktisad & Universal Source Skepticism resource gate."""
+    """Zero-Waste Compute Protocol & Universal Source Skepticism resource gate."""
 
     resource_type: str
     proposed_units: float
@@ -501,7 +501,7 @@ def audit_transcript_health(
 
 
 # ---------------------------------------------------------------------------
-# 6. 19th Lem'a Zaruret vs. İsraf Resource Evaluator
+# 6. Zero-Waste Compute Protocol (Necessity vs. Waste Gate)
 # ---------------------------------------------------------------------------
 
 
@@ -513,7 +513,7 @@ def evaluate_iktisad_resource_skepticism(
     expected_value_usd: float,
     probability_of_realization: float,
 ) -> IktisadResourceCheck:
-    """Evaluate proposed resource expenditure under the 19th Lem'a İktisad doctrine."""
+    """Evaluate proposed resource expenditure under the Zero-Waste Compute Protocol."""
     ev = round(expected_value_usd * max(0.0, probability_of_realization), 4)
 
     if has_deterministic_zero_cost_alternative:
@@ -527,7 +527,7 @@ def evaluate_iktisad_resource_skepticism(
             ev,
             False,
             "REJECTED_ISRAF_DETERMINISTIC_ALT",
-            f"Deterministic local alternative exists for {resource_type}. Spending is prohibited israf.",
+            f"Deterministic local alternative exists for {resource_type}. Spending is rejected as wasteful.",
         )
 
     if not source_verified:
@@ -568,7 +568,7 @@ def evaluate_iktisad_resource_skepticism(
         ev,
         True,
         "APPROVED_ZARURET",
-        f"Strict zaruret confirmed. Risk-adjusted EV: ${ev:.2f}.",
+        f"Strict necessity confirmed. Risk-adjusted EV: ${ev:.2f}.",
     )
 
 

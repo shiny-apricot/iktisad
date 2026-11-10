@@ -2,7 +2,7 @@
 
 > **Product**: `iktisad` / Kenz Cloud Gateway  
 > **Vendor**: Kenz Technologies (Kenz Labs)  
-> **Corporate Doctrine**: *"Kırk Düşün, Bir Kes"* (Measure 40 times, cut once) — 19th Lem'a (*İktisad Risalesi*)  
+> **Corporate Doctrine**: *"Kırk Düşün, Bir Kes"* (Measure 40 times, cut once) — Autonomous Frugality & Zero-Waste Compute  
 > **Governance Milestone**: `TASK-ECON-004` (Halal Commercialization & Polar.sh Listing)
 
 ---
@@ -13,7 +13,7 @@ Autonomous AI agent workflows (SWE-bench agents, coding assistants, CI/CD autode
 - A single test suite execution dumps 500–2,000 lines of terminal ANSI logs into the prompt window (1,500–6,000 tokens per roundtrip).
 - Including raw multi-thousand-line source files causes sudden context cliffing, needle-in-a-haystack retrieval degradation, and runaway token bills.
 
-**Kenz Cloud Gateway** acts as an ultra-lightweight, drop-in OpenAI-compatible reverse-proxy (`/v1/chat/completions`) that enforces **Sıfır-İsraf (Zero-Waste) Token Frugality**:
+**Kenz Cloud Gateway** acts as an ultra-lightweight, drop-in OpenAI-compatible reverse-proxy (`/v1/chat/completions`) that enforces **Zero-Waste Token Frugality**:
 - **>85% Token Defense**: Collapses noisy pytest/terminal logs to single-line verified summaries and converts bulky code files into zero-loss Python AST skeletons.
 - **Circuit Breaker Protection**: Automatically halts runaway agent loops before monthly budgets are breached.
 - **Dynamic Routing**: Dispatches reversible subagent tasks to economical Flash/Flash-Lite models while reserving flagship models for irreversible Type-1 architectural gates.
