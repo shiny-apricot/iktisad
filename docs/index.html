@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iktisad ⚡ Zero-dependency Token Firewall & MCP Server for AI Agents</title>
+  <meta name="description" content="Stop paying LLMs to read terminal noise. Zero-dependency Token Firewall, MCP Server & Quota Engine for Autonomous AI Coding Agents.">
+  <meta name="theme-color" content="#090d16">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <style>
+    :root {
+      --bg: #090d16;
+      --bg-card: #0e1424;
+      --bg-card-hover: #131b30;
+      --bg-code: #060910;
+      --border: #1e293b;
+      --border-bright: #334155;
+      --cyan: #00f2fe;
+      --cyan-glow: rgba(0, 242, 254, 0.15);
+      --green: #10b981;
+      --green-glow: rgba(16, 185, 129, 0.15);
+      --purple: #8b5cf6;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(0, 242, 254, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 15% 70%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    a {
+      color: var(--cyan);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    a:hover {
+      color: #67e8f9;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+      color: #fff;
+    }
+    .brand-glow {
+      color: var(--cyan);
+      text-shadow: 0 0 16px rgba(0, 242, 254, 0.6);
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+    .nav-links a:hover {
+      color: #fff;
+    }
+    .btn-sponsor {
+      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      color: #fff !important;
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-sponsor:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 22px rgba(139, 92, 246, 0.5);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 72px 0 56px;
+      text-align: center;
+      position: relative;
+    }
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 242, 254, 0.08);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-family: var(--font-mono);
+      color: var(--cyan);
+      margin-bottom: 24px;
+      letter-spacing: 0.02em;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+      margin-bottom: 20px;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, #fff 30%, var(--cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p.tagline {
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto 36px;
+      line-height: 1.55;
+    }
+
+    /* Copy boxes */
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+    .command-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .command-box:hover {
+      border-color: var(--cyan);
+      background: var(--bg-card-hover);
+      box-shadow: 0 0 20px var(--cyan-glow);
+    }
+    .command-prefix {
+      color: var(--cyan);
+      user-select: none;
+    }
+    .copy-btn {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-muted);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+    }
+
+    /* Badges Row */
+    .badges-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .badge-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+    .badge-link:hover {
+      color: #fff;
+      border-color: var(--border-bright);
+      background: rgba(255, 255, 255, 0.07);
+      transform: translateY(-1px);
+    }
+    .badge-link svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    /* Section Styling */
+    section {
+      padding: 56px 0;
+      border-top: 1px solid var(--border);
+    }
+    .section-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 44px;
+    }
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 1.02rem;
+    }
+
+    /* Before / After Visualizer */
+    .visualizer-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+    .visualizer-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.2);
+      overflow-x: auto;
+    }
+    .tab-btn {
+      padding: 12px 20px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.02);
+    }
+    .tab-btn.active {
+      color: var(--cyan);
+      border-bottom-color: var(--cyan);
+      background: rgba(0, 242, 254, 0.04);
+    }
+
+    .visualizer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      divide-x: 1px solid var(--border);
+    }
+    @media (max-width: 820px) {
+      .visualizer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .vis-col {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .vis-col-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .vis-col-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tag-waste {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--red);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+    }
+    .tag-saved {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+    }
+    .vis-code-box {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      height: 290px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      line-height: 1.45;
+    }
+    .code-dim { color: var(--text-dim); }
+    .code-err { color: #f87171; }
+    .code-ok { color: #34d399; font-weight: bold; }
+    .code-cyan { color: var(--cyan); }
+
+    /* Metrics Bar */
+    .metrics-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+    .metric-card:hover {
+      border-color: var(--cyan);
+    }
+    .metric-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      margin-bottom: 4px;
+    }
+    .metric-val.green { color: var(--green); text-shadow: 0 0 12px var(--green-glow); }
+    .metric-val.red { color: var(--red); }
+    .metric-val.cyan { color: var(--cyan); text-shadow: 0 0 12px var(--cyan-glow); }
+    .metric-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Bezos Sandwich Protocol */
+    .sandwich-diagram {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 16px;
+      margin: 36px 0;
+    }
+    @media (max-width: 900px) {
+      .sandwich-diagram {
+        grid-template-columns: 1fr;
+      }
+      .sandwich-arrow {
+        transform: rotate(90deg);
+        justify-content: center;
+      }
+    }
+    .sandwich-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 20px;
+      position: relative;
+      transition: all 0.2s;
+    }
+    .sandwich-step:hover {
+      border-color: var(--cyan);
+      transform: translateY(-2px);
+    }
+    .sandwich-step.frontier {
+      border-color: var(--purple);
+      background: linear-gradient(180deg, rgba(139, 92, 246, 0.08) 0%, var(--bg-card) 100%);
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.15);
+    }
+    .step-badge {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .step-badge.frugal { background: rgba(0, 242, 254, 0.15); color: var(--cyan); }
+    .step-badge.frontier { background: rgba(139, 92, 246, 0.2); color: #c084fc; }
+    .sandwich-step h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .sandwich-step p {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .sandwich-arrow {
+      display: flex;
+      align-items: center;
+      color: var(--cyan);
+      font-size: 1.5rem;
+      opacity: 0.8;
+    }
+
+    /* Comparison Table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 28px 0;
+      font-size: 0.92rem;
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .compare-table th, .compare-table td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table th {
+      background: rgba(0,0,0,0.3);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.2s ease;
+    }
+    .feature-card:hover {
+      border-color: var(--cyan);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+    .feature-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* MCP Quickstart */
+    .code-tabs {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    .code-nav {
+      display: flex;
+      background: rgba(0,0,0,0.25);
+      border-bottom: 1px solid var(--border);
+    }
+    .code-tab-btn {
+      padding: 12px 20px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .code-tab-btn.active {
+      color: var(--cyan);
+      border-bottom-color: var(--cyan);
+      background: rgba(0, 242, 254, 0.05);
+    }
+    .code-content {
+      padding: 20px;
+      position: relative;
+    }
+    .code-block {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    /* Polar Pro CTA */
+    .pro-banner {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(0, 242, 254, 0.15));
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      position: relative;
+      margin: 40px 0;
+      box-shadow: 0 10px 40px rgba(139, 92, 246, 0.1);
+    }
+    .pro-banner h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .pro-banner p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 24px;
+    }
+    .btn-pro {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 32px;
+      border-radius: 10px;
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.4);
+      transition: all 0.2s;
+    }
+    .btn-pro:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(139, 92, 246, 0.6);
+      color: #fff;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0 36px;
+      background: rgba(0,0,0,0.3);
+      color: var(--text-dim);
+      font-size: 0.88rem;
+    }
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 18px;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+    }
+    .footer-links a:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="container nav-inner">
+      <div class="brand">
+        <span class="brand-glow">⚡</span> iktisad
+      </div>
+      <nav class="nav-links">
+        <a href="#visualizer">Visualizer</a>
+        <a href="#sandwich">Sandwich Protocol</a>
+        <a href="#mcp">MCP Setup</a>
+        <a href="#gateway">Gateway</a>
+        <a href="https://github.com/shiny-apricot/iktisad" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://polar.sh/products/aecd39ab-d342-4ea2-96c4-d50939a7d940" target="_blank" rel="noopener" class="btn-sponsor">Polar Pro Tier</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="badge-pill">
+          <span>v0.1.0 ON PYPI</span> • <span>ZERO DEPENDENCIES</span> • <span>NATIVE MCP SERVER</span>
+        </div>
+        <h1>
+          Stop paying LLMs to read <br>
+          <span class="highlight">terminal noise</span>.
+        </h1>
+        <p class="tagline">
+          Zero-dependency Token Firewall, MCP Server & Quota Engine for Autonomous AI Agents.<br>
+          Cut test logs by <strong>80–97%</strong>, eliminate thinking token bloat, and prevent runaway API bills.
+        </p>
+
+        <!-- Command Boxes -->
+        <div class="hero-actions">
+          <div class="command-box" onclick="copySnippet('pip install iktisad', this)">
+            <span class="command-prefix">$</span>
+            <code>pip install iktisad</code>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+
+          <div class="command-box" onclick="copySnippet('iktisad --mcp', this)">
+            <span class="command-prefix">$</span>
+            <code>iktisad --mcp</code>
+            <button class="copy-btn">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Badges / Links -->
+        <div class="badges-row">
+          <a href="https://github.com/shiny-apricot/iktisad" target="_blank" rel="noopener" class="badge-link">
+            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub Repository
+          </a>
+          <a href="https://pypi.org/project/iktisad/0.1.0/" target="_blank" rel="noopener" class="badge-link">
+            <svg viewBox="0 0 24 24"><path d="M12 0L1.5 6v12L12 24l10.5-6V6L12 0zm0 2.3l8.2 4.7-3.7 2.1-8.2-4.7L12 2.3zm-9 5.2l8.2 4.7v9.4L3 16.9V7.5zm18 9.4l-8.2 4.7v-9.4l8.2-4.7v9.4z"/></svg>
+            PyPI v0.1.0
+          </a>
+          <a href="https://polar.sh/products/aecd39ab-d342-4ea2-96c4-d50939a7d940" target="_blank" rel="noopener" class="badge-link">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Polar Pro Tier ($10/mo)
+          </a>
+          <a href="mailto:kenzailabs@gmail.com" class="badge-link">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            kenzailabs@gmail.com
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Before / After Visualizer -->
+    <section id="visualizer">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Interactive Compression Engine</span>
+          <h2 class="section-title">Before vs. After Token Bleed Visualizer</h2>
+          <p class="section-desc">
+            Reasoning models (Claude Opus 5.5, o3, Fable) generate internal chain-of-thought (CoT) over every token you feed them. Feeding 45,000 tokens of noisy terminal stdout inflates reasoning latency and multiplies costs.
+          </p>
+        </div>
+
+        <div class="visualizer-card">
+          <div class="visualizer-tabs">
+            <button class="tab-btn active" onclick="switchVisualizerTab('pytest', this)">
+              <span>🧪 Pytest Suite Matrix</span>
+            </button>
+            <button class="tab-btn" onclick="switchVisualizerTab('traceback', this)">
+              <span>💥 Deep Traceback Cascades</span>
+            </button>
+            <button class="tab-btn" onclick="switchVisualizerTab('passing', this)">
+              <span>✅ 500-Test Passing Run</span>
+            </button>
+          </div>
+
+          <div class="visualizer-grid">
+            <!-- Left: Before -->
+            <div class="vis-col">
+              <div class="vis-col-header">
+                <span class="vis-col-title">
+                  <span>🔴 Raw Terminal Output</span>
+                </span>
+                <span id="before-badge" class="tag-waste">45,000 tokens (~$0.68)</span>
+              </div>
+              <div id="before-box" class="vis-code-box"><span class="code-dim">============================= test session starts ==============================
+platform linux -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0
+rootdir: /home/agent/workspace
+plugins: cov-5.0.0, xdist-3.5.0
+gw0 [100] / gw1 [100] / gw2 [100] / gw3 [100]
+[gw0] [  1%] PASSED tests/test_auth.py::test_init
+[gw1] [  2%] PASSED tests/test_auth.py::test_keygen
+[gw2] [  3%] PASSED tests/test_auth.py::test_cert_rotation
+[gw3] [  4%] PASSED tests/test_auth.py::test_expiry
+................................................................................
+................................................................................
+................................................................................
+[320 lines of dots and parallel thread logs omitted]
+/usr/local/lib/python3.13/site-packages/urllib3/connectionpool.py:1099: InsecureRequestWarning: Unverified HTTPS request is being made.
+/usr/local/lib/python3.13/site-packages/urllib3/connectionpool.py:1099: InsecureRequestWarning: Unverified HTTPS request is being made.
+[84 deprecation warnings omitted]
+=================================== FAILURES ===================================
+___________________________ test_token_revocation ____________________________
+[gw2] linux -- Python 3.13.2 /home/agent/.venv/bin/python
+
+self = &lt;test_auth.TestSecurity object at 0x7f8a1c&gt;
+session = &lt;Session token='ey82f...' active=False&gt;
+
+    def test_token_revocation(self, session):
+        manager = SessionManager(vault_url="https://internal-vault:8200")
+        manager.bind(session)
+&gt;       res = manager.verify_signature(session.token)
+E       AttributeError: 'NoneType' object has no attribute 'verify_signature'
+
+tests/test_auth.py:42: AttributeError
+--------------------------- Captured stdout call ---------------------------
+DEBUG: Loaded certs from /etc/ssl/certs/ca-certificates.crt
+DEBUG: Connecting to 10.0.4.18:8200
+DEBUG: Handshake complete in 1.42ms
+--------------------------- Captured log call ------------------------------
+2026-11-10 19:42:01 [DEBUG] auth.session: Session cached with TTL 3600s
+=========================== short test summary info ============================
+FAILED tests/test_auth.py::test_token_revocation - AttributeError: 'NoneType'...
+================= 1 failed, 99 passed, 84 warnings in 4.82s ===================</span></div>
+            </div>
+
+            <!-- Right: After -->
+            <div class="vis-col">
+              <div class="vis-col-header">
+                <span class="vis-col-title">
+                  <span>🟢 İktisad Filtered Context</span>
+                </span>
+                <span id="after-badge" class="tag-saved">600 tokens (98.7% Saved)</span>
+              </div>
+              <div id="after-box" class="vis-code-box"><span class="code-cyan"># [iktisad firewall] Log compressed 45,000 tokens -&gt; 600 tokens (-98.7%)</span>
+<span class="code-ok">SUMMARY: 1 failed, 99 passed in 4.82s (84 warnings suppressed)</span>
+
+<span class="code-err">FAIL: tests/test_auth.py::test_token_revocation</span>
+<span class="code-dim">File "tests/test_auth.py", line 42, in test_token_revocation</span>
+    res = manager.verify_signature(session.token)
+<span class="code-err">AttributeError: 'NoneType' object has no attribute 'verify_signature'</span>
+
+<span class="code-cyan"># Isolated Root Cause:</span>
+- manager is None at line 42. Check SessionManager initialization or mock return value.
+- Passing tests & noise stripped. Zero CoT distraction for reasoning engine.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="metrics-bar">
+          <div class="metric-card">
+            <div class="metric-val red" id="m-raw">45,000</div>
+            <div class="metric-label">Raw Tokens Ingested</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val green" id="m-filtered">600</div>
+            <div class="metric-label">İktisad Output Tokens</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val cyan" id="m-savings">98.7%</div>
+            <div class="metric-label">Context Budget Preserved</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val green" id="m-cost">~$0.67</div>
+            <div class="metric-label">Estimated Savings / Run</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bezos Sandwich Protocol -->
+    <section id="sandwich">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Architectural Pattern</span>
+          <h2 class="section-title">The Bezos Sandwich Protocol (2026 Edition)</h2>
+          <p class="section-desc">
+            Type-1 decisions (one-way doors) require deep strategic reasoning. Type-2 decisions (two-way doors) are reversible. Never burn frontier reasoning tokens on mechanical compilation or log scrolling.
+          </p>
+        </div>
+
+        <div class="sandwich-diagram">
+          <!-- Step 1 -->
+          <div class="sandwich-step">
+            <span class="step-badge frugal">Stage 1: Frugal Ingestion</span>
+            <h3>Gemini 3.8 Flash</h3>
+            <p>
+              Extracts 0-token AST code skeletons, compresses noisy terminal logs, and constructs a dense <strong>&lt;600-token brief</strong>.
+            </p>
+          </div>
+
+          <div class="sandwich-arrow">➔</div>
+
+          <!-- Step 2 -->
+          <div class="sandwich-step frontier">
+            <span class="step-badge frontier">Stage 2: 1-Shot Frontier Reasoner</span>
+            <h3>Claude Opus 5.5 / o3 / Fable</h3>
+            <p>
+              Frontier reasoning model ingests ONLY the distilled brief. Solves the core algorithmic failure in a single zero-shot decision without thinking token bloat.
+            </p>
+          </div>
+
+          <div class="sandwich-arrow">➔</div>
+
+          <!-- Step 3 -->
+          <div class="sandwich-step">
+            <span class="step-badge frugal">Stage 3: Mechanical Execution</span>
+            <h3>Gemini 3.8 Flash / Local AST</h3>
+            <p>
+              Applies exact code diff, runs local pytest verification through the iktisad firewall, and stages clean commit. Total cost: <strong>$0.01 instead of $1.50</strong>.
+            </p>
+          </div>
+        </div>
+
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>Architecture</th>
+              <th>Input Context Size</th>
+              <th>Frontier CoT Thinking Tokens</th>
+              <th>Cost per Bug Fix</th>
+              <th>Loop Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Naive Agentic Loop</strong> (Raw Terminal Dumps)</td>
+              <td style="color: var(--red);">40k – 90k tokens</td>
+              <td style="color: var(--red);">8,000 – 16,000 tokens</td>
+              <td style="color: var(--red);">$1.20 – $2.80</td>
+              <td style="color: var(--red);">High (HTTP 429 cascades)</td>
+            </tr>
+            <tr>
+              <td><strong>İktisad Sandwich Protocol</strong> (Frugal Gateway)</td>
+              <td style="color: var(--green);"><strong>&lt; 600 tokens</strong></td>
+              <td style="color: var(--green);"><strong>&lt; 800 tokens</strong></td>
+              <td style="color: var(--green);"><strong>$0.02 – $0.05</strong></td>
+              <td style="color: var(--green);">Zero (Circuit breaker protected)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MCP Server Quickstart -->
+    <section id="mcp">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Zero-Configuration Integration</span>
+          <h2 class="section-title">Native Model Context Protocol (MCP) Server</h2>
+          <p class="section-desc">
+            Equip Cursor, Claude Code, and Windsurf with native token defense tools using the official Model Context Protocol.
+          </p>
+        </div>
+
+        <div class="code-tabs">
+          <div class="code-nav">
+            <button class="code-tab-btn active" onclick="switchMcpTab('cursor', this)">Cursor IDE</button>
+            <button class="code-tab-btn" onclick="switchMcpTab('claude', this)">Claude Code / Desktop</button>
+            <button class="code-tab-btn" onclick="switchMcpTab('windsurf', this)">Windsurf</button>
+            <button class="code-tab-btn" onclick="switchMcpTab('cli', this)">Direct CLI / Stdio</button>
+          </div>
+
+          <div class="code-content">
+            <div id="mcp-code-block" class="code-block"><code>// In Cursor Settings -> MCP Servers:
+{
+  "name": "iktisad",
+  "type": "stdio",
+  "command": "iktisad",
+  "args": ["--mcp"]
+}</code></div>
+          </div>
+        </div>
+
+        <!-- MCP Tools Matrix -->
+        <table class="compare-table" style="margin-top: 30px;">
+          <thead>
+            <tr>
+              <th>Exposed MCP Tool</th>
+              <th>Functionality</th>
+              <th>Token Savings</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>compress_terminal_log</code></td>
+              <td>Compresses pytest, compiler, and shell logs, isolating only failed assertions and tracebacks</td>
+              <td style="color: var(--green);"><strong>80% – 97%</strong></td>
+            </tr>
+            <tr>
+              <td><code>extract_ast_skeleton</code></td>
+              <td>Extracts class/function signatures, docstrings, and line bounds with 0 LLM tokens</td>
+              <td style="color: var(--cyan);"><strong>100% (0 tokens)</strong></td>
+            </tr>
+            <tr>
+              <td><code>select_frugal_model</code></td>
+              <td>Evaluates task heaviness/irreversibility and routes between Flash & Frontier reasoners</td>
+              <td style="color: var(--green);"><strong>50% – 90%</strong></td>
+            </tr>
+            <tr>
+              <td><code>check_circuit_breaker</code></td>
+              <td>Enforces hourly/daily token quotas, automatically killing runaway agent retry loops</td>
+              <td style="color: var(--amber);"><strong>Protects Budgets</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Frugal Gateway -->
+    <section id="gateway">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">Rate Limit Armor & Reverse Proxy</span>
+          <h2 class="section-title">iktisad Frugal Gateway</h2>
+          <p class="section-desc">
+            A drop-in reverse proxy that intercepts outbound LLM API requests, silently strips terminal noise, enforces local SQLite token velocity, and protects against HTTP 429 cascades.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3>Reverse Proxy Interceptor</h3>
+            <p>
+              Point your agents to <code>http://localhost:8000/v1</code>. Compatible with OpenAI, Anthropic, and Gemini wire protocols. Automatically strips raw test logs before forwarding upstream.
+            </p>
+            <div class="command-box" style="margin-top: 16px;" onclick="copySnippet('iktisad --serve-gateway --port 8000', this)">
+              <span class="command-prefix">$</span>
+              <code>iktisad --serve-gateway --port 8000</code>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Runaway Loop Circuit Breaker</h3>
+            <p>
+              If an autonomous agent is caught in an infinite error-fix loop consuming tokens without moving the needle, iktisad trips the breaker and stops the bleed before your card gets billed.
+            </p>
+            <div class="command-box" style="margin-top: 16px;" onclick="copySnippet('iktisad --circuit-status', this)">
+              <span class="command-prefix">$</span>
+              <code>iktisad --circuit-status</code>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">🗺️</div>
+            <h3>Zero-Token AST Skeletonizer</h3>
+            <p>
+              Extract class definitions, method signatures, and line boundaries in pure Python AST. Read 2,000-line repositories in 30 lines without ingesting entire files into LLM context.
+            </p>
+            <div class="command-box" style="margin-top: 16px;" onclick="copySnippet('iktisad --ast-skeleton my_file.py', this)">
+              <span class="command-prefix">$</span>
+              <code>iktisad --ast-skeleton my_file.py</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Polar Pro Tier Banner -->
+    <section>
+      <div class="container">
+        <div class="pro-banner">
+          <h2>Ready to Deploy Autonomous Frugality?</h2>
+          <p>
+            Open-source under MIT. Upgrade to the Polar Pro Tier for multi-agent fleet presets, CI/CD telemetry bridges, and direct developer support.
+          </p>
+          <a href="https://polar.sh/products/aecd39ab-d342-4ea2-96c4-d50939a7d940" target="_blank" rel="noopener" class="btn-pro">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Subscribe on Polar Pro ($10/mo)
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <p><strong>iktisad</strong> ⚡ Developed by <strong>Kenz Labs</strong> (Kenz Technologies).</p>
+        <p style="margin-top: 4px; font-size: 0.8rem;">
+          Doctrinal & Fiqh Basis: 19. Lem'a (İktisad Risalesi) — Zero Waste, Pure Utility, Autonomous Frugality.
+        </p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/shiny-apricot/iktisad" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://pypi.org/project/iktisad/0.1.0/" target="_blank" rel="noopener">PyPI</a>
+        <a href="https://polar.sh/products/aecd39ab-d342-4ea2-96c4-d50939a7d940" target="_blank" rel="noopener">Polar</a>
+        <a href="mailto:kenzailabs@gmail.com">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function copySnippet(text, el) {
+      navigator.clipboard.writeText(text).then(function() {
+        const btn = el.querySelector('.copy-btn span') || el.querySelector('button span');
+        if (btn) {
+          const orig = btn.innerText;
+          btn.innerText = 'Copied! ✓';
+          setTimeout(() => { btn.innerText = orig; }, 1800);
+        }
+      });
+    }
+
+    const visualizerPresets = {
+      pytest: {
+        rawBadge: "45,000 tokens (~$0.68)",
+        afterBadge: "600 tokens (98.7% Saved)",
+        rawTokens: "45,000",
+        afterTokens: "600",
+        savings: "98.7%",
+        cost: "~$0.67",
+        before: `============================= test session starts ==============================
+platform linux -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0
+rootdir: /home/agent/workspace
+plugins: cov-5.0.0, xdist-3.5.0
+gw0 [100] / gw1 [100] / gw2 [100] / gw3 [100]
+[gw0] [  1%] PASSED tests/test_auth.py::test_init
+[gw1] [  2%] PASSED tests/test_auth.py::test_keygen
+[gw2] [  3%] PASSED tests/test_auth.py::test_cert_rotation
+[gw3] [  4%] PASSED tests/test_auth.py::test_expiry
+................................................................................
+................................................................................
+................................................................................
+[320 lines of dots and parallel thread logs omitted]
+/usr/local/lib/python3.13/site-packages/urllib3/connectionpool.py:1099: InsecureRequestWarning: Unverified HTTPS request is being made.
+[84 deprecation warnings omitted]
+=================================== FAILURES ===================================
+___________________________ test_token_revocation ____________________________
+[gw2] linux -- Python 3.13.2 /home/agent/.venv/bin/python
+
+self = <test_auth.TestSecurity object at 0x7f8a1c>
+session = <Session token='ey82f...' active=False>
+
+    def test_token_revocation(self, session):
+        manager = SessionManager(vault_url="https://internal-vault:8200")
+        manager.bind(session)
+>       res = manager.verify_signature(session.token)
+E       AttributeError: 'NoneType' object has no attribute 'verify_signature'
+
+tests/test_auth.py:42: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_auth.py::test_token_revocation - AttributeError: 'NoneType'...
+================= 1 failed, 99 passed, 84 warnings in 4.82s ===================`,
+        after: `# [iktisad firewall] Log compressed 45,000 tokens -> 600 tokens (-98.7%)
+SUMMARY: 1 failed, 99 passed in 4.82s (84 warnings suppressed)
+
+FAIL: tests/test_auth.py::test_token_revocation
+File "tests/test_auth.py", line 42, in test_token_revocation
+    res = manager.verify_signature(session.token)
+AttributeError: 'NoneType' object has no attribute 'verify_signature'
+
+# Isolated Root Cause:
+- manager is None at line 42. Check SessionManager initialization or mock return value.
+- Passing tests & noise stripped. Zero CoT distraction for reasoning engine.`
+      },
+      traceback: {
+        rawBadge: "28,500 tokens (~$0.43)",
+        afterBadge: "410 tokens (98.6% Saved)",
+        rawTokens: "28,500",
+        afterTokens: "410",
+        savings: "98.6%",
+        cost: "~$0.42",
+        before: `Traceback (most recent call last):
+  File "/usr/lib/python3.13/wsgiref/handlers.py", line 137, in run
+    self.result = application(self.environ, self.start_response)
+  File "/home/agent/.venv/lib/python3.13/site-packages/django/core/handlers/wsgi.py", line 124, in __call__
+    response = self.get_response(request)
+  File "/home/agent/.venv/lib/python3.13/site-packages/django/core/handlers/base.py", line 140, in get_response
+    response = self._middleware_chain(request)
+  File "/home/agent/.venv/lib/python3.13/site-packages/django/contrib/sessions/middleware.py", line 23, in process_request
+    request.session = self.SessionStore(session_key)
+  [22 internal framework frames omitted...]
+  File "src/billing/service.py", line 194, in charge_customer
+    token = self.signer.decode_payload(raw_jwt)
+  File "src/crypto/jwt.py", line 58, in decode_payload
+    raise InvalidSignatureError("Algorithm RS256 required, received HS256")
+src.crypto.jwt.InvalidSignatureError: Algorithm RS256 required, received HS256`,
+        after: `# [iktisad firewall] 22 standard library & framework frames collapsed
+FAIL: src/billing/service.py:194 in charge_customer
+File "src/crypto/jwt.py", line 58, in decode_payload
+    raise InvalidSignatureError("Algorithm RS256 required, received HS256")
+InvalidSignatureError: Algorithm RS256 required, received HS256
+
+# Isolated Root Cause:
+- Signature mismatch: token algorithm HS256 does not match expected RS256.`
+      },
+      passing: {
+        rawBadge: "14,200 tokens (~$0.21)",
+        afterBadge: "24 tokens (99.8% Saved)",
+        rawTokens: "14,200",
+        afterTokens: "24",
+        savings: "99.8%",
+        cost: "~$0.21",
+        before: `============================= test session starts ==============================
+platform linux -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0
+rootdir: /home/agent/workspace
+................................................................................
+................................................................................
+................................................................................
+................................................................................
+................................................................................
+................................................................................
+................................................................................
+============================= 500 passed in 3.12s ==============================`,
+        after: `OK: 500 passed in 3.12s`
+      }
+    };
+
+    function switchVisualizerTab(presetKey, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const data = visualizerPresets[presetKey];
+      document.getElementById('before-badge').innerText = data.rawBadge;
+      document.getElementById('after-badge').innerText = data.afterBadge;
+      document.getElementById('before-box').innerText = data.before;
+      document.getElementById('after-box').innerText = data.after;
+      document.getElementById('m-raw').innerText = data.rawTokens;
+      document.getElementById('m-filtered').innerText = data.afterTokens;
+      document.getElementById('m-savings').innerText = data.savings;
+      document.getElementById('m-cost').innerText = data.cost;
+    }
+
+    const mcpConfigs = {
+      cursor: `// In Cursor Settings -> MCP Servers -> Add new MCP server:
+{
+  "name": "iktisad",
+  "type": "stdio",
+  "command": "iktisad",
+  "args": ["--mcp"]
+}`,
+      claude: `// In claude_desktop_config.json:
+{
+  "mcpServers": {
+    "iktisad": {
+      "command": "iktisad",
+      "args": ["--mcp"]
+    }
+  }
+}`,
+      windsurf: `// In Windsurf mcp_config.json:
+{
+  "mcpServers": {
+    "iktisad": {
+      "command": "iktisad",
+      "args": ["--mcp"]
+    }
+  }
+}`,
+      cli: `# Launch stdio JSON-RPC server directly:
+iktisad --mcp
+
+# Or use dedicated MCP entrypoint:
+iktisad-mcp`
+    };
+
+    function switchMcpTab(tabKey, btn) {
+      document.querySelectorAll('.code-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('mcp-code-block').innerHTML = '<code>' + escapeHtml(mcpConfigs[tabKey]) + '</code>';
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+  </script>
+</body>
+</html>
