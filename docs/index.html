@@ -1307,7 +1307,7 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
         afterTokens: "~110",
         savings: "94.0%",
         cost: "~$0.026",
-        before: `============================= test session starts ==============================
+        beforeHtml: `<span class=\"code-dim\">============================= test session starts ==============================
 platform linux -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0 -- /home/agent/.venv/bin/python
 cachedir: .pytest_cache
 rootdir: /home/agent/workspace/enterprise-core
@@ -1364,31 +1364,31 @@ tests/unit/test_logging.py::test_pii_masking_filter [gw1] PASSED         [ 88%]
 tests/unit/test_graphql.py::test_depth_limit_protection [gw2] PASSED    [ 90%]
 tests/unit/test_graphql.py::test_dataloader_batching [gw2] PASSED        [ 92%]
 tests/unit/test_crypto_vault.py::test_kms_envelope_encryption [gw3] PASSED [ 94%]
-tests/unit/test_crypto_vault.py::test_zero_knowledge_proof [gw3] PASSED [ 96%]
-tests/billing/test_subscription_gate.py::test_active_customer_access [gw0] FAILED [ 98%]
-tests/billing/test_subscription_gate.py::test_enterprise_seat_cap [gw1] PASSED [100%]
+tests/unit/test_zero_knowledge_proof [gw3] PASSED [ 96%]</span>
+<span class=\"code-err\">tests/billing/test_subscription_gate.py::test_active_customer_access [gw0] FAILED [ 98%]</span>
+<span class=\"code-dim\">tests/billing/test_subscription_gate.py::test_enterprise_seat_cap [gw1] PASSED [100%]
 
 ==================================== WARNINGS ===================================
 /home/agent/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:201: PydanticDeprecatedSince20: Using extra keyword arguments on Field is deprecated.
-/home/agent/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py:1099: InsecureRequestWarning: Unverified HTTPS request to host 'internal-vault'.
+/home/agent/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py:1099: InsecureRequestWarning: Unverified HTTPS request to host \x27internal-vault\x27.
 /home/agent/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1942: SAWarning: Object already exists in session; this will be an error in 2.1.
 /home/agent/.venv/lib/python3.13/site-packages/pytest_asyncio/plugin.py:734: PytestDeprecationWarning: @pytest.fixture is being applied to an async function.
-[... 28 additional framework deprecation warnings suppressed by python runtime ...]
+[... 28 additional framework deprecation warnings suppressed by python runtime ...]</span>
 
 =================================== FAILURES ====================================
-_______________________ test_active_customer_access ____________________________
+<span class=\"code-err\">_______________________ test_active_customer_access ____________________________
 [gw0] linux -- Python 3.13.2 /home/agent/.venv/bin/python
 
-self = <tests.billing.test_subscription_gate.TestSubscriptionGate object at 0x7f9a2d3e1100>
-client = <starlette.testclient.TestClient object at 0x7f9a2d3e1450>
-db_session = <sqlalchemy.orm.session.Session object at 0x7f9a2d3e1890>
-mock_stripe = <unittest.mock.MagicMock object at 0x7f9a2d3e1dd0>
+self = &lt;tests.billing.test_subscription_gate.TestSubscriptionGate object at 0x7f9a2d3e1100&gt;
+client = &lt;starlette.testclient.TestClient object at 0x7f9a2d3e1450&gt;
+db_session = &lt;sqlalchemy.orm.session.Session object at 0x7f9a2d3e1890&gt;
+mock_stripe = &lt;unittest.mock.MagicMock object at 0x7f9a2d3e1dd0&gt;
 
     @pytest.mark.asyncio
     async def test_active_customer_access(self, client, db_session, mock_stripe):
-        user = await create_test_tenant(db_session, plan="pro", status="trial_expired")
+        user = await create_test_tenant(db_session, plan=\"pro\", status=\"trial_expired\")
         entitlement_svc = EntitlementService(db=db_session, stripe=mock_stripe)
->       entitlement = await entitlement_svc.check_entitlement(user.id, feature="mcp_unlimited")
+&gt;       entitlement = await entitlement_svc.check_entitlement(user.id, feature=\"mcp_unlimited\")
 
 tests/billing/test_subscription_gate.py:84: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
@@ -1398,139 +1398,134 @@ src/billing/service.py:189: in _evaluate_status
     assert user.subscription.is_active is True
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-user = <User id='usr_99x8' email='dev@customer.io' tier='pro' grace_period=0>
-feature = 'mcp_unlimited'
+user = &lt;User id=\x27usr_99x8\x27 email=\x27dev@customer.io\x27 tier=\x27pro\x27 grace_period=0&gt;
+feature = \x27mcp_unlimited\x27
 
->   assert user.subscription.is_active is True
+&gt;   assert user.subscription.is_active is True
 E   AssertionError: assert False is True
-E    +  where False = <Subscription id='sub_092a' status='trial_expired' is_active=False>.is_active
+E    +  where False = &lt;Subscription id=\x27sub_092a\x27 status=\x27trial_expired\x27 is_active=False&gt;.is_active
 
-src/billing/service.py:189: AssertionError
------------------------------ Captured stdout call -----------------------------
+src/billing/service.py:189: AssertionError</span>
+<span class=\"code-dim\">----------------------------- Captured stdout call -----------------------------
 2026-11-10T19:42:01.104Z [DEBUG] (billing.service): Resolving tenant entitlement for usr_99x8
-2026-11-10T19:42:01.108Z [DEBUG] (db.pool): Checkout connection <Connection 0x7f9a2d120a> (pool size=10, checked_out=3)
-2026-11-10T19:42:01.112Z [DEBUG] (sql.echo): SELECT users.id, subscriptions.status FROM users LEFT JOIN subscriptions ON users.id = subscriptions.user_id WHERE users.id = 'usr_99x8'
-2026-11-10T19:42:01.115Z [DEBUG] (billing.cache): Redis cache miss on key 'entitlement:usr_99x8:mcp_unlimited'
-2026-11-10T19:42:01.119Z [WARN]  (billing.service): Tenant usr_99x8 has status 'trial_expired' with grace_period=0
+2026-11-10T19:42:01.108Z [DEBUG] (db.pool): Checkout connection &lt;Connection 0x7f9a2d120a&gt; (pool size=10, checked_out=3)
+2026-11-10T19:42:01.112Z [DEBUG] (sql.echo): SELECT users.id, subscriptions.status FROM users LEFT JOIN subscriptions ON users.id = subscriptions.user_id WHERE users.id = \x27usr_99x8\x27
+2026-11-10T19:42:01.115Z [DEBUG] (billing.cache): Redis cache miss on key \x27entitlement:usr_99x8:mcp_unlimited\x27
+2026-11-10T19:42:01.119Z [WARN]  (billing.service): Tenant usr_99x8 has status \x27trial_expired\x27 with grace_period=0
 ----------------------------- Captured stderr call -----------------------------
 [urllib3.connectionpool] Resetting dropped connection: internal-vault
 [opentelemetry.trace] Non-recording span created for parent_id=None
 =========================== short test summary info ============================
 FAILED tests/billing/test_subscription_gate.py::test_active_customer_access - AssertionError: assert False is True
-================== 1 failed, 48 passed, 32 warnings in 14.82s ===================`,
-        after: `# [iktisad firewall] Distilled ~1,820 tokens -> ~110 tokens (-94.0% Context Reduction)
-# Cost per loop: ~$0.001 (saved ~$0.026 per agentic retry iteration)
+================== 1 failed, 48 passed, 32 warnings in 14.82s ===================</span>`,
+        afterHtml: `<span class=\"code-cyan\"># [iktisad firewall] Distilled ~1,820 tokens -&gt; ~110 tokens (-94.0% Context Reduction)
+# Cost per loop: ~$0.001 (saved ~$0.026 per agentic retry iteration)</span>
 
-SUMMARY: 1 failed, 48 passed, 32 warnings in 14.82s
-SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug traces
+<span class=\"code-ok\">SUMMARY: 1 failed, 48 passed, 32 warnings in 14.82s
+SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug traces</span>
 
-FAIL: tests/billing/test_subscription_gate.py::test_active_customer_access
-File "src/billing/service.py", line 189, in _evaluate_status
+<span class=\"code-err\">FAIL: tests/billing/test_subscription_gate.py::test_active_customer_access</span>
+<span class=\"code-dim\">File \"src/billing/service.py\", line 189, in _evaluate_status</span>
     assert user.subscription.is_active is True
-AssertionError: assert False is True
- + where False = <Subscription id='sub_092a' status='trial_expired' is_active=False>.is_active
+<span class=\"code-err\">AssertionError: assert False is True
+ + where False = &lt;Subscription id=\x27sub_092a\x27 status=\x27trial_expired\x27 is_active=False&gt;.is_active</span>
 
-# Isolated Root Cause & Actionable Context:
-• Target: src/billing/service.py:189 in _evaluate_status()
-• Cause: user.subscription status is 'trial_expired' with grace_period=0, causing is_active=False.
-• Clean Fix: Handle 'trial_expired' in entitlement fallback logic or verify mock fixture setup.
-• Preserved: Zero CoT reasoning token bloat, zero passing test distraction.`
+<span class=\"code-cyan\"># Isolated Root Cause &amp; Actionable Context:</span>
+• <span class=\"code-ok\">Target:</span> src/billing/service.py:189 in _evaluate_status()
+• <span class=\"code-ok\">Cause:</span> user.subscription status is \x27trial_expired\x27 with grace_period=0, causing is_active=False.
+• <span class=\"code-ok\">Clean Fix:</span> Handle \x27trial_expired\x27 in entitlement fallback logic or verify mock fixture setup.
+• <span class=\"code-ok\">Preserved:</span> Zero CoT reasoning token bloat, zero passing test distraction.`
       },
       traceback: {
-        rawBadge: "Tokens: 28,500 tokens (~$0.43 per loop)",
-        afterBadge: "Tokens: 320 tokens (~$0.005 per loop) — 98.9% Reduction",
-        rawTokens: "28,500",
-        afterTokens: "320",
-        savings: "98.9%",
-        cost: "~$0.42",
-        before: `Traceback (most recent call last):
-  File "/usr/local/lib/python3.13/site-packages/starlette/routing.py", line 705, in app
+        rawBadge: "Tokens: ~2,850 tokens (~$0.043 per loop)",
+        afterBadge: "Tokens: ~95 tokens (~$0.001 per loop) — 96.7% Reduction",
+        rawTokens: "~2,850",
+        afterTokens: "~95",
+        savings: "96.7%",
+        cost: "~$0.042",
+        beforeHtml: `<span class=\"code-dim\">Traceback (most recent call last):
+  File \"/usr/local/lib/python3.13/site-packages/starlette/routing.py\", line 705, in app
     await response(scope, receive, send)
-  File "/usr/local/lib/python3.13/site-packages/starlette/responses.py", line 273, in __call__
+  File \"/usr/local/lib/python3.13/site-packages/starlette/responses.py\", line 273, in __call__
     await run_in_threadpool(self.background)
-  File "/usr/local/lib/python3.13/site-packages/starlette/concurrency.py", line 40, in run_in_threadpool
+  File \"/usr/local/lib/python3.13/site-packages/starlette/concurrency.py\", line 40, in run_in_threadpool
     return await anyio.to_thread.run_sync(func, *args)
-  File "/usr/local/lib/python3.13/site-packages/anyio/to_thread.py", line 56, in run_sync
+  File \"/usr/local/lib/python3.13/site-packages/anyio/to_thread.py\", line 56, in run_sync
     return await get_async_backend().run_sync_in_worker_thread(
-  File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 2176, in run_sync_in_worker_thread
+  File \"/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py\", line 2176, in run_sync_in_worker_thread
     return await future
-  File "/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py", line 859, in run
+  File \"/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py\", line 859, in run
     result = context.run(func, *args)
-  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py", line 191, in call_next
+  File \"/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py\", line 191, in call_next
     return await response_sent.wait()
-  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py", line 164, in __call__
+  File \"/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py\", line 164, in __call__
     await self.app(scope, receive, _send)
-  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py", line 93, in __call__
+  File \"/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py\", line 93, in __call__
     await self.simple_response(scope, receive, send, request_headers=headers)
-  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/gzip.py", line 24, in __call__
+  File \"/usr/local/lib/python3.13/site-packages/starlette/middleware/gzip.py\", line 24, in __call__
     await self.app(scope, receive, send)
-  File "/usr/local/lib/python3.13/site-packages/starlette/middleware/authentication.py", line 67, in __call__
+  File \"/usr/local/lib/python3.13/site-packages/starlette/middleware/authentication.py\", line 67, in __call__
     response = await self.app(scope, receive, send)
-  File "/usr/local/lib/python3.13/site-packages/fastapi/applications.py", line 1054, in __call__
+  File \"/usr/local/lib/python3.13/site-packages/fastapi/applications.py\", line 1054, in __call__
     await super().__call__(scope, receive, send)
-  File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 291, in app
+  File \"/usr/local/lib/python3.13/site-packages/fastapi/routing.py\", line 291, in app
     raw_response = await run_endpoint_function(
-  File "/usr/local/lib/python3.13/site-packages/fastapi/routing.py", line 198, in run_endpoint_function
+  File \"/usr/local/lib/python3.13/site-packages/fastapi/routing.py\", line 198, in run_endpoint_function
     return await dependant.call(**values)
-  File "/home/agent/workspace/enterprise-core/src/api/v2/billing_router.py", line 87, in execute_charge
+  File \"/home/agent/workspace/enterprise-core/src/api/v2/billing_router.py\", line 87, in execute_charge
     return await BillingDispatcher.process_invoice_payment(invoice_id, idempotency_key)
-  File "/home/agent/workspace/enterprise-core/src/billing/dispatcher.py", line 152, in process_invoice_payment
+  File \"/home/agent/workspace/enterprise-core/src/billing/dispatcher.py\", line 152, in process_invoice_payment
     settlement = await PaymentRail.dispatch_settlement(payload)
-  File "/home/agent/workspace/enterprise-core/src/billing/rails.py", line 74, in dispatch_settlement
+  File \"/home/agent/workspace/enterprise-core/src/billing/rails.py\", line 74, in dispatch_settlement
     token = VaultSigner.decrypt_secret_envelope(payload.encrypted_blob)
-  File "/home/agent/workspace/enterprise-core/src/crypto/jwt.py", line 58, in decrypt_secret_envelope
-    raise InvalidSignatureError("Algorithm RS256 required, received HS256 in header: alg=HS256")
-src.crypto.jwt.InvalidSignatureError: Algorithm RS256 required, received HS256 in header: alg=HS256
+  File \"/home/agent/workspace/enterprise-core/src/crypto/jwt.py\", line 58, in decrypt_secret_envelope
+    raise InvalidSignatureError(\"Algorithm RS256 required, received HS256 in header: alg=HS256\")</span>
+<span class=\"code-err\">src.crypto.jwt.InvalidSignatureError: Algorithm RS256 required, received HS256 in header: alg=HS256</span>
 
-[Local Scope Variable Inspection Dump: 0x7f9a2d3e1980]
-payload = <InvoicePayload id='inv_882' amount=4900 currency='USD' status='pending' retries=3>
-headers = {'content-type': 'application/json', 'authorization': 'Bearer eyJhbGciOi...', 'x-request-id': 'req_01j9'}
-db_state = <EngineSession postgresql://user:***@10.0.8.12:5432/core_prod connected=True in_transaction=True>
-thread_pool = <ThreadPoolExecutor max_workers=32 active_threads=14 queue_depth=2>
-memory_arena_stats: malloc_trim=0 rss_mb=642.1 vms_mb=1820.4 shared_mb=88.2`,
-        after: `# [iktisad firewall] 26 Starlette / FastAPI / AnyIO framework frames collapsed
-# Distilled 28,500 tokens -> 320 tokens (-98.9% Reduction)
+<span class=\"code-dim\">[Local Scope Variable Inspection Dump: 0x7f9a2d3e1980]
+payload = &lt;InvoicePayload id=\x27inv_882\x27 amount=4900 currency=\x27USD\x27 status=\x27pending\x27 retries=3&gt;
+headers = {\x27content-type\x27: \x27application/json\x27, \x27authorization\x27: \x27Bearer eyJhbGciOi...\x27, \x27x-request-id\x27: \x27req_01j9\x27}
+db_state = &lt;EngineSession postgresql://user:***@10.0.8.12:5432/core_prod connected=True in_transaction=True&gt;
+thread_pool = &lt;ThreadPoolExecutor max_workers=32 active_threads=14 queue_depth=2&gt;
+memory_arena_stats: malloc_trim=0 rss_mb=642.1 vms_mb=1820.4 shared_mb=88.2</span>`,
+        afterHtml: `<span class=\"code-cyan\"># [iktisad firewall] 24 Starlette / FastAPI / AnyIO framework frames collapsed
+# Distilled ~2,850 tokens -&gt; ~95 tokens (-96.7% Context Reduction)
+# Cost per loop: ~$0.001 (saved ~$0.042 per agentic retry iteration)</span>
 
-FAIL: src/billing/rails.py:74 -> src/crypto/jwt.py:58 in decrypt_secret_envelope()
-File "src/crypto/jwt.py", line 58, in decrypt_secret_envelope
-    raise InvalidSignatureError("Algorithm RS256 required, received HS256 in header: alg=HS256")
-InvalidSignatureError: Algorithm RS256 required, received HS256 in header: alg=HS256
+<span class=\"code-err\">FAIL: src/billing/rails.py:74 -&gt; src/crypto/jwt.py:58 in decrypt_secret_envelope()</span>
+<span class=\"code-dim\">File \"src/crypto/jwt.py\", line 58, in decrypt_secret_envelope</span>
+    raise InvalidSignatureError(\"Algorithm RS256 required, received HS256 in header: alg=HS256\")
+<span class=\"code-err\">InvalidSignatureError: Algorithm RS256 required, received HS256 in header: alg=HS256</span>
 
-# Isolated Root Cause:
-• Key Mismatch: Envelope was signed with symmetric HMAC (HS256), but VaultSigner requires asymmetric RSA (RS256).
-• Framework noise stripped: 26 middleware wrappers and 640MB memory arena dumps excluded.`
+<span class=\"code-cyan\"># Isolated Root Cause &amp; Actionable Context:</span>
+• <span class=\"code-ok\">Key Mismatch:</span> Envelope signed with symmetric HMAC (HS256), but VaultSigner requires asymmetric RSA (RS256).
+• <span class=\"code-ok\">Framework noise stripped:</span> 24 middleware wrappers and 640MB memory arena dumps excluded.
+• <span class=\"code-ok\">Preserved:</span> Exact caller-callee line bounds and cryptographic exception.`
       },
       monorepo: {
-        rawBadge: "Tokens: 42,000 tokens (~$0.63 per loop)",
-        afterBadge: "Tokens: 380 tokens (~$0.006 per loop) — 99.1% Reduction",
-        rawTokens: "42,000",
-        afterTokens: "380",
-        savings: "99.1%",
-        cost: "~$0.62",
-        before: `# === Full Ingestion of src/enterprise/billing/monolith_engine.py (10,480 lines) ===
-# Loading raw code buffer into LLM context window (42,000 tokens)...
+        rawBadge: "Tokens: ~3,850 tokens (~$0.058 per loop)",
+        afterBadge: "Tokens: ~140 tokens (~$0.002 per loop) — 96.4% Reduction",
+        rawTokens: "~3,850",
+        afterTokens: "~140",
+        savings: "96.4%",
+        cost: "~$0.056",
+        beforeHtml: `<span class=\"code-cyan\"># === Ingestion of Monorepo Module: src/enterprise/billing/monolith_engine.py ===
+# Loading raw code buffer into LLM context window (~3,850 tokens)...</span>
 
-import asyncio
+<span class=\"code-dim\">import asyncio
 import datetime
 import hashlib
 import json
 import logging
 import os
 import re
-import socket
-import ssl
-import sys
-import time
-from typing import Any, Callable, Dict, Generator, Iterable, List, Optional, Set, Tuple, Union
-import uuid
-
+from typing import Any, Callable, Dict, List, Optional
 import asyncpg
 import pydantic
 import redis.asyncio as aioredis
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
 
-logger = logging.getLogger("enterprise.billing.monolith")
+logger = logging.getLogger(\"enterprise.billing.monolith\")
 
 class MonolithEngineConfig:
     def __init__(self, host: str, port: int, pool_size: int = 50, timeout: float = 30.0):
@@ -1538,8 +1533,8 @@ class MonolithEngineConfig:
         self.port = port
         self.pool_size = pool_size
         self.timeout = timeout
-        self.retry_policy = {"max_attempts": 5, "backoff_multiplier": 1.5, "jitter": True}
-        # [45 lines of configuration schema definitions and validations omitted]
+        self.retry_policy = {\"max_attempts\": 5, \"backoff_multiplier\": 1.5, \"jitter\": True}
+        # [45 lines of private config schema validations omitted]
 
 class LedgerTransactionManager:
     # [380 lines of nested ledger state machine, raw SQL queries, transaction commit hooks]
@@ -1548,51 +1543,52 @@ class LedgerTransactionManager:
         pass
 
 class SubscriptionLifecycleCoordinator:
-    # [1,200 lines of Stripe, Polar, PayPal webhook event parsing and state machines]
+    # [520 lines of Stripe, Polar, PayPal webhook event parsing and state machines]
     async def reconcile_unpaid_invoices(self, tenant_id: str, grace_period_days: int = 7):
-        # [240 lines of reconciliation algorithms, invoice re-issuance, email notifications]
+        # [140 lines of reconciliation algorithms, invoice re-issuance, email notifications]
         pass
 
 class UsageMeterAggregator:
-    # [850 lines of Prometheus, Datadog, OpenTelemetry gauge and histogram streaming]
+    # [480 lines of Prometheus, Datadog, OpenTelemetry gauge and histogram streaming]
     def calculate_billable_units(self, events: List[Dict[str, Any]]) -> int:
-        # [110 lines of tier math, proration, volume discounts]
+        # [95 lines of tier math, proration, volume discounts]
         pass
 
-# [9,400 additional lines of internal implementation details, raw SQL statements, and loops omitted]`,
-        after: `# [iktisad AST skeletonizer] 10,480 lines compressed to structural signatures
-# Distilled 42,000 tokens -> 380 tokens (-99.1% Codebase Context Reduction)
+# [1,200 additional lines of internal loops, private helpers, and raw SQL queries...]</span>`,
+        afterHtml: `<span class=\"code-cyan\"># [iktisad AST skeletonizer] 1,850 lines compressed to structural signatures
+# Distilled ~3,850 tokens -&gt; ~140 tokens (-96.4% Context Reduction)
+# Cost per loop: ~$0.002 (saved ~$0.056 per agentic retry iteration)</span>
 
-Module: src/enterprise/billing/monolith_engine.py (Lines 1 - 10480)
+<span class=\"code-ok\">Module: src/enterprise/billing/monolith_engine.py (Lines 1 - 1850)</span>
 
-Classes & Exported Signatures:
-├── class MonolithEngineConfig(host: str, port: int, pool_size: int = 50, timeout: float = 30.0) [L28-L75]
-├── class LedgerTransactionManager [L77-L457]
-│   └── async def commit_double_entry_ledger(debit_account: str, credit_account: str, amount: int) -> LedgerEntry [L112-L197]
-├── class SubscriptionLifecycleCoordinator [L459-L1659]
-│   ├── async def handle_webhook_event(payload: bytes, signature: str) -> bool [L512-L580]
-│   └── async def reconcile_unpaid_invoices(tenant_id: str, grace_period_days: int = 7) -> ReconcileResult [L820-L1060]
-└── class UsageMeterAggregator [L1661-L2511]
-    └── def calculate_billable_units(events: list[dict[str, Any]]) -> int [L1840-L1950]
+<span class=\"code-dim\">Classes &amp; Exported Signatures:</span>
+├── <span class=\"code-ok\">class MonolithEngineConfig</span>(host: str, port: int, pool_size: int = 50) <span class=\"code-dim\">[L28-L75]</span>
+├── <span class=\"code-ok\">class LedgerTransactionManager</span> <span class=\"code-dim\">[L77-L457]</span>
+│   └── <span class=\"code-cyan\">async def commit_double_entry_ledger</span>(debit_account: str, credit_account: str, amount: int) -&gt; LedgerEntry <span class=\"code-dim\">[L112-L197]</span>
+├── <span class=\"code-ok\">class SubscriptionLifecycleCoordinator</span> <span class=\"code-dim\">[L459-L979]</span>
+│   ├── <span class=\"code-cyan\">async def handle_webhook_event</span>(payload: bytes, signature: str) -&gt; bool <span class=\"code-dim\">[L512-L580]</span>
+│   └── <span class=\"code-cyan\">async def reconcile_unpaid_invoices</span>(tenant_id: str, grace_period_days: int = 7) -&gt; ReconcileResult <span class=\"code-dim\">[L820-L960]</span>
+└── <span class=\"code-ok\">class UsageMeterAggregator</span> <span class=\"code-dim\">[L981-L1461]</span>
+    └── <span class=\"code-cyan\">def calculate_billable_units</span>(events: list[dict[str, Any]]) -&gt; int <span class=\"code-dim\">[L1140-L1235]</span>
 
-# Semantic Context:
-• Complete structural AST map available with line bounds.
-• Agents read method interfaces without burning 42,000 tokens on private loops.`
+<span class=\"code-cyan\"># Semantic Structural Context:</span>
+• <span class=\"code-ok\">Complete structural AST map available with exact line numbers for agent navigation.</span>
+• <span class=\"code-ok\">Agents read method interfaces without burning ~3,850 tokens on private loops.</span>`
       }
     };
 
     function switchVisualizerTab(presetKey, btn) {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      document.querySelectorAll(\x27.tab-btn\x27).forEach(b =&gt; b.classList.remove(\x27active\x27));
+      btn.classList.add(\x27active\x27);
       const data = visualizerPresets[presetKey];
-      document.getElementById('before-badge').innerText = data.rawBadge;
-      document.getElementById('after-badge').innerText = data.afterBadge;
-      document.getElementById('before-box').innerText = data.before;
-      document.getElementById('after-box').innerText = data.after;
-      document.getElementById('m-raw').innerText = data.rawTokens;
-      document.getElementById('m-filtered').innerText = data.afterTokens;
-      document.getElementById('m-savings').innerText = data.savings;
-      document.getElementById('m-cost').innerText = data.cost;
+      document.getElementById(\x27before-badge\x27).innerText = data.rawBadge;
+      document.getElementById(\x27after-badge\x27).innerText = data.afterBadge;
+      document.getElementById(\x27before-box\x27).innerHTML = data.beforeHtml;
+      document.getElementById(\x27after-box\x27).innerHTML = data.afterHtml;
+      document.getElementById(\x27m-raw\x27).innerText = data.rawTokens;
+      document.getElementById(\x27m-filtered\x27).innerText = data.afterTokens;
+      document.getElementById(\x27m-savings\x27).innerText = data.savings;
+      document.getElementById(\x27m-cost\x27).innerText = data.cost;
     }
 
     const mcpConfigs = {

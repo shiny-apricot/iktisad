@@ -22,40 +22,34 @@ Autonomous AI agent workflows (SWE-bench agents, coding assistants, CI/CD autode
 
 ## 2. Polar.sh Tier Matrix
 
-| Tier | Price | Monthly Token Defense | Upstream Forwarding | Ast Skeletonizer & CLI Firewall | Support & SLA |
+| Tier | Price | Monthly Token Defense | Gateway & Forwarding | Ast Skeletonizer & CLI Firewall | Support & SLA |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Open-Source Community** | **$0 / mo** (Free) | Self-hosted (unlimited) | Self-hosted local proxy | Full standard library access via `pip install iktisad` | Best-effort GitHub Discussions |
-| **Pro Developer (Recommended)** | **$10 / mo** | Up to 10,000,000 tokens/mo | Hosted Kenz Cloud Gateway endpoint (`https://gateway.kenz.tech/v1`) | Real-time AST pruning + CLI log firewall + Quota circuit breaker | Priority issue triage on GitHub & Polar (<24h SLA) |
-| **Enterprise / Custom** | **$99 / mo** | Up to 100,000,000 tokens/mo | Dedicated proxy instance + custom upstream API routing | Multi-language AST filters (Python, TypeScript, Go) | Bilateral SLA, custom circuit breakers & private Slack/Discord |
+| **Pro Developer (Recommended)** | **$10 / mo** | Unlimited local defense | Local Gateway Proxy Presets (`http://127.0.0.1:8000/v1`) | Commercial Team License + Real-time AST pruning + Quota circuit breaker | Priority email & GitHub triage (<24h SLA) |
+| **Enterprise / Custom** | **$99 / mo** | Unlimited local defense | Custom local gateway presets + multi-agent configs | Multi-language AST filters (Python, TypeScript, Go) | Bilateral SLA, custom circuit breakers & direct support |
 
 ---
 
 ## 3. "Pro Developer" Tier Details ($10 / month)
 
 ### Core Benefits
-1. **Hosted Kenz Cloud Gateway Access**:
-   - High-availability, low-latency OpenAI-compatible endpoint.
-   - Simply change your agent's `base_url`:
+1. **Commercial Team Usage License**:
+   - Legal clearance for proprietary enterprise codebases and commercial client deployments.
+2. **Local Gateway Proxy Presets & Prompt Filters**:
+   - Pre-configured JSON presets and optimized prompt filters for Cursor, Claude Code, and Windsurf running against your local `iktisad --serve-gateway` instance:
      ```python
      from openai import OpenAI
 
      client = OpenAI(
-         base_url="https://gateway.kenz.tech/v1",
-         api_key="kenz_sec_...",
+         base_url="http://127.0.0.1:8000/v1",
+         api_key="local-proxy-key",
      )
      ```
-2. **Deterministic Context Token Defense**:
-   - Inbound prompt inspection intercepts noisy terminal outputs, stripping ANSI escape codes, duplicate tracebacks, and progress bars.
-   - Inbound Python files are analyzed at zero token cost via AST symbol parsing; agent prompts receive compact outlines (`# File: ... L10-L25: def run(...)`) rather than thousands of raw boilerplate lines.
-   - Transparent response telemetry headers on every completion:
-     - `X-Iktisad-Original-Tokens: 8450`
-     - `X-Iktisad-Compressed-Tokens: 1120`
-     - `X-Iktisad-Savings-Pct: 86.75%`
-     - `X-Iktisad-Model-Routed: gemini-1.5-flash`
-3. **Runaway Quota Circuit Breaker**:
-   - Define custom daily token caps. If an autonomous agent enters an unconstrained retry loop, the gateway trips the circuit breaker and returns HTTP 429 before exhausting your budget.
-4. **Priority GitHub & Polar Bug Triage**:
-   - Direct support from Kenz Labs core engineers with guaranteed <24-hour response on all bug reports and feature requests.
+3. **Deterministic Context Token Defense**:
+   - Intercepts noisy terminal outputs, stripping ANSI escape codes, duplicate tracebacks, and progress bars.
+   - Zero-token AST code skeletonization for codebase context reduction.
+4. **Direct Priority Developer Support**:
+   - Guaranteed <24-hour response turnaround via `kenzailabs@gmail.com` and prioritized GitHub issues.
 
 ---
 
@@ -92,7 +86,7 @@ import os
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="https://gateway.kenz.tech/v1",  # Or local: http://127.0.0.1:8000/v1
+    base_url="http://127.0.0.1:8000/v1",  # Local reverse-proxy gateway
     api_key=os.environ.get("KENZ_GATEWAY_KEY", "mock-key"),
 )
 
