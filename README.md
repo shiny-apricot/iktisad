@@ -199,5 +199,5 @@ if stats.circuit_breaker_tripped:
 ## 📜 License & Support
 
 - **License**: MIT License.
-- **Commercial Support & Sponsorship**: Support ongoing development or subscribe to the Pro Tier via [Polar Pro ($10/mo)](https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA).
+- **Commercial Support & Sponsorship**: Support ongoing development or subscribe to the Pro Tier via [Polar Pro ($19/mo)](https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA).
 - Built by **Kenz Labs** ("Kırk Düşün, Bir Kes").
