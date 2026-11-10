@@ -40,6 +40,6 @@ iktisad = "iktisad.cli:main"
 iktisad-guard = "iktisad.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/autonomy-corp/iktisad"
-Repository = "https://github.com/autonomy-corp/iktisad"
+Homepage = "https://github.com/shiny-apricot/iktisad"
+Repository = "https://github.com/shiny-apricot/iktisad"
 Funding = "https://polar.sh/autonomy-corp"

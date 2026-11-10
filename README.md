@@ -43,7 +43,7 @@ pip install iktisad
 
 *Or install directly from source:*
 ```bash
-git clone https://github.com/autonomy-corp/iktisad.git
+git clone https://github.com/shiny-apricot/iktisad.git
 cd iktisad
 pip install .
 ```

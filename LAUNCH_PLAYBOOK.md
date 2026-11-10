@@ -44,7 +44,7 @@ Show HN: Iktisad – Zero-dependency CLI log compressor & AST skeletonizer for A
 
 ### URL
 ```text
-https://github.com/autonomy-corp/iktisad
+https://github.com/shiny-apricot/iktisad
 ```
 
 ### Post Body (Copy & Paste Ready)
@@ -89,7 +89,7 @@ iktisad --ast-skeleton src/services/billing.py
 iktisad --benchmark
 ```
 
-Code is on GitHub (MIT licensed): https://github.com/autonomy-corp/iktisad  
+Code is on GitHub (MIT licensed): https://github.com/shiny-apricot/iktisad  
 PyPI: https://pypi.org/project/iktisad/
 
 I'd love your feedback: How do you currently handle token blowups in your autonomous agent loops? What language AST parsers should I add next (TypeScript, Go, Rust)?
@@ -142,7 +142,7 @@ iktisad --ast-skeleton my_app/engine.py
 - **Context Space Saved**: In typical autonomous agent loops, terminal traces and full-file dumps consume **30% to 60% of prompt tokens**. Frugal filtering saves **$25 to $50 per $100 spent** without sacrificing model reasoning accuracy.
 - **Test Suite**: Fully verified locally across **315 passing tests in 9.5s** with 0 regressions.
 
-GitHub: https://github.com/autonomy-corp/iktisad  
+GitHub: https://github.com/shiny-apricot/iktisad  
 PyPI: `pip install iktisad`
 
 Would love to know if people would find a tree-sitter plugin useful for TypeScript / C++ / Rust codebases as well.
@@ -201,7 +201,7 @@ iktisad --compress-log test_output.log
 iktisad --ast-skeleton src/main.py
 ```
 
-GitHub: https://github.com/autonomy-corp/iktisad  
+GitHub: https://github.com/shiny-apricot/iktisad  
 PyPI: https://pypi.org/project/iktisad/
 
 Feedback, PRs, and suggestions are very welcome!
@@ -286,7 +286,7 @@ Real measured benchmarks:
 iktisad is open-source under the MIT license.
 
 📦 PyPI: pip install iktisad
-💻 GitHub: https://github.com/autonomy-corp/iktisad
+💻 GitHub: https://github.com/shiny-apricot/iktisad
 💜 Support on Polar: https://polar.sh/autonomy-corp
 
 Star the repo and let us know what language AST parsers you want next! ⭐
