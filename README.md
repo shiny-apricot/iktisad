@@ -8,7 +8,7 @@
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)]()
 [![Model Context Protocol](https://img.shields.io/badge/MCP-Native%20Server-purple.svg)](https://modelcontextprotocol.io/)
 [![PyPI version](https://img.shields.io/pypi/v/iktisad.svg)](https://pypi.org/project/iktisad/)
-[![Sponsor on Polar](https://img.shields.io/badge/Sponsor-Polar.sh-purple.svg)](https://polar.sh/autonomy-corp)
+[![Sponsor on Polar](https://img.shields.io/badge/Sponsor-Polar.sh-purple.svg)](https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA)
 
 ---
 
@@ -199,5 +199,5 @@ if stats.circuit_breaker_tripped:
 ## 📜 License & Support
 
 - **License**: MIT License.
-- **Commercial Support & Sponsorship**: Support ongoing development or sponsor micro-features via [Polar.sh/autonomy-corp](https://polar.sh/autonomy-corp).
+- **Commercial Support & Sponsorship**: Support ongoing development or subscribe to the Pro Tier via [Polar Pro ($10/mo)](https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA).
 - Built by **Kenz Labs** ("Kırk Düşün, Bir Kes").
