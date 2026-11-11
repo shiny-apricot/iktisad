@@ -416,3 +416,43 @@ def test_mcp_run_release_preflight_audit_tool() -> None:
     assert not resp["result"]["isError"]
     payload = json.loads(resp["result"]["content"][0]["text"])
     assert payload["version"] == "0.2.0"
+
+
+def test_action_yml_and_marketplace_manifest_integrity() -> None:
+    """Verify products/iktisad/action.yml exists, is composite, and wraps iktisad cli."""
+    action_file = Path(__file__).resolve().parent.parent / "action.yml"
+    assert action_file.is_file(), f"action.yml missing at {action_file}"
+    content = action_file.read_text(encoding="utf-8")
+
+    assert "using: 'composite'" in content or "using: composite" in content
+    assert "iktisad.cli run --" in content
+    assert "shiny-apricot" in content or "iktisad" in content
+
+
+def test_smithery_json_mcp_manifest_integrity() -> None:
+    """Verify products/iktisad/smithery.json exists, declares iktisad-mcp, and lists core tools."""
+    smithery_file = Path(__file__).resolve().parent.parent / "smithery.json"
+    assert smithery_file.is_file(), f"smithery.json missing at {smithery_file}"
+    data = json.loads(smithery_file.read_text(encoding="utf-8"))
+
+    assert data.get("name") == "iktisad"
+    start_cmd = data.get("startCommand", {})
+    assert start_cmd.get("command") == "iktisad-mcp"
+
+    declared_tools = [t.get("name") for t in data.get("tools", [])]
+    assert "compress_terminal_log" in declared_tools
+    assert "extract_ast_skeleton" in declared_tools
+    assert "select_frugal_model" in declared_tools
+    assert "check_circuit_breaker" in declared_tools
+
+
+def test_cli_compress_subcommand_file(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    """Verify iktisad compress <file> compresses noisy output cleanly."""
+    log_file = tmp_path / "test.log"
+    log_file.write_text("pytest\n..................\n18 passed in 0.05s\n", encoding="utf-8")
+
+    code = cli_main(["compress", str(log_file)])
+    assert code == 0
+    out = capsys.readouterr().out
+    assert "OK: 18 passed" in out
+

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://smithery.ai/docs/config/schema.json",
+  "name": "iktisad",
+  "displayName": "iktisad: Frugal AI Agent MCP Server",
+  "description": "Zero-waste terminal log compressor and AST code skeletonizer cutting up to 92% of token waste in AI coding agents.",
+  "version": "0.2.0",
+  "startCommand": {
+    "type": "stdio",
+    "command": "iktisad-mcp",
+    "args": []
+  },
+  "tools": [
+    {
+      "name": "compress_terminal_log",
+      "description": "Compress noisy terminal, pytest, or compiler stdout/stderr by 80-97%. Strips ANSI codes, progress bars, and passing tests while strictly isolating root-cause tracebacks and assertion errors."
+    },
+    {
+      "name": "extract_ast_skeleton",
+      "description": "Extract class and function signatures, line ranges, and docstrings from Python source code at 0 LLM tokens."
+    },
+    {
+      "name": "select_frugal_model",
+      "description": "Dynamically routes tasks based on Bezos Type-1 (irreversible) vs Type-2 (reversible) doors using the Sandwich Protocol."
+    },
+    {
+      "name": "check_circuit_breaker",
+      "description": "Inspects token burn and trips a safety circuit breaker before budget overruns occur."
+    }
+  ]
+}

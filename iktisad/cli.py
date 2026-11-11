@@ -254,6 +254,29 @@ def build_parser() -> argparse.ArgumentParser:
         help="Run gateway server without blocking main thread",
     )
 
+    # Subcommand: iktisad run ...
+    run_parser = subparsers.add_parser(
+        "run",
+        help="Execute a command and compress its terminal stdout/stderr via iktisad context firewall",
+    )
+    run_parser.add_argument(
+        "cmd",
+        nargs=argparse.REMAINDER,
+        help="Command and arguments to execute (e.g. pytest tests/ -q)",
+    )
+
+    # Subcommand: iktisad compress ...
+    compress_parser = subparsers.add_parser(
+        "compress",
+        help="Compress terminal logs or pytest output from file or stdin pipe",
+    )
+    compress_parser.add_argument(
+        "file",
+        nargs="?",
+        default="-",
+        help="Log file to compress (defaults to '-' for stdin pipe)",
+    )
+
     return parser
 
 
@@ -333,12 +356,43 @@ def main(args: list[str] | None = None) -> int:
         serve_gateway(config=config, block=block, enforcer=enforcer)
         return 0
 
-    if parsed_args.compress_log:
-        path = Path(parsed_args.compress_log)
-        if not path.is_file():
-            print(f"Error: file not found: {parsed_args.compress_log}", file=sys.stderr)
+    if parsed_args.subcommand == "run":
+        cmd_args = parsed_args.cmd
+        if cmd_args and cmd_args[0] == "--":
+            cmd_args = cmd_args[1:]
+        if not cmd_args:
+            print("Error: No command specified to run.", file=sys.stderr)
             return 1
-        raw = path.read_text(encoding="utf-8", errors="replace")
+        import subprocess
+        proc = subprocess.run(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        raw_output = proc.stdout or ""
+        obs = compress_cli_observation(raw_output)
+        print(f"[iktisad:run] {obs.raw_chars:,} chars -> {obs.compressed_chars:,} chars ({obs.savings_pct:.1f}% context savings | exit: {proc.returncode})")
+        print(obs.pruned_text)
+        return proc.returncode
+
+    if parsed_args.subcommand == "compress":
+        if parsed_args.file == "-" or not parsed_args.file:
+            raw = sys.stdin.read()
+        else:
+            path = Path(parsed_args.file)
+            if not path.is_file():
+                print(f"Error: file not found: {parsed_args.file}", file=sys.stderr)
+                return 1
+            raw = path.read_text(encoding="utf-8", errors="replace")
+        obs = compress_cli_observation(raw)
+        print(obs.pruned_text)
+        return 0
+
+    if parsed_args.compress_log:
+        if parsed_args.compress_log == "-":
+            raw = sys.stdin.read()
+        else:
+            path = Path(parsed_args.compress_log)
+            if not path.is_file():
+                print(f"Error: file not found: {parsed_args.compress_log}", file=sys.stderr)
+                return 1
+            raw = path.read_text(encoding="utf-8", errors="replace")
         obs = compress_cli_observation(raw)
         print(f"Original: {obs.raw_chars:,} chars -> Compressed: {obs.compressed_chars:,} chars ({obs.savings_pct:.1f}% savings)")
         print("-" * 50)

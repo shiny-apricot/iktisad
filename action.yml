@@ -1,0 +1,41 @@
+name: 'iktisad Token Defense'
+description: 'Intercept and compress noisy test logs and compiler outputs by up to 97% to prevent context bloat in AI coding agent loops.'
+author: 'Kenz Technologies'
+branding:
+  icon: 'terminal'
+  color: 'purple'
+
+inputs:
+  run:
+    description: 'Shell command to execute under iktisad protection (e.g. pytest tests/ -v)'
+    required: false
+    default: ''
+  args:
+    description: 'Additional flags to pass to iktisad'
+    required: false
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Ensure Python 3
+      shell: bash
+      run: |
+        if ! command -v python3 &> /dev/null; then
+          echo "::error::Python 3.10+ is required to run iktisad action."
+          exit 1
+        fi
+
+    - name: Install iktisad
+      shell: bash
+      run: |
+        python3 -m pip install --quiet --upgrade pip
+        if ! python3 -c "import iktisad" &> /dev/null; then
+          python3 -m pip install --quiet iktisad || python3 -m pip install --quiet -e "${{ github.action_path }}" || true
+        fi
+
+    - name: Execute command under iktisad firewall
+      if: ${{ inputs.run != '' }}
+      shell: bash
+      run: |
+        python3 -m iktisad.cli run -- ${{ inputs.run }}

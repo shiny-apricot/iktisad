@@ -451,3 +451,42 @@ def test_cli_bandwidth_and_media_runners(tmp_path: Path, capsys: pytest.CaptureF
     assert ret_media == 0
     captured_media = capsys.readouterr()
     assert "Media Blocked: True" in captured_media.out
+
+
+def test_iktisad_cli_run_subcommand(capsys):
+    """Verify iktisad run subcommand executes command and compresses output."""
+    import sys
+    from iktisad.cli import main as cli_main
+
+    ret = cli_main(["run", "--", sys.executable, "-c", "print('hello from iktisad run')"])
+    assert ret == 0
+    captured = capsys.readouterr().out
+    assert "[iktisad:run]" in captured
+    assert "hello from iktisad run" in captured
+
+
+def test_iktisad_cli_compress_log_stdin(capsys, monkeypatch):
+    """Verify iktisad --compress-log - reads from stdin."""
+    import io
+    import sys
+    from iktisad.cli import main as cli_main
+
+    fake_stdin = io.StringIO("print('dummy test')\n1 passed in 0.01s\n")
+    monkeypatch.setattr(sys, "stdin", fake_stdin)
+    ret = cli_main(["--compress-log", "-"])
+    assert ret == 0
+    captured = capsys.readouterr().out
+    assert "Original:" in captured
+    assert "Compressed:" in captured
+
+
+def test_iktisad_aliases():
+    """Verify backward-compatibility and ergonomic function aliases in iktisad."""
+    import iktisad
+    from iktisad.core import compress_terminal_output, extract_ast_skeleton
+
+    assert iktisad.compress_terminal_output is iktisad.compress_cli_observation
+    assert iktisad.extract_ast_skeleton is iktisad.extract_python_ast_skeleton
+    assert compress_terminal_output is iktisad.compress_cli_observation
+    assert extract_ast_skeleton is iktisad.extract_python_ast_skeleton
+

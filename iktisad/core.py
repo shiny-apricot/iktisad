@@ -307,6 +307,10 @@ def compress_cli_observation(
     return CLIPrunedObservation(pruned_joined, raw_chars, comp_chars, max(0.0, savings), has_error)
 
 
+# Alias for backward-compatibility & dogfooding ergonomics
+compress_terminal_output = compress_cli_observation
+
+
 # ---------------------------------------------------------------------------
 # 3. Python AST Code Localizer & Skeletonizer
 # ---------------------------------------------------------------------------
@@ -371,6 +375,10 @@ def extract_python_ast_skeleton(file_path: Path | str) -> PythonASTSkeleton:
             )
 
     return PythonASTSkeleton(str(path), doc_summary, imports_count, tuple(symbols))
+
+
+# Alias for backward-compatibility & dogfooding ergonomics
+extract_ast_skeleton = extract_python_ast_skeleton
 
 
 # ---------------------------------------------------------------------------
