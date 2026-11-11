@@ -1,7 +1,7 @@
 # İktisad (`iktisad`)
 
 > **Deterministic token defense engine & native MCP server for AI coding agents.**  
-> *Compresses terminal test logs by 80–97% and extracts zero-token AST skeletons to prevent context bloat, rate-limit cascades, and runaway token bills.*
+> *Compresses terminal test logs by 80–97% and extracts AST code skeletons (-93.0% context reduction) to prevent context bloat, rate-limit cascades, and runaway token bills.*
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -77,7 +77,7 @@ Registered with [Smithery.ai](https://smithery.ai) & Glama.ai via `smithery.json
 ## 🛠️ Core Engines
 
 - 🛡️ **Deterministic CLI Output Firewall**: Compresses noisy pytest and compiler outputs by **80–97%**, isolating failure tracebacks and collapsing passing runs to a single `OK` status line.
-- 🗺️ **Zero-Token AST Code Skeletonizer**: Extracts function/class signatures, line ranges, and docstrings from Python source files at **0 LLM tokens** using Python's native `ast` parser.
+- 🗺️ **AST Code Skeletonizer**: Extracts function/class signatures, line ranges, and docstrings from Python source files with **-93.0% context reduction** (computed locally with zero LLM calls using Python's native `ast` parser).
 - 🚪 **Dynamic Model Routing & Sandwich Protocol**: Evaluates task reversibility (Type-1 irreversible vs. Type-2 reversible). Routes mechanical tasks to sub-cent fast models, reserving frontier reasoning models for high-stakes decisions under a `<600`-token brief.
 - ⚡ **Rate Limit Armor & Circuit Breaker**: Tracks local token velocity in SQLite and halts runaway loops before exhausting API budgets or hitting HTTP 429 rate limits.
 - 🔌 **Native Model Context Protocol (MCP)**: JSON-RPC stdio server exposing `compress_terminal_log`, `extract_ast_skeleton`, `select_frugal_model`, and `check_circuit_breaker`.
@@ -89,7 +89,7 @@ Registered with [Smithery.ai](https://smithery.ai) & Glama.ai via `smithery.json
 | Tool | Parameters | Description |
 | :--- | :--- | :--- |
 | `compress_terminal_log` | `raw_log` (str), `max_chars` (int) | Compresses terminal output by 80–97%, isolating critical traceback frames |
-| `extract_ast_skeleton` | `file_path` (str) or `code` (str) | Extracts AST outlines, line ranges, and signatures at 0 tokens |
+| `extract_ast_skeleton` | `file_path` (str) or `code` (str) | Extracts AST outlines, line ranges, and signatures (-93.0% context reduction, computed locally) |
 | `select_frugal_model` | `task_kind`, `heaviness`, `importance` | Recommends optimal model tier via reversible vs. irreversible routing |
 | `check_circuit_breaker` | `daily_budget` (int), `db_path` (str) | Checks daily token velocity and halts loops if spending threshold is breached |
 
@@ -107,7 +107,7 @@ iktisad run -- pytest tests/ -v
 # 3. Compress existing log file
 iktisad compress pytest_output.log
 
-# 4. Extract Python AST skeleton at 0 tokens
+# 4. Extract Python AST skeleton (-93.0% context reduction, zero LLM calls)
 iktisad --ast-skeleton src/billing_service.py
 
 # 5. Route task dynamically
