@@ -1,0 +1,20 @@
+{
+  "name": "iktisad-ci-guard",
+  "url": "https://shiny-apricot.github.io/iktisad/",
+  "hook_attributes": {
+    "url": "https://iktisad-guard.example.com/webhook",
+    "active": true
+  },
+  "redirect_url": "https://shiny-apricot.github.io/iktisad/setup",
+  "public": true,
+  "default_permissions": {
+    "checks": "write",
+    "contents": "read",
+    "pull_requests": "write",
+    "metadata": "read"
+  },
+  "default_events": [
+    "pull_request",
+    "marketplace_purchase"
+  ]
+}

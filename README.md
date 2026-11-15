@@ -81,6 +81,7 @@ Registered with [Smithery.ai](https://smithery.ai) & Glama.ai via `smithery.json
 - 🚪 **Dynamic Model Routing & Sandwich Protocol**: Evaluates task reversibility (Type-1 irreversible vs. Type-2 reversible). Routes mechanical tasks to sub-cent fast models, reserving frontier reasoning models for high-stakes decisions under a `<600`-token brief.
 - ⚡ **Rate Limit Armor & Circuit Breaker**: Tracks local token velocity in SQLite and halts runaway loops before exhausting API budgets or hitting HTTP 429 rate limits.
 - 🔌 **Native Model Context Protocol (MCP)**: JSON-RPC stdio server exposing `compress_terminal_log`, `extract_ast_skeleton`, `select_frugal_model`, `check_circuit_breaker`, and `run_release_preflight_audit`.
+- 🔐 **GitHub App CI Guard (`iktisad.github_app`)**: Local fail-closed HMAC-SHA256 webhook verification, `marketplace_purchase` entitlement parsing, AST-skeleton PR preflight audit & Check Run payload builder, and stdlib webhook server + manifest generator (local module; not yet published on GitHub Marketplace).
 
 ---
 
@@ -116,6 +117,10 @@ iktisad --route-task refactor_db --heaviness 8.0 --importance 9.0 --irreversible
 
 # 6. Launch local reverse-proxy gateway
 iktisad --serve-gateway --port 8000 --daily-token-budget 1000000
+
+# 7. Print GitHub App CI Guard manifest JSON or run local webhook server
+iktisad github-app --manifest
+iktisad github-app --serve --host 127.0.0.1 --port 8080
 ```
 
 ---

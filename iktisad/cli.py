@@ -277,6 +277,43 @@ def build_parser() -> argparse.ArgumentParser:
         help="Log file to compress (defaults to '-' for stdin pipe)",
     )
 
+    # Subcommand: iktisad github-app ...
+    github_app_parser = subparsers.add_parser(
+        "github-app",
+        help="GitHub App Marketplace CI Guard manifest and webhook server",
+    )
+    github_app_parser.add_argument(
+        "--manifest",
+        action="store_true",
+        help="Print the GitHub App manifest JSON",
+    )
+    github_app_parser.add_argument(
+        "--serve",
+        action="store_true",
+        help="Launch the GitHub App webhook HTTP server",
+    )
+    github_app_parser.add_argument(
+        "--host",
+        default="127.0.0.1",
+        help="Host interface for GitHub App webhook server (default: 127.0.0.1)",
+    )
+    github_app_parser.add_argument(
+        "--port",
+        type=int,
+        default=8080,
+        help="Port for GitHub App webhook server (default: 8080)",
+    )
+    github_app_parser.add_argument(
+        "--webhook-secret",
+        default=None,
+        help="GitHub App webhook secret (defaults to IKTISAD_GITHUB_WEBHOOK_SECRET env var)",
+    )
+    github_app_parser.add_argument(
+        "--no-block",
+        action="store_true",
+        help="Run webhook server without blocking main thread",
+    )
+
     return parser
 
 
@@ -382,6 +419,23 @@ def main(args: list[str] | None = None) -> int:
             raw = path.read_text(encoding="utf-8", errors="replace")
         obs = compress_cli_observation(raw)
         print(obs.pruned_text)
+        return 0
+
+    if parsed_args.subcommand == "github-app":
+        from iktisad.github_app import build_github_app_manifest, serve_github_app
+
+        if parsed_args.manifest:
+            print(json.dumps(build_github_app_manifest(), indent=2))
+            return 0
+        if parsed_args.serve:
+            serve_github_app(
+                host=parsed_args.host,
+                port=parsed_args.port,
+                webhook_secret=parsed_args.webhook_secret,
+                block=not parsed_args.no_block,
+            )
+            return 0
+        parser.parse_args(["github-app", "--help"])
         return 0
 
     if parsed_args.compress_log:
