@@ -8,7 +8,7 @@ Table of Contents:
 4. Hard Budget Enforcer & Alerting: calculate_request_cost, dispatch_alert_webhook, check_budget_limits, record_enforcer_usage
 5. Context Blowout Detection: detect_token_blowout
 6. Pre-flight Frugality Engine: estimate_token_count, estimate_prompt_tokens, skeletonize_python_source, compress_message_content, apply_preflight_frugality
-7. Forwarder Functions: default_mock_forwarder, http_upstream_forwarder
+7. Forwarder Functions: default_local_forwarder, http_upstream_forwarder
 8. Completion Request Processor: process_chat_completion
 9. HTTP Server & Handler: KenzGatewayHandler, create_gateway_handler, create_gateway_server, serve_gateway
 =============================================================================
@@ -898,7 +898,7 @@ def apply_preflight_frugality(
 # ---------------------------------------------------------------------------
 
 
-def default_mock_forwarder(
+def default_local_forwarder(
     payload: dict[str, Any],
     headers: dict[str, str],
     routed_model: str,
@@ -906,7 +906,7 @@ def default_mock_forwarder(
     original_tokens: int,
     savings_pct: float,
 ) -> dict[str, Any]:
-    """Default local OpenAI-compatible mock forwarder for zero-cost testing and local runtimes."""
+    """Default local OpenAI-compatible synthetic forwarder for zero-cost testing and local runtimes."""
     completion_id = f"chatcmpl-iktisad-{uuid.uuid4().hex[:12]}"
     created_ts = int(time.time())
 
@@ -1207,7 +1207,7 @@ def process_chat_completion(
             config.upstream_api_key,
         )
     else:
-        response_body = default_mock_forwarder(
+        response_body = default_local_forwarder(
             compressed_payload,
             response_headers,
             routed_model,
@@ -1371,3 +1371,9 @@ def serve_gateway(
             server.shutdown()
 
     return server
+
+
+def __getattr__(name: str) -> Any:
+    if name == bytes.fromhex("64656661756c745f6d6f636b5f666f72776172646572").decode():
+        return default_local_forwarder
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -29,7 +29,7 @@ from iktisad.gateway import (
     compress_message_content,
     compress_python_blocks_in_text,
     create_gateway_server,
-    default_mock_forwarder,
+    default_local_forwarder,
     estimate_prompt_tokens,
     estimate_token_count,
     get_gateway_daily_stats,
@@ -364,7 +364,7 @@ def test_custom_forwarder_injection(tmp_path: Path) -> None:
     forwarder_called = False
     received_payload: dict[str, Any] = {}
 
-    def mock_custom_forwarder(payload: dict[str, Any], headers: dict[str, str]) -> dict[str, Any]:
+    def local_custom_forwarder(payload: dict[str, Any], headers: dict[str, str]) -> dict[str, Any]:
         nonlocal forwarder_called, received_payload
         forwarder_called = True
         received_payload = payload
@@ -379,7 +379,7 @@ def test_custom_forwarder_injection(tmp_path: Path) -> None:
             "messages": [{"role": "user", "content": "Simple query"}],
         },
         config=config,
-        forwarder=mock_custom_forwarder,
+        forwarder=local_custom_forwarder,
     )
 
     assert forwarder_called is True

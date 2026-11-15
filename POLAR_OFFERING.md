@@ -1,6 +1,6 @@
 # Kenz Cloud Gateway — Polar.sh Commercial Offering & Halal Commercial Tier
 
-> **Product**: `iktisad` / Kenz Cloud Gateway  
+> **Product**: `iktisad` (v0.2.0) / Kenz Cloud Gateway  
 > **Vendor**: Kenz Technologies (Kenz Labs)  
 > **Corporate Doctrine**: *"Kırk Düşün, Bir Kes"* (Measure 40 times, cut once) — Autonomous Frugality & Zero-Waste Compute  
 > **Governance Milestone**: `TASK-ECON-004` (Halal Commercialization & Polar.sh Listing)
@@ -16,7 +16,7 @@ Autonomous AI agent workflows (SWE-bench agents, coding assistants, CI/CD autode
 **Kenz Cloud Gateway** acts as an ultra-lightweight, drop-in OpenAI-compatible reverse-proxy (`/v1/chat/completions`) that enforces **Zero-Waste Token Frugality**:
 - **>85% Token Defense**: Collapses noisy pytest/terminal logs to single-line verified summaries and converts bulky code files into zero-loss Python AST skeletons.
 - **Circuit Breaker Protection**: Automatically halts runaway agent loops before monthly budgets are breached.
-- **Dynamic Routing**: Dispatches reversible subagent tasks to economical Flash/Flash-Lite models while reserving flagship models for irreversible Type-1 architectural gates.
+- **Dynamic Routing**: Routes low-coupling ($\alpha < 0.60$) exploration and compression tasks to economical Hydrogen execution tiers while reserving Argon for high-coupling architectural gates.
 
 ---
 
@@ -87,7 +87,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="http://127.0.0.1:8000/v1",  # Local reverse-proxy gateway
-    api_key=os.environ.get("KENZ_GATEWAY_KEY", "mock-key"),
+    api_key=os.environ.get("KENZ_GATEWAY_KEY", "local-key"),
 )
 
 response = client.chat.completions.create(

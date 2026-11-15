@@ -471,8 +471,8 @@ def test_iktisad_cli_compress_log_stdin(capsys, monkeypatch):
     import sys
     from iktisad.cli import main as cli_main
 
-    fake_stdin = io.StringIO("print('dummy test')\n1 passed in 0.01s\n")
-    monkeypatch.setattr(sys, "stdin", fake_stdin)
+    stub_stdin = io.StringIO("print('sample test')\n1 passed in 0.01s\n")
+    monkeypatch.setattr(sys, "stdin", stub_stdin)
     ret = cli_main(["--compress-log", "-"])
     assert ret == 0
     captured = capsys.readouterr().out

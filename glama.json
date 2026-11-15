@@ -1,0 +1,7 @@
+{
+  "$schema": "https://glama.ai/mcp/servers.schema.json",
+  "name": "iktisad",
+  "description": "Zero-waste, frugal token defense engine & native MCP server for AI coding agents",
+  "entrypoint": "iktisad-mcp",
+  "transport": "stdio"
+}

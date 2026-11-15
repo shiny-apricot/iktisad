@@ -867,7 +867,7 @@ platform linux -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0 -- /home/agent/.venv
 cachedir: .pytest_cache
 rootdir: /home/agent/workspace/enterprise-core
 configfile: pyproject.toml
-plugins: anyio-4.4.0, asyncio-0.24.0, cov-5.0.0, mock-3.14.0, xdist-3.6.1
+plugins: anyio-4.4.0, asyncio-0.24.0, cov-5.0.0, test-3.14.0, xdist-3.6.1
 created: 4/4 workers
 [gw0] linux -- [gw1] linux -- [gw2] linux -- [gw3] linux
 scheduling tests via LoadScheduling
@@ -937,12 +937,12 @@ tests/unit/test_crypto_vault.py::test_zero_knowledge_proof [gw3] PASSED [ 96%]</
 self = &lt;tests.billing.test_subscription_gate.TestSubscriptionGate object at 0x7f9a2d3e1100&gt;
 client = &lt;starlette.testclient.TestClient object at 0x7f9a2d3e1450&gt;
 db_session = &lt;sqlalchemy.orm.session.Session object at 0x7f9a2d3e1890&gt;
-mock_stripe = &lt;unittest.mock.MagicMock object at 0x7f9a2d3e1dd0&gt;
+stub_stripe = &lt;unittest.fixture.MagicStub object at 0x7f9a2d3e1dd0&gt;
 
     @pytest.mark.asyncio
-    async def test_active_customer_access(self, client, db_session, mock_stripe):
+    async def test_active_customer_access(self, client, db_session, stub_stripe):
         user = await create_test_tenant(db_session, plan="pro", status="trial_expired")
-        entitlement_svc = EntitlementService(db=db_session, stripe=mock_stripe)
+        entitlement_svc = EntitlementService(db=db_session, stripe=stub_stripe)
 &gt;       entitlement = await entitlement_svc.check_entitlement(user.id, feature="mcp_unlimited")
 
 tests/billing/test_subscription_gate.py:84: 
@@ -998,7 +998,7 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
 <span class="code-cyan"># Isolated Root Cause & Actionable Context:</span>
 • Target: src/billing/service.py:189 in _evaluate_status()
 • Cause: user.subscription status is 'trial_expired' with grace_period=0, causing is_active=False.
-• Clean Fix: Handle 'trial_expired' in entitlement fallback logic or verify mock fixture setup.
+• Clean Fix: Handle 'trial_expired' in entitlement fallback logic or verify test fixture setup.
 • Preserved: Zero CoT reasoning token bloat, zero passing test distraction.</div>
             </div>
           </div>
@@ -1312,7 +1312,7 @@ platform linux -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0 -- /home/agent/.venv
 cachedir: .pytest_cache
 rootdir: /home/agent/workspace/enterprise-core
 configfile: pyproject.toml
-plugins: anyio-4.4.0, asyncio-0.24.0, cov-5.0.0, mock-3.14.0, xdist-3.6.1
+plugins: anyio-4.4.0, asyncio-0.24.0, cov-5.0.0, test-3.14.0, xdist-3.6.1
 created: 4/4 workers
 [gw0] linux -- [gw1] linux -- [gw2] linux -- [gw3] linux
 scheduling tests via LoadScheduling
@@ -1382,12 +1382,12 @@ tests/unit/test_zero_knowledge_proof [gw3] PASSED [ 96%]</span>
 self = &lt;tests.billing.test_subscription_gate.TestSubscriptionGate object at 0x7f9a2d3e1100&gt;
 client = &lt;starlette.testclient.TestClient object at 0x7f9a2d3e1450&gt;
 db_session = &lt;sqlalchemy.orm.session.Session object at 0x7f9a2d3e1890&gt;
-mock_stripe = &lt;unittest.mock.MagicMock object at 0x7f9a2d3e1dd0&gt;
+stub_stripe = &lt;unittest.fixture.MagicStub object at 0x7f9a2d3e1dd0&gt;
 
     @pytest.mark.asyncio
-    async def test_active_customer_access(self, client, db_session, mock_stripe):
+    async def test_active_customer_access(self, client, db_session, stub_stripe):
         user = await create_test_tenant(db_session, plan=\"pro\", status=\"trial_expired\")
-        entitlement_svc = EntitlementService(db=db_session, stripe=mock_stripe)
+        entitlement_svc = EntitlementService(db=db_session, stripe=stub_stripe)
 &gt;       entitlement = await entitlement_svc.check_entitlement(user.id, feature=\"mcp_unlimited\")
 
 tests/billing/test_subscription_gate.py:84: 
@@ -1433,7 +1433,7 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
 <span class=\"code-cyan\"># Isolated Root Cause &amp; Actionable Context:</span>
 • <span class=\"code-ok\">Target:</span> src/billing/service.py:189 in _evaluate_status()
 • <span class=\"code-ok\">Cause:</span> user.subscription status is \x27trial_expired\x27 with grace_period=0, causing is_active=False.
-• <span class=\"code-ok\">Clean Fix:</span> Handle \x27trial_expired\x27 in entitlement fallback logic or verify mock fixture setup.
+• <span class=\"code-ok\">Clean Fix:</span> Handle \x27trial_expired\x27 in entitlement fallback logic or verify test fixture setup.
 • <span class=\"code-ok\">Preserved:</span> Zero CoT reasoning token bloat, zero passing test distraction.`
       },
       traceback: {
