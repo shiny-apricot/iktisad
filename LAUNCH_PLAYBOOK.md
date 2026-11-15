@@ -1,8 +1,8 @@
-# `iktisad` — Stealth Open-Source Launch Playbook
+# `iktisad` (v0.2.0) — Open-Source Launch Playbook
 
-> **Positioning**: Zero-dependency, pure Python token defense engine & native MCP server for autonomous AI coding agents (Token Bill Defense, Rate Limit Armor & Context Retention).  
-> **Target Audience**: Developers running AI coding agents (Claude Code, Cursor, Windsurf, SWE-bench runners, OpenHands, Aider, custom agentic loops), local LLM developers (Ollama, vLLM, llama.cpp), and platform engineers optimizing frontier LLM inference bills.  
-> **Core Value**: Cut agent token waste by 80–97% by eliminating terminal ANSI dumps, preventing Thinking Token Bloat in 2026 reasoning models (`Claude Fable`, `Claude Opus 5.5`, `o3`, `DeepSeek-R1`), extracting zero-token AST code skeletons, providing native MCP integration, and shielding pipelines from HTTP 429 rate limits.
+> **Positioning**: Zero-dependency Python token defense engine and native MCP server for AI coding agents.  
+> **License & Pricing**: Free MIT Open-Source Core (CLI, Python AST, stdio MCP) + `$10/mo` Polar Pro (`https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA`) for commercial team convenience, curated local presets (`iktisad --export-presets`), and `<24h` priority support (`kenzailabs@gmail.com`).  
+> **Verified Baseline (`benchmarks/RESULTS.md` & live `pytest`)**: `85 passed` in `products/iktisad/tests/`, `-94.5%` failing pytest reduction (`21,842 -> 1,194 chars`, `1.59–1.61 ms`), `-99.7%` passing pytest reduction (`8,256 -> 22 chars`, `0.19 ms`), `-93.1%` Python AST skeleton reduction (`130,567 -> 8,977 chars` across 5 files / `3,637 LOC`, `17.46–17.96 ms`).
 
 ---
 
@@ -13,25 +13,23 @@
 4. [Reddit r/Python Post](#4-reddit-rpython-post)
 5. [X / Twitter Launch Thread](#5-x--twitter-launch-thread)
 6. [GitHub README Hero Section](#6-github-readme-hero-section)
-7. [Community FAQ & Objection Handling](#7-community-faq--objection-handling)
+7. [Community FAQ](#7-community-faq)
 
 ---
 
 ## 1. Launch Strategy & Distribution Sequencing
 
-### Sequencing Timeline
-1. **T-00:00 (Day 1, 07:00 PT / 14:00 UTC)**:
-   - Deploy GitHub release tag `v0.1.0`.
-   - Ensure PyPI package `pip install iktisad` is live and verified.
-   - Post **Show HN** on Hacker News focusing on 2026 Token Cost Defense & Native MCP.
-2. **T+02:00 (Day 1, 09:00 PT / 16:00 UTC)**:
-   - Publish **r/LocalLLaMA** post emphasizing context retention, avoiding KV-cache bloat on local VRAM, and native MCP support for Cursor / Ollama.
-   - Publish **r/Python** post emphasizing pure Python stdlib architecture (`ast`, zero external dependencies, `<4ms` latency).
-3. **T+04:00 (Day 1, 11:00 PT / 18:00 UTC)**:
-   - Roll out 7-part **X/Twitter thread** breaking down Thinking Token Bloat in 2026 reasoning models and demonstrating the Bezos Sandwich Protocol.
-4. **T+24:00 (Day 2)**:
-   - Answer all HN and Reddit comments with benchmarks and reproducible reproduction commands.
-   - Collect feature requests (language support: TypeScript/Go/Rust AST parsing).
+1. **Release Gate**:
+   - Confirm GitHub release tag `v0.2.0` and MIT `LICENSE` are live on `https://github.com/shiny-apricot/iktisad`.
+   - Confirm PyPI `pip install iktisad` (`0.2.0`) and `products/iktisad/tests/` (`85 passed`) pass cleanly.
+2. **Wave 1 (Show HN)**:
+   - Publish **Show HN** focusing on deterministic terminal log compression, Python AST skeletons, and native stdio MCP tools.
+3. **Wave 2 (r/LocalLLaMA & r/Python)**:
+   - Publish **r/LocalLLaMA** post on protecting 8k/32k local context windows with `iktisad compress -` and `iktisad --mcp`.
+   - Publish **r/Python** post on pure stdlib `ast` skeletonization and `0` third-party dependencies.
+4. **Wave 3 (X / Twitter & Ecosystem Follow-ups)**:
+   - Publish the 7-part technical thread with reproducible `benchmarks/RESULTS.md` numbers.
+   - Answer all comments with exact CLI flags (`iktisad run -- <cmd>`, `iktisad compress -`, `iktisad --ast-skeleton <file>`).
 
 ---
 
@@ -39,7 +37,7 @@
 
 ### Post Title
 ```text
-Show HN: Iktisad – Zero-dependency token defense engine & native MCP server for AI coding agents
+Show HN: iktisad (v0.2.0) – Zero-dependency log compressor & MCP server for coding agents
 ```
 
 ### URL
@@ -47,59 +45,45 @@ Show HN: Iktisad – Zero-dependency token defense engine & native MCP server fo
 https://github.com/shiny-apricot/iktisad
 ```
 
-### Post Body (Copy & Paste Ready)
+### Post Body
 
 ```markdown
 Hi HN,
 
-I built **iktisad**, a lightweight, zero-dependency Python tool to solve the single biggest money-waster in autonomous AI coding agents: **terminal log hemorrhaging and Thinking Token Bloat**.
+I built **iktisad** (`v0.2.0`, MIT License), a zero-dependency Python CLI and native MCP server that filters terminal noise and extracts Python AST skeletons before prompts reach your LLM.
 
-### The Problem in 2026: Thinking Token Bloat & Runaway Bills
-If you run coding agents (Claude Code, Cursor, Windsurf, SWE-bench runners, OpenHands, Aider, or multi-agent loops), you don't care about internet megabytes—you have fiber. What hurts is:
+### Why I Built It
+Coding agents (Claude Code, Cursor, Windsurf, Aider) repeatedly dump thousands of characters of passing test lines, ANSI escape codes, and full source files into prompts. In reasoning models, every noisy line inflates context pressure, triggers 429 rate limits, and crowds out architectural instructions.
 
-1. **💸 Runaway Agent Bills ($50–$100/day)**: Agents stuck in error-fix-retry loops, feeding thousands of tokens of redundant test output back into frontier models on every turn.
-2. **🧠 Thinking Token Bloat in 2026 Reasoning Models**: Frontier models (`Claude Fable`, `Claude Opus 5.5`, `o3`, `DeepSeek-R1`) think before they answer. When you inject 4,000 tokens of raw terminal output (ANSI color escapes, passing dots, traceback frame noise, pip info), the model's reasoning engine tries to simulate and analyze every irrelevant line. This inflates internal thinking tokens by **3x to 10x**, burning through your API budget on pure noise.
-3. **🚦 HTTP 429 Rate Limit Cascades**: Spiky prompt payload sizes in CI and multi-agent loops instantly exhaust TPM (tokens per minute) rate limits, crashing automated runs.
-4. **📉 Context Drift & System Prompt Eviction**: Terminal spam pushes your system prompt, architecture rules, and safety boundaries out of the context window.
-5. **📚 Brute-Force Code Reads**: Dumping 2,500-line Python files into context just to find a function definition.
+### What `iktisad` Does (Pure Python 3.10+ Stdlib)
+- **Native MCP Server (`iktisad --mcp` / `iktisad-mcp`)**: Connects directly to Cursor, Claude Code, and Windsurf over stdio JSON-RPC. Exposes 5 tools: `compress_terminal_log`, `extract_ast_skeleton`, `select_frugal_model`, `check_circuit_breaker`, and `run_release_preflight_audit`.
+- **CLI Runner & Pipe (`iktisad run -- pytest` / `iktisad compress -`)**: Strips ANSI sequences and passing progress lines while keeping `=== FAILURES ===`, `E   AssertionError`, and `file:line` tracebacks intact.
+- **Python AST Skeletonizer (`iktisad --ast-skeleton src/app.py`)**: Parses Python files via stdlib `ast` into class hierarchies, function signatures, type hints, docstrings, and exact line ranges at `0` LLM tokens.
+- **Local Gateway & GitHub App CI Guard (`iktisad gateway --port 8000`, `iktisad github-app --manifest`)**: Optional local reverse proxy, SQLite budget tracking (`iktisad --bandwidth-usage`), and CI PR guard.
 
-### The Solution: Deterministic Pre-Filtering & Native MCP
-Instead of asking an expensive reasoning model to "summarize the test logs", `iktisad` filters inputs deterministically using the Python standard library in `<4ms`:
-
-- **Native MCP Server (`iktisad --mcp` / `iktisad-mcp`)**: Seamlessly connects to Cursor, Claude Code, Windsurf, or Claude Desktop over stdio JSON-RPC. Agents invoke `compress_terminal_log`, `extract_ast_skeleton`, `select_frugal_model`, and `check_circuit_breaker` natively.
-- **CLI Firewall (`iktisad --compress-log`)**: Compresses test and build logs by **80%–97%**. Passing test suites collapse to a single verified `OK: 124 passed in 2.1s` line. Failing suites strip out passing tests, stripping ANSI codes and preserving only the exact failing frames and root cause tracebacks.
-- **Zero-Token AST Code Skeletonizer (`iktisad --ast-skeleton`)**: Parses source files via Python's native `ast` module and generates structured outlines (classes, functions, parameters, line numbers, and docstrings). Your agent navigates symbol outlines at **0 LLM tokens**, pinpointing exact line ranges before fetching specific lines.
-- **The Bezos Sandwich Protocol (2026 Edition)**: Dynamically routes reversible mechanical tasks (linting, boilerplate) to lightweight models (`Gemini 3.8 Flash`, local models) while reserving expensive frontier models (`Claude Fable`, `Claude Opus 5.5`, `o3`, `DeepSeek-R1`) for high-stakes decisions under the Sandwich Protocol (`<600`-token brief -> 1-shot reasoning -> fast execution).
-- **Rate Limit Armor & Circuit Breaker**: An ultra-low-latency local SQLite token ledger that prevents runaway infinite loops from blowing past daily spending budgets.
-
-### Real Numbers & Verified Benchmarks
-- **Measured Log Redundancy**: Terminal and pytest outputs contain **70% to 95%** ANSI escape codes, passing dots, and vendor stack frames.
-- **Empirical Token Savings**: In typical autonomous agent loops, terminal traces and full-file dumps consume **30% to 60% of prompt tokens**. Frugal AST filtering and log compression save **$25 to $50 per $100 spent** without degrading reasoning accuracy.
-- **Test Suite Verification**: Validated across **45 passing unit and integration tests in <1.0s** with zero regressions.
-- **Dependencies**: Exactly **0 third-party packages**. Runs exclusively on Python 3.10+ stdlib (`ast`, `re`, `sqlite3`, `dataclasses`, `argparse`).
-- **Latency Overhead**: `< 4 milliseconds` deterministic CPU execution overhead.
+### Verified Benchmarks (`benchmarks/RESULTS.md`)
+Measured on Python 3.12.3 and pytest 9.0.2 (median of 50 runs; `est. tokens = chars / 4`):
+- **Failing pytest (`20 failed, 80 passed`)**: `21,842 chars` -> `1,194 chars` (**-94.5%**, `1.59–1.61 ms`)
+- **Passing pytest (`99 passed`)**: `8,256 chars` -> `22 chars` (**-99.7%**, `0.19 ms`)
+- **Python AST recon (`5 files, 3,637 LOC`)**: `130,567 chars` -> `8,977 chars` (**-93.1%**, `17.46–17.96 ms`)
+- **Test suite**: `85 passed` in `products/iktisad/tests/` with `0` third-party dependencies.
 
 ### Quickstart
 ```bash
 pip install iktisad
 
-# 1. Start native MCP server for Cursor / Claude Code
 iktisad --mcp
-
-# 2. Compress a noisy pytest log
-iktisad --compress-log pytest.log
-
-# 3. Extract AST skeleton without touching LLM tokens
-iktisad --ast-skeleton src/services/billing.py
-
-# 4. Route task under 2026 Bezos Sandwich Protocol
-iktisad --route-task deploy_db --heaviness 8.5 --importance 9.0 --irreversible
+iktisad run -- pytest -q
+pytest -v | iktisad compress -
+iktisad --ast-skeleton src/main.py
+iktisad --export-presets
 ```
 
-Code is on GitHub (MIT licensed): https://github.com/shiny-apricot/iktisad  
-PyPI: https://pypi.org/project/iktisad/
+Core CLI, Python AST, and stdio MCP are free under MIT. A `$10/mo` Polar Pro tier is available for commercial team convenience, curated local presets, and `<24h` priority support (`kenzailabs@gmail.com`).
 
-I'd love your feedback: How do you currently defend against Thinking Token Bloat and $50/day runaway agent loops?
+GitHub: https://github.com/shiny-apricot/iktisad  
+Docs & Visualizer: https://shiny-apricot.github.io/iktisad/  
+PyPI: https://pypi.org/project/iktisad/
 ```
 
 ---
@@ -111,52 +95,40 @@ I'd love your feedback: How do you currently defend against Thinking Token Bloat
 
 ### Post Title
 ```text
-I wrote a zero-dependency token compressor & native MCP server to protect local 8k/32k context windows
+I built a zero-dependency MCP server & log firewall to protect local 8k/32k context windows
 ```
 
-### Post Body (Copy & Paste Ready)
+### Post Body
 
 ```markdown
-Hey everyone,
+When running local coding agents with Ollama, vLLM, or llama.cpp on 8k or 32k context windows, raw test output eats KV-cache fast.
 
-If you're running local coding agents with models like Qwen 2.5 Coder, DeepSeek-Coder, or Llama 3 on local hardware (Ollama, vLLM, llama.cpp, LM Studio, Cursor), you know the pain: **local context windows are precious**. 
+A single pytest run with 20 failures and 80 passes outputs `21,842` chars (~`5,460` est. tokens at `chars / 4`). Dumping raw source files to inspect a single signature wastes tens of thousands more chars.
 
-Even with 32k or 64k context, filling up the KV cache spikes your VRAM usage, tanks your Time-To-First-Token (TTFT), and causes severe context drift where system prompts get forgotten.
+I built **`iktisad`** (`v0.2.0`, MIT License), a pure Python 3.10+ stdlib CLI and native MCP server with zero external dependencies.
 
-The worst offender is terminal logs. When your agent runs `pytest`, `npm test`, or `cargo test`, thousands of tokens of ANSI garbage, progress bars, and passing test names fill up your context. In an agent loop of 10 steps, your 32k context is blown and generation speed grinds to a crawl.
+### Key Features
+1. **Terminal Log Compression (`iktisad run -- pytest` or `pytest | iktisad compress -`)**:
+   - `20 failed, 80 passed`: `21,842 chars` -> `1,194 chars` (**-94.5%** in `1.59–1.61 ms`), preserving `=== FAILURES ===`, assertions, and `file:line` markers.
+   - `99 passed`: `8,256 chars` -> `22 chars` (**-99.7%** in `0.19 ms`).
+2. **Python AST Skeletons (`iktisad --ast-skeleton app.py`)**:
+   - Across 5 Python files (`3,637 LOC`): `130,567 chars` -> `8,977 chars` (**-93.1%** in `17.46–17.96 ms`, `0` LLM tokens).
+3. **Native MCP Server (`iktisad --mcp` / `iktisad-mcp`)**:
+   - Exposes `compress_terminal_log`, `extract_ast_skeleton`, `select_frugal_model`, `check_circuit_breaker`, and `run_release_preflight_audit`.
+4. **Local Gateway & Presets**:
+   - Start a local proxy with `iktisad gateway --port 8000` (or `iktisad --serve-gateway --port 8000`) and export client configs with `iktisad --export-presets`.
 
-I built **`iktisad`**, a pure Python, zero-dependency token defense engine and native MCP server designed to solve this at the local level.
-
-### What it does:
-1. **Native MCP Server (`iktisad --mcp`)**: Plugs directly into Cursor, Claude Code, or Windsurf. Agents autonomously call tools to compress terminal dumps and extract code outlines.
-2. **Noisy Terminal Firewall**: Strips ANSI escape sequences and collapses clean runs into a single `OK: 42 passed in 1.2s` line. For failures, it isolates only the traceback frame and assertion error. Result: **80% to 95% token savings** on command outputs.
-3. **Zero-Token AST Code Skeletonizer**: Instead of feeding your 7B/14B/32B model a 2,000-line Python file, `iktisad` parses the file via native `ast` into an outline of classes, methods, signatures, and docstrings. The agent queries this symbol table first and only loads the lines it needs.
-4. **Zero Dependencies**: Pure Python 3.10+ stdlib (`ast`, `re`, `sqlite3`). No PyTorch, no Hugging Face transformers, no bloated virtual environment. Installs in 1 second.
-5. **Rate Limit & Runaway Loop Armor**: Local SQLite ledger with configurable token caps to kill runaway infinite loops before they burn GPU compute or API credits.
-
-### Quick Example:
+### Quickstart
 ```bash
 pip install iktisad
-
-# Run MCP server for Cursor / Windsurf:
 iktisad --mcp
-
-# Strip terminal garbage before feeding to your local agent:
-pytest tests/ | iktisad --compress-stdin > agent_prompt_context.txt
-
-# Inspect AST outline at 0 tokens:
-iktisad --ast-skeleton my_app/engine.py
+pytest -v | iktisad compress -
 ```
 
-### Verified Benchmark Metrics:
-- **Terminal Log Compression**: Pytest and terminal outputs contain **70% to 95%** ANSI escapes, passing dots, and vendor frames. Passing runs collapse to 1 status line; failing runs isolate the exact traceback frame.
-- **Context Space Saved**: In typical autonomous agent loops, terminal traces and full-file dumps consume **30% to 60% of prompt tokens**. Frugal filtering saves **$25 to $50 per $100 spent** without sacrificing model reasoning accuracy.
-- **Test Suite**: Fully verified locally across **45 passing tests in <1.0s** with 0 regressions.
+Verified locally across `85 passed` tests.
 
-GitHub: https://github.com/shiny-apricot/iktisad  
-PyPI: `pip install iktisad`
-
-Would love to hear how local agent builders are managing context drift in long loops!
+GitHub (MIT): https://github.com/shiny-apricot/iktisad  
+PyPI: https://pypi.org/project/iktisad/
 ```
 
 ---
@@ -168,140 +140,111 @@ Would love to hear how local agent builders are managing context drift in long l
 
 ### Post Title
 ```text
-iktisad: A zero-dependency Python tool & native MCP server to cut terminal token bloat and extract AST skeletons for AI agents
+iktisad v0.2.0: Zero-dependency Python stdlib log compressor, AST skeletonizer & MCP server
 ```
 
-### Post Body (Copy & Paste Ready)
+### Post Body
 
 ```markdown
 Hi r/Python!
 
-I've been working on autonomous Python agents and noticed a massive inefficiency: agent frameworks frequently dump raw terminal outputs (`pytest`, `mypy`, `ruff`, `pip`) and whole multi-thousand-line Python source files into LLM prompts.
+I built **`iktisad`** (`v0.2.0`, MIT License) using only the Python 3.10+ standard library (`ast`, `re`, `sqlite3`, `dataclasses`, `argparse`, `json`) to prevent AI coding agents from flooding context windows with raw pytest stdout and full source files.
 
-In 2026 reasoning models (`Claude Fable`, `Claude Opus 5.5`, `o3`, `DeepSeek-R1`), this causes **Thinking Token Bloat**: the reasoning engine tries to simulate and ponder thousands of tokens of ANSI colors, passing test dots, and environment dumps, multiplying API costs and triggering HTTP 429 rate limit exceptions in CI.
+### Highlights
+- **Zero External Dependencies**: Installs cleanly via `pip install iktisad` with `dependencies = []`.
+- **Failing-Traceback-Preserving Log Compressor**: Drops `PASSED` noise while keeping `=== FAILURES ===`, `> assert ...`, `E   AssertionError`, and `file:line` markers within a `1,200`-char default budget (`21,842 -> 1,194 chars`, `-94.5%` in `1.59–1.61 ms`). Passing suites (`99 passed`) collapse from `8,256 chars` to `22 chars` (`-99.7%` in `0.19 ms`).
+- **Python AST Skeletonizer**: Uses `ast.parse` to extract class hierarchies, typed signatures, docstrings, and line ranges (`130,567 -> 8,977 chars` across 5 files / `3,637 LOC`, `-93.1%` in `17.46–17.96 ms`).
+- **Native Stdio MCP & CLI**: Run `iktisad --mcp`, `iktisad run -- pytest`, `iktisad compress -`, `iktisad --bandwidth-usage`, `iktisad gateway --port 8000`, or `iktisad github-app --manifest`.
+- **Verified Suite**: `85 passed` tests in `products/iktisad/tests/`.
 
-To fix this, I created **`iktisad`** (`pip install iktisad`), an open-source Python utility and native MCP server that uses pure Python standard library features to deterministically sanitize and structure context.
-
-### Highlights:
-- **Native MCP Server (`iktisad --mcp` / `iktisad-mcp`)**: Standard JSON-RPC 2.0 stdio server supporting tools/list, initialize, and tools/call. Works instantly with Cursor, Claude Code, Windsurf.
-- **Zero Third-Party Dependencies**: Built exclusively with stdlib modules: `ast`, `re`, `sqlite3`, `dataclasses`, `argparse`. No external package tree.
-- **Python AST Skeletonizer**: Uses Python's native `ast.parse` to traverse modules and produce lightweight outline representations (line ranges, class hierarchies, function signatures with type hints, and docstrings) at **0 LLM tokens**.
-- **Terminal Log Firewall**: Deterministic regex state machine that strips ANSI escape codes, strips progress bars/spinners, suppresses redundant passing tests, and extracts isolated exception frames.
-- **Token Circuit Breaker**: Local SQLite-backed token ledger with configurable caps to kill runaway infinite agent loops before they drain API quotas or cause $50/day surprise charges.
-
-### Usage:
-```python
-from iktisad import compress_cli_observation, extract_python_ast_skeleton
-
-# Compress noisy pytest output
-raw_pytest_output = run_command("pytest tests/")
-obs = compress_cli_observation(raw_pytest_output)
-print(obs.pruned_text)
-# Output: "OK: 154 passed in 3.12s" (or focused traceback if failed)
-
-# Extract AST outline without reading 2,000 lines into LLM context
-skeleton = extract_python_ast_skeleton("src/autonomy_corp/engine.py")
-print(skeleton.render_compact())
-```
-
-### CLI:
+### Usage
 ```bash
 pip install iktisad
-
-# Run MCP server
-iktisad --mcp
-
-# CLI inspection
-iktisad --compress-log test_output.log
-iktisad --ast-skeleton src/main.py
+iktisad run -- pytest -q
+iktisad --ast-skeleton iktisad/core.py
+iktisad --export-presets
 ```
 
 GitHub: https://github.com/shiny-apricot/iktisad  
-PyPI: https://pypi.org/project/iktisad/
-
-Feedback, PRs, and suggestions are very welcome!
+Visualizer: https://shiny-apricot.github.io/iktisad/
 ```
 
 ---
 
 ## 5. X / Twitter Launch Thread
 
-### Tweet 1 (The Hook) 🪝
+### Tweet 1
 ```text
-The average AI coding agent wastes 80% to 95% of its context window on terminal ANSI garbage and 3,000-line file reads.
+AI coding agents waste huge context budgets on raw pytest stdout and full-file reads.
 
-In 2026 reasoning models (o3, DeepSeek-R1, Opus 5.5), this triggers massive "Thinking Token Bloat" and $50/day bills.
+We released iktisad v0.2.0 (MIT): a zero-dependency Python CLI & native MCP server.
 
-Today we're open-sourcing iktisad: a zero-dependency Python token defense engine & native MCP server.
+Verified in benchmarks/RESULTS.md:
+- Failing pytest: -94.5% chars (1.59 ms)
+- Passing pytest: -99.7% chars (0.19 ms)
+- Python AST (5 files): -93.1% chars
 
-Here is how it works 🧵👇
+Thread 👇
 ```
 
-### Tweet 2 (The Thinking Token Bloat Problem) 🚨
+### Tweet 2
 ```text
-Frontier models like o3, DeepSeek-R1, and Claude Opus 5.5 generate internal chains of thought before writing code.
+When 20 tests fail and 80 pass, pytest outputs 21,842 chars (~5,460 est. tokens).
 
-When you feed them 5,000 tokens of raw pytest output with ANSI colors, progress bars, and passing dots, their reasoning engine tries to simulate EVERY line.
+`iktisad compress -` and `iktisad run -- pytest` pack that down to 1,194 chars (~298 est. tokens) in 1.59–1.61 ms.
 
-Result? 3x to 10x thinking token bloat, high latency, and HTTP 429 rate limit crashes.
+`PASSED` noise is stripped while `=== FAILURES ===`, assertions, and `file:line` tracebacks stay intact.
 ```
 
-### Tweet 3 (The Terminal Log Firewall) 🛡️
+### Tweet 3
 ```text
-iktisad deterministically compresses test/build logs in <4ms:
-- Strips all ANSI sequences & spinners
-- Collapses clean test runs to 1 single line: "OK: 145 passed in 2.1s"
-- On failure? Keeps ONLY the root cause exception frame and traceback.
+When all 99 tests pass, raw stdout is 8,256 chars (~2,064 est. tokens).
 
-Instant 80% to 97% prompt token reduction.
+iktisad collapses it to 22 chars (~6 est. tokens) in 0.19 ms.
+
+That is a verified -99.7% reduction with zero LLM calls.
 ```
 
-### Tweet 4 (Zero-Token AST Skeletons) 🗺️
+### Tweet 4
 ```text
-Stop having your LLM read 2,500 lines of code just to locate a function definition.
+Reading 5 Python modules (3,637 LOC) verbatim costs 130,567 chars (~32,642 est. tokens).
 
-iktisad parses Python files natively with `ast` at 0 LLM tokens:
-- Class boundaries
-- Method signatures & type hints
-- Docstring summaries
-
-Your agent pinpoints the exact line range (e.g. L45-L60) before loading code.
+`iktisad --ast-skeleton <file>` uses Python stdlib `ast` to emit typed signatures, docstrings, and line bounds: 8,977 chars (~2,244 est. tokens, -93.1%) in 17.46–17.96 ms.
 ```
 
-### Tweet 5 (The 2026 Bezos Sandwich Protocol) 🥪
+### Tweet 5
 ```text
-Don't use expensive reasoning models for mechanical tasks!
+Native Model Context Protocol (MCP) server over stdio:
 
-iktisad implements the Bezos Sandwich Protocol:
-1. Fast prep (<600 tokens) via Gemini 3.8 Flash
-2. 1-shot high-stakes strategic decision via Claude Opus 5.5 / Claude Fable / o3
-3. Deterministic execution via Flash or local AST
+`iktisad --mcp` (or `iktisad-mcp`)
 
-Maximum intelligence, minimum bill.
+Exposes 5 tools to Cursor, Claude Code, and Windsurf:
+- `compress_terminal_log`
+- `extract_ast_skeleton`
+- `select_frugal_model`
+- `check_circuit_breaker`
+- `run_release_preflight_audit`
 ```
 
-### Tweet 6 (Native MCP Server) 🔌
+### Tweet 6
 ```text
-Developers don't write code manually; their agents do.
+Built with 0 third-party dependencies on Python 3.10+ stdlib.
 
-iktisad includes a native Model Context Protocol (MCP) server over stdio:
-`iktisad --mcp`
+Includes local SQLite accounting (`iktisad --bandwidth-usage`), local proxy (`iktisad gateway --port 8000`), GitHub App manifest (`iktisad github-app --manifest`), and client presets (`iktisad --export-presets`).
 
-Plug it into Cursor, Claude Code, or Windsurf in 30 seconds. Your agents invoke token pruning tools autonomously.
+Verified across 85 passing tests.
 ```
 
-### Tweet 7 (Zero Dependencies & Call to Action) 🚀
+### Tweet 7
 ```text
-Zero third-party dependencies.
-No torch. No transformers. Pure Python 3.10+ standard library.
+Core CLI, Python AST, and stdio MCP are free under the MIT License.
 
-Runs in < 4 milliseconds. Installs in 1 second.
+Polar Pro ($10/mo) adds commercial team convenience, curated presets, and <24h support (`kenzailabs@gmail.com`).
 
-📦 PyPI: pip install iktisad
-💻 GitHub: https://github.com/shiny-apricot/iktisad
-💜 Support on Polar: https://polar.sh/autonomy-corp
-
-Star the repo and protect your agents from runaway token loops! ⭐
+pip install iktisad
+GitHub: https://github.com/shiny-apricot/iktisad
+Docs: https://shiny-apricot.github.io/iktisad/
+Polar Pro: https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA
 ```
 
 ---
@@ -309,86 +252,41 @@ Star the repo and protect your agents from runaway token loops! ⭐
 ## 6. GitHub README Hero Section
 
 ```markdown
-<div align="center">
+# iktisad (v0.2.0)
 
-# ⚡ iktisad
+Deterministic, zero-dependency context firewall, Python AST skeletonizer, and native MCP server for AI coding agents.
 
-**Deterministic, zero-dependency token defense engine & native MCP server for AI coding agents.**
+- **Failing pytest (`20 failed, 80 passed`)**: `21,842 -> 1,194 chars` (**-94.5%**, `1.59–1.61 ms`)
+- **Passing pytest (`99 passed`)**: `8,256 -> 22 chars` (**-99.7%**, `0.19 ms`)
+- **Python AST (`5 files, 3,637 LOC`)**: `130,567 -> 8,977 chars` (**-93.1%**, `17.46–17.96 ms`)
 
-*Stop paying frontier model rates to process raw terminal dumps, eliminate Thinking Token Bloat, and prevent $50/day runaway agent loops.*
-
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Zero Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen.svg)]()
-[![Model Context Protocol](https://img.shields.io/badge/MCP-Native%20Server-purple.svg)](https://modelcontextprotocol.io/)
-[![PyPI version](https://img.shields.io/pypi/v/iktisad.svg)](https://pypi.org/project/iktisad/)
-[![Downloads](https://img.shields.io/pypi/dm/iktisad.svg)](https://pypi.org/project/iktisad/)
-
-[Features](#-core-features) • [Native MCP](#-native-mcp) • [Quickstart](#-quickstart) • [Benchmarks](#-benchmarks) • [CLI Usage](#-cli-usage) • [Python SDK](#-python-sdk)
-
-</div>
-
----
-
-### 🚨 The Problem: Thinking Token Bloat & $50/day Runaway Loops
-
-Autonomous developer agents (Claude Code, SWE-bench runners, OpenHands, Cursor, Windsurf) hemorrhage token budget on:
-1. **Thinking Token Bloat in 2026 Reasoning Models**: Frontier models (`Claude Fable`, `Claude Opus 5.5`, `o3`, `DeepSeek-R1`) spend internal thinking tokens simulating every line of raw terminal dumps, multiplying inference costs by 3x–10x.
-2. **Terminal ANSI Dumps**: Injecting 800-line pytest runs with spinners, escape codes, and passing test lists into context (typically 70% to 95% redundant noise).
-3. **HTTP 429 Rate Limit Cascades**: Spiky prompt payloads exhausting API rate limits in CI and multi-agent loops.
-4. **Context Drift & System Prompt Eviction**: Terminal spam pushes system prompts and instructions out of the active context window.
-5. **Whole-File Reads**: Reading 2,500 lines of source code to find a single method signature.
-
-### 🛡️ The Solution: `iktisad`
-`iktisad` provides deterministic pre-filtering and native MCP tooling in pure Python with **zero external dependencies**:
-
-| Capability | Raw Input | `iktisad` Output | Redundancy Filtered |
-| :--- | :--- | :--- | :--- |
-| **Clean Pytest Suite** | Raw terminal ANSI & passing dots | `OK: 124 passed in 2.1s` | **70%–95%** |
-| **Failed Test Traceback** | Verbose stdout + vendor frames | `FAIL: test_billing.py:42 - ZeroDivisionError` | **70%–90%** |
-| **Python Source File** | Full module text (2,500 lines) | AST symbol outline with line ranges | **90%–99%** |
-| **Native MCP Server** | Stdio JSON-RPC | Autonomously callable by Cursor / Claude Code | **Zero Human Overhead** |
-
----
-
-### 🚀 Quickstart
-
+### Quickstart
 ```bash
-# Install via pip (0 dependencies, <1 second install)
 pip install iktisad
-
-# 1. Run Native MCP Server
 iktisad --mcp
-
-# 2. Compress noisy terminal test logs
-iktisad --compress-log pytest.log
-
-# 3. Extract code outline at 0 LLM tokens
+iktisad run -- pytest -q
+pytest -v | iktisad compress -
 iktisad --ast-skeleton src/app.py
-
-# 4. Dynamic Model Routing (2026 Edition)
-iktisad --route-task lint_check --heaviness 2.0 --importance 3.0
+iktisad --bandwidth-usage
+iktisad gateway --port 8000
+iktisad github-app --manifest
+iktisad --pro
+iktisad --export-presets
 ```
 ```
 
 ---
 
-## 7. Community FAQ & Objection Handling
+## 7. Community FAQ
 
-### Q: Why not just ask the LLM to summarize the logs?
-**A**: Asking a frontier reasoning model to summarize logs burns prompt tokens AND triggers internal Thinking Token Bloat, spending $0.05–$0.20 just to read the noise. `iktisad` runs deterministically on your CPU in `<4ms` at **$0.00 and 0 tokens**.
+### Q: Why filter logs deterministically instead of summarizing with an LLM?
+**A**: Summarizing raw logs with an LLM still consumes prompt tokens and adds latency. `iktisad` compresses failing pytest output in `1.59–1.61 ms` and passing output in `0.19 ms` on CPU with `0` LLM calls.
 
-### Q: What is Thinking Token Bloat in 2026 models?
-**A**: Models like `o3`, `DeepSeek-R1`, and `Claude Opus 5.5` use Chain-of-Thought reasoning. When given 5,000 tokens of raw terminal stdout, the model's internal reasoning tokens explode as it tries to parse every pass dot, ANSI code, and environment header. `iktisad` eliminates the noise so the model reasons only over actual failure frames.
+### Q: Does log compression drop failing tracebacks?
+**A**: No. Passing test noise is stripped while `=== FAILURES ===`, `> assert ...`, `E   AssertionError`, and `file:line` traceback markers are preserved within the `1,200`-char default budget.
 
-### Q: How does the Native MCP Server work?
-**A**: `iktisad --mcp` runs a standard Model Context Protocol server over stdio. AI agent environments like Cursor, Claude Code, and Windsurf can discover and invoke `compress_terminal_log`, `extract_ast_skeleton`, `select_frugal_model`, and `check_circuit_breaker` without any manual human intervention.
+### Q: What languages does `--ast-skeleton` support right now?
+**A**: Python 3.10+ via the built-in `ast` standard library module. It extracts classes, function signatures, type annotations, docstrings, and line bounds.
 
-### Q: Does compressing logs hide important failure context?
-**A**: No. Clean passing runs are collapsed to a single status summary. When a failure occurs, `iktisad` strips out passing tests while strictly preserving the exception type, traceback frames, assertion messages, and offending code lines.
-
-### Q: How does AST skeletonization work?
-**A**: It uses Python's native `ast` parser. It extracts class hierarchies, function signatures with type annotations, line numbers, and docstring summaries. The agent reads the skeleton to find the exact line range (e.g. `L45-L60`), and reads only those 15 lines.
-
-### Q: Are there any dependencies?
-**A**: None. It is 100% built on Python 3.10+ standard libraries (`ast`, `re`, `sqlite3`, `dataclasses`, `argparse`).
+### Q: What is included in MIT Core vs. Polar Pro ($10/mo)?
+**A**: The CLI, Python AST skeletonizer, local gateway, and 5-tool stdio MCP server are free under the MIT License (`85 passed` tests). Polar Pro (`$10/mo`) provides commercial team convenience, curated local presets (`iktisad --export-presets`), and `<24h` priority support via `kenzailabs@gmail.com`.

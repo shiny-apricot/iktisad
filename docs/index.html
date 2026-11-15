@@ -717,7 +717,7 @@
     <section class="hero">
       <div class="container">
         <div class="badge-pill">
-          <span>v0.1.1 ON PYPI</span> • <span>ZERO DEPENDENCIES</span> • <span>NATIVE MCP SERVER</span>
+          <span>v0.2.0 ON PYPI</span> • <span>ZERO DEPENDENCIES</span> • <span>NATIVE MCP SERVER</span>
         </div>
         <h1>
           The Autonomous Context Firewall <br>
@@ -756,7 +756,7 @@
           </a>
           <a href="https://pypi.org/project/iktisad/" target="_blank" rel="noopener" class="badge-link">
             <svg viewBox="0 0 24 24"><path d="M12 0L1.5 6v12L12 24l10.5-6V6L12 0zm0 2.3l8.2 4.7-3.7 2.1-8.2-4.7L12 2.3zm-9 5.2l8.2 4.7v9.4L3 16.9V7.5zm18 9.4l-8.2 4.7v-9.4l8.2-4.7v9.4z"/></svg>
-            PyPI v0.1.1
+            PyPI v0.2.0
           </a>
           <a href="https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA" target="_blank" rel="noopener" class="badge-link">
             <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
@@ -784,23 +784,23 @@
         <div class="features-grid">
           <div class="feature-card">
             <div class="feature-icon">🧹</div>
-            <h3>1. CLI & Terminal Noise Compactor</h3>
+            <h3>1. CLI &amp; Terminal Noise Compactor</h3>
             <p>
-              Compress pytest, vitest, cargo, docker, and build outputs deterministically. Strips passing dots, worker heartbeats, and internal framework frames while preserving the exact failing assertion and root cause.
+              Compress pytest and build stdout deterministically with <code>iktisad run -- &lt;cmd&gt;</code> or <code>iktisad compress -</code>. Strips passing noise while preserving failing assertions and tracebacks.
             </p>
             <div style="margin-top: 14px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--green); font-weight: 600;">
-              ⚡ 85% – 98% terminal token reduction
+              ⚡ -94.5% (failing) to -99.7% (passing) reduction
             </div>
           </div>
 
           <div class="feature-card">
             <div class="feature-icon">🗺️</div>
-            <h3>2. AST Codebase Skeletonizer</h3>
+            <h3>2. Python AST Codebase Skeletonizer</h3>
             <p>
-              Compress 10,000-line monorepos into semantic structural signatures, classes, and method boundaries in pure Python AST. Provides complete architectural visibility without ingesting private implementation code.
+              Compress Python modules into structural signatures, classes, docstrings, and line bounds using pure Python stdlib <code>ast</code>. Navigate architectures without loading full implementation bodies.
             </p>
             <div style="margin-top: 14px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--cyan); font-weight: 600;">
-              ⚡ 90% codebase context preserved
+              ⚡ -93.1% char reduction across 5 Python files
             </div>
           </div>
 
@@ -808,10 +808,10 @@
             <div class="feature-icon">🛑</div>
             <h3>3. Runaway Loop Circuit Breaker</h3>
             <p>
-              Tracks retry velocity and repetitive error patterns. Automatically detects when an agent is trapped in an infinite retry loop and trips the circuit breaker before $50+ is wasted on repetitive hallucinated fixes.
+              Tracks token velocity and repetitive failure loops in local SQLite. Trips the circuit breaker automatically before runaway retries exhaust your daily token budget.
             </p>
             <div style="margin-top: 14px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--amber); font-weight: 600;">
-              ⚡ Hard token & financial budget ceiling
+              ⚡ Hard daily token &amp; spend ceiling
             </div>
           </div>
 
@@ -819,10 +819,10 @@
             <div class="feature-icon">🥪</div>
             <h3>4. Frugal Model Router</h3>
             <p>
-              Enforces the Bezos Sandwich Protocol: routes heavy terminal and repo ingestion to Gemini 3.8 Flash for brief distillation, and triggers 1-shot Claude Opus 5.5 / o3 only for strategic execution.
+              Routes low-coupling mechanical steps to lightweight models and reserves frontier reasoners for irreversible architectural decisions. Verified across 85 passing unit and integration tests.
             </p>
             <div style="margin-top: 14px; font-family: var(--font-mono); font-size: 0.82rem; color: var(--purple); font-weight: 600;">
-              ⚡ 10x – 50x token ROI leverage
+              ⚡ Deterministic Python pre-filtering (&lt;18 ms)
             </div>
           </div>
         </div>
@@ -843,13 +843,13 @@
         <div class="visualizer-card">
           <div class="visualizer-tabs">
             <button class="tab-btn active" onclick="switchVisualizerTab('pytest', this)">
-              <span>🧪 Pytest Suite (48 Tests + Failure)</span>
+              <span>🧪 Pytest (20 Failed + 80 Passed)</span>
             </button>
-            <button class="tab-btn" onclick="switchVisualizerTab('traceback', this)">
-              <span>💥 Deep Traceback & Memory Dump</span>
+            <button class="tab-btn" onclick="switchVisualizerTab('passing', this)">
+              <span>✅ Pytest (99 Passed)</span>
             </button>
             <button class="tab-btn" onclick="switchVisualizerTab('monorepo', this)">
-              <span>🗺️ 10,000-Line Monorepo AST</span>
+              <span>🗺️ Python AST (5 Files, 3,637 LOC)</span>
             </button>
           </div>
 
@@ -860,146 +860,55 @@
                 <span class="vis-col-title">
                   <span>🔴 Raw Terminal Output</span>
                 </span>
-                <span id="before-badge" class="tag-waste">Tokens: ~1,820 tokens (~$0.027 per loop)</span>
+                <span id="before-badge" class="tag-waste">21,842 chars (~5,460 est. tokens)</span>
               </div>
               <div id="before-box" class="vis-code-box"><span class="code-dim">============================= test session starts ==============================
-platform linux -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0 -- /home/agent/.venv/bin/python
+platform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0 -- /opt/venv/bin/python
 cachedir: .pytest_cache
-rootdir: /home/agent/workspace/enterprise-core
-configfile: pyproject.toml
-plugins: anyio-4.4.0, asyncio-0.24.0, cov-5.0.0, test-3.14.0, xdist-3.6.1
-created: 4/4 workers
-[gw0] linux -- [gw1] linux -- [gw2] linux -- [gw3] linux
-scheduling tests via LoadScheduling
+rootdir: /workspace/enterprise-core
+collected 100 items
 
-tests/unit/test_config.py::test_env_parser_valid [gw0] PASSED            [  2%]
-tests/unit/test_config.py::test_env_override [gw0] PASSED                [  4%]
-tests/unit/test_crypto.py::test_argon2_hashing [gw1] PASSED              [  6%]
-tests/unit/test_crypto.py::test_jwt_ed25519_sign [gw1] PASSED            [  8%]
-tests/unit/test_telemetry.py::test_otlp_batcher [gw2] PASSED             [ 10%]
-tests/unit/test_telemetry.py::test_span_propagation [gw2] PASSED         [ 12%]
-tests/unit/test_cache.py::test_redis_cluster_failover [gw3] PASSED       [ 14%]
-tests/unit/test_cache.py::test_lru_eviction_policy [gw3] PASSED          [ 16%]
-tests/unit/test_rate_limiter.py::test_token_bucket_burst [gw0] PASSED    [ 18%]
-tests/unit/test_rate_limiter.py::test_sliding_window_counter [gw0] PASSED [ 20%]
-tests/unit/test_storage.py::test_s3_multipart_upload [gw1] PASSED        [ 22%]
-tests/unit/test_storage.py::test_s3_presigned_url [gw1] PASSED           [ 24%]
-tests/unit/test_queue.py::test_sqs_fifo_ordering [gw2] PASSED            [ 26%]
-tests/unit/test_queue.py::test_dead_letter_replay [gw2] PASSED           [ 28%]
-tests/unit/test_audit.py::test_immutable_ledger_hash [gw3] PASSED        [ 30%]
-tests/unit/test_audit.py::test_tamper_evident_signature [gw3] PASSED     [ 32%]
-tests/unit/test_session.py::test_cookie_same_site_strict [gw0] PASSED    [ 34%]
-tests/unit/test_session.py::test_session_invalidation [gw0] PASSED       [ 36%]
-tests/unit/test_database.py::test_connection_pool_saturation [gw1] PASSED [ 38%]
-tests/unit/test_database.py::test_read_replica_routing [gw1] PASSED      [ 40%]
-tests/unit/test_health.py::test_readiness_probe [gw2] PASSED             [ 42%]
-tests/unit/test_health.py::test_liveness_circuit_breaker [gw2] PASSED   [ 44%]
-tests/unit/test_rbac.py::test_role_hierarchy_admin [gw3] PASSED          [ 46%]
-tests/unit/test_rbac.py::test_permission_deny_default [gw3] PASSED       [ 48%]
-tests/unit/test_events.py::test_kafka_schema_registry [gw0] PASSED      [ 50%]
-tests/unit/test_events.py::test_idempotent_consumer [gw0] PASSED         [ 52%]
-tests/unit/test_webhook.py::test_hmac_sha256_verification [gw1] PASSED   [ 54%]
-tests/unit/test_webhook.py::test_exponential_backoff [gw1] PASSED        [ 56%]
-tests/unit/test_metrics.py::test_prometheus_counter_increment [gw2] PASSED [ 58%]
-tests/unit/test_metrics.py::test_histogram_quantiles [gw2] PASSED        [ 60%]
-tests/unit/test_tokens.py::test_refresh_token_rotation [gw3] PASSED      [ 62%]
-tests/unit/test_tokens.py::test_blacklisted_jti [gw3] PASSED             [ 64%]
-tests/unit/test_parser.py::test_ast_statement_extraction [gw0] PASSED   [ 66%]
-tests/unit/test_parser.py::test_cst_comment_preservation [gw0] PASSED    [ 68%]
-tests/unit/test_workers.py::test_celery_task_concurrency [gw1] PASSED    [ 70%]
-tests/unit/test_workers.py::test_priority_queue_drain [gw1] PASSED       [ 72%]
-tests/unit/test_pricing.py::test_seat_based_proration [gw2] PASSED       [ 74%]
-tests/unit/test_pricing.py::test_usage_tier_calculation [gw2] PASSED     [ 76%]
-tests/unit/test_email.py::test_dkim_header_signing [gw3] PASSED          [ 78%]
-tests/unit/test_email.py::test_template_injection_escaping [gw3] PASSED  [ 80%]
-tests/unit/test_authz.py::test_jwt_claims_tenant_isolation [gw0] PASSED  [ 82%]
-tests/unit/test_authz.py::test_impersonation_audit_trail [gw0] PASSED   [ 84%]
-tests/unit/test_logging.py::test_json_structured_formatter [gw1] PASSED  [ 86%]
-tests/unit/test_logging.py::test_pii_masking_filter [gw1] PASSED         [ 88%]
-tests/unit/test_graphql.py::test_depth_limit_protection [gw2] PASSED    [ 90%]
-tests/unit/test_graphql.py::test_dataloader_batching [gw2] PASSED        [ 92%]
-tests/unit/test_crypto_vault.py::test_kms_envelope_encryption [gw3] PASSED [ 94%]
-tests/unit/test_crypto_vault.py::test_zero_knowledge_proof [gw3] PASSED [ 96%]</span>
-<span class="code-err">tests/billing/test_subscription_gate.py::test_active_customer_access [gw0] FAILED [ 98%]</span>
-<span class="code-dim">tests/billing/test_subscription_gate.py::test_enterprise_seat_cap [gw1] PASSED [100%]
-
-==================================== WARNINGS ===================================
-/home/agent/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:201: PydanticDeprecatedSince20: Using extra keyword arguments on Field is deprecated.
-/home/agent/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py:1099: InsecureRequestWarning: Unverified HTTPS request to host 'internal-vault'.
-/home/agent/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1942: SAWarning: Object already exists in session; this will be an error in 2.1.
-/home/agent/.venv/lib/python3.13/site-packages/pytest_asyncio/plugin.py:734: PytestDeprecationWarning: @pytest.fixture is being applied to an async function.
-[... 28 additional framework deprecation warnings suppressed by python runtime ...]</span>
+tests/test_suite.py::test_pass_001 PASSED                                [  1%]
+tests/test_suite.py::test_pass_002 PASSED                                [  2%]
+... [78 additional PASSED progress lines suppressed in preview] ...</span>
+<span class="code-err">tests/test_suite.py::test_fail_001 FAILED                                [ 81%]
+tests/test_suite.py::test_fail_020 FAILED                                [100%]</span>
 
 =================================== FAILURES ====================================
-<span class="code-err">_______________________ test_active_customer_access ____________________________
-[gw0] linux -- Python 3.13.2 /home/agent/.venv/bin/python
-
-self = &lt;tests.billing.test_subscription_gate.TestSubscriptionGate object at 0x7f9a2d3e1100&gt;
-client = &lt;starlette.testclient.TestClient object at 0x7f9a2d3e1450&gt;
-db_session = &lt;sqlalchemy.orm.session.Session object at 0x7f9a2d3e1890&gt;
-stub_stripe = &lt;unittest.fixture.MagicStub object at 0x7f9a2d3e1dd0&gt;
-
-    @pytest.mark.asyncio
-    async def test_active_customer_access(self, client, db_session, stub_stripe):
-        user = await create_test_tenant(db_session, plan="pro", status="trial_expired")
-        entitlement_svc = EntitlementService(db=db_session, stripe=stub_stripe)
-&gt;       entitlement = await entitlement_svc.check_entitlement(user.id, feature="mcp_unlimited")
-
-tests/billing/test_subscription_gate.py:84: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-src/billing/service.py:142: in check_entitlement
-    return self._evaluate_status(user, feature)
-src/billing/service.py:189: in _evaluate_status
-    assert user.subscription.is_active is True
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-user = &lt;User id='usr_99x8' email='dev@customer.io' tier='pro' grace_period=0&gt;
-feature = 'mcp_unlimited'
-
-&gt;   assert user.subscription.is_active is True
-E   AssertionError: assert False is True
-E    +  where False = &lt;Subscription id='sub_092a' status='trial_expired' is_active=False&gt;.is_active
-
-src/billing/service.py:189: AssertionError</span>
-<span class="code-dim">----------------------------- Captured stdout call -----------------------------
-2026-11-10T19:42:01.104Z [DEBUG] (billing.service): Resolving tenant entitlement for usr_99x8
-2026-11-10T19:42:01.108Z [DEBUG] (db.pool): Checkout connection &lt;Connection 0x7f9a2d120a&gt; (pool size=10, checked_out=3)
-2026-11-10T19:42:01.112Z [DEBUG] (sql.echo): SELECT users.id, subscriptions.status FROM users LEFT JOIN subscriptions ON users.id = subscriptions.user_id WHERE users.id = 'usr_99x8'
-2026-11-10T19:42:01.115Z [DEBUG] (billing.cache): Redis cache miss on key 'entitlement:usr_99x8:mcp_unlimited'
-2026-11-10T19:42:01.119Z [WARN]  (billing.service): Tenant usr_99x8 has status 'trial_expired' with grace_period=0
------------------------------ Captured stderr call -----------------------------
-[urllib3.connectionpool] Resetting dropped connection: internal-vault
-[opentelemetry.trace] Non-recording span created for parent_id=None
-=========================== short test summary info ============================
-FAILED tests/billing/test_subscription_gate.py::test_active_customer_access - AssertionError: assert False is True
-================== 1 failed, 48 passed, 32 warnings in 14.82s ===================</span></div>
+<span class="code-err">_______________________________ test_fail_001 ___________________________________
+    def test_fail_001():
+        left = "expected-value-from-service-0"
+        right = "actual-value-from-service-0"
+&gt;       assert left == right
+E       AssertionError: assert 'expected-value-from-service-0' == 'actual-value-from-service-0'
+tests/test_suite.py:18: AssertionError
+[... 19 additional failure blocks ...]</span>
+<span class="code-dim">=========================== short test summary info ============================
+FAILED tests/test_suite.py::test_fail_001 - AssertionError
+... [20 failed, 80 passed in 0.48s — total raw stdout: 21,842 chars]</span></div>
             </div>
 
             <!-- Right: After -->
             <div class="vis-col">
               <div class="vis-col-header">
                 <span class="vis-col-title">
-                  <span>🟢 İktisad Filtered Context</span>
+                  <span>🟢 iktisad Filtered Context</span>
                 </span>
-                <span id="after-badge" class="tag-saved">Tokens: ~110 tokens (~$0.001 per loop) — 94.0% Reduction</span>
+                <span id="after-badge" class="tag-saved">1,194 chars (~298 est. tokens) — -94.5% Reduction</span>
               </div>
-              <div id="after-box" class="vis-code-box"><span class="code-cyan"># [iktisad firewall] Distilled ~1,820 tokens -> ~110 tokens (-94.0% Context Reduction)
-# Cost per loop: ~$0.001 (saved ~$0.026 per agentic retry iteration)</span>
+              <div id="after-box" class="vis-code-box"><span class="code-cyan"># [iktisad firewall] 21,842 chars -&gt; 1,194 chars (-94.5% Reduction in 1.59–1.61 ms)
+# est. tokens = chars / 4 (~5,460 -&gt; ~298 est. tokens)</span>
 
-<span class="code-ok">SUMMARY: 1 failed, 48 passed, 32 warnings in 14.82s
-SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug traces</span>
+<span class="code-ok">=== FAILURES ===</span>
+<span class="code-err">_______________________________ test_fail_001 ___________________________________</span>
+    def test_fail_001():
+&gt;       assert left == right
+<span class="code-err">E       AssertionError: assert 'expected-value-from-service-0' == 'actual-value-from-service-0'</span>
+<span class="code-dim">tests/test_suite.py:18: AssertionError</span>
 
-<span class="code-err">FAIL: tests/billing/test_subscription_gate.py::test_active_customer_access</span>
-<span class="code-dim">File "src/billing/service.py", line 189, in _evaluate_status</span>
-    assert user.subscription.is_active is True
-<span class="code-err">AssertionError: assert False is True
- + where False = &lt;Subscription id='sub_092a' status='trial_expired' is_active=False&gt;.is_active</span>
-
-<span class="code-cyan"># Isolated Root Cause & Actionable Context:</span>
-• Target: src/billing/service.py:189 in _evaluate_status()
-• Cause: user.subscription status is 'trial_expired' with grace_period=0, causing is_active=False.
-• Clean Fix: Handle 'trial_expired' in entitlement fallback logic or verify test fixture setup.
-• Preserved: Zero CoT reasoning token bloat, zero passing test distraction.</div>
+<span class="code-cyan">... [middle failure blocks packed within max_chars=1200 default budget] ...</span>
+<span class="code-err">FAILED tests/test_suite.py::test_fail_020 - AssertionError</span>
+<span class="code-ok">20 failed, 80 passed in 0.48s</span></div>
             </div>
           </div>
         </div>
@@ -1007,25 +916,25 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
         <!-- Metrics -->
         <div class="metrics-bar">
           <div class="metric-card">
-            <div class="metric-val red" id="m-raw">~1,820</div>
-            <div class="metric-label">Raw Tokens Ingested</div>
+            <div class="metric-val red" id="m-raw">21,842</div>
+            <div class="metric-label">Raw Chars (~5,460 est. tokens)</div>
           </div>
           <div class="metric-card">
-            <div class="metric-val green" id="m-filtered">~110</div>
-            <div class="metric-label">İktisad Output Tokens</div>
+            <div class="metric-val green" id="m-filtered">1,194</div>
+            <div class="metric-label">iktisad Chars (~298 est. tokens)</div>
           </div>
           <div class="metric-card">
-            <div class="metric-val cyan" id="m-savings">94.0%</div>
-            <div class="metric-label">Context Reduction</div>
+            <div class="metric-val cyan" id="m-savings">94.5%</div>
+            <div class="metric-label">Verified Char Reduction</div>
           </div>
           <div class="metric-card">
-            <div class="metric-val green" id="m-cost">~$0.026</div>
-            <div class="metric-label">Saved Per Loop</div>
+            <div class="metric-val green" id="m-cost">1.59 ms</div>
+            <div class="metric-label">Median CPU Latency</div>
           </div>
         </div>
 
         <div class="visualizer-footnote">
-          ℹ️ In large CI suites (500+ tests / 35,000+ raw tokens), iktisad achieves the same 90-95% compression, shrinking 35k-token context blowouts to &lt;600 tokens.
+          ℹ️ Verified locally in <code>benchmarks/RESULTS.md</code> (Python 3.12.3, pytest 9.0.2, median of 50 repetitions, <code>est. tokens = chars / 4</code>).
         </div>
       </div>
     </section>
@@ -1067,9 +976,9 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
           <!-- Step 3 -->
           <div class="sandwich-step">
             <span class="step-badge frugal">Stage 3: Mechanical Execution</span>
-            <h3>Gemini 3.8 Flash / Local AST</h3>
+            <h3>Lightweight Runner / Local AST</h3>
             <p>
-              Applies exact code diff, runs local pytest verification through the iktisad firewall, and stages clean commit. Total cost: <strong>$0.01 instead of $1.50</strong>.
+              Applies code diffs, runs local pytest via <code>iktisad run -- pytest</code>, and verifies output deterministically with zero extra reasoning bloat.
             </p>
           </div>
         </div>
@@ -1077,27 +986,34 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
         <table class="compare-table">
           <thead>
             <tr>
-              <th>Architecture</th>
-              <th>Input Context Size</th>
-              <th>Frontier CoT Thinking Tokens</th>
-              <th>Cost per Bug Fix</th>
-              <th>Loop Risk</th>
+              <th>Benchmark Scenario (<code>benchmarks/RESULTS.md</code>)</th>
+              <th>Raw Chars (est. tokens)</th>
+              <th>iktisad Chars (est. tokens)</th>
+              <th>Reduction</th>
+              <th>Median Time</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><strong>Naive Agentic Loop</strong> (Raw Terminal Dumps)</td>
-              <td style="color: var(--red);">40k – 90k tokens</td>
-              <td style="color: var(--red);">8,000 – 16,000 tokens</td>
-              <td style="color: var(--red);">$1.20 – $2.80</td>
-              <td style="color: var(--red);">High (HTTP 429 cascades)</td>
+              <td><strong>Pytest (20 failing + 80 passing)</strong></td>
+              <td style="color: var(--red);">21,842 (5,460)</td>
+              <td style="color: var(--green);"><strong>1,194 (298)</strong></td>
+              <td style="color: var(--green);"><strong>-94.5%</strong></td>
+              <td>1.59–1.61 ms</td>
             </tr>
             <tr>
-              <td><strong>İktisad Sandwich Protocol</strong> (Frugal Gateway)</td>
-              <td style="color: var(--green);"><strong>&lt; 600 tokens</strong></td>
-              <td style="color: var(--green);"><strong>&lt; 800 tokens</strong></td>
-              <td style="color: var(--green);"><strong>$0.02 – $0.05</strong></td>
-              <td style="color: var(--green);">Zero (Circuit breaker protected)</td>
+              <td><strong>Pytest (99 passing)</strong></td>
+              <td style="color: var(--red);">8,256 (2,064)</td>
+              <td style="color: var(--green);"><strong>22 (6)</strong></td>
+              <td style="color: var(--green);"><strong>-99.7%</strong></td>
+              <td>0.19 ms</td>
+            </tr>
+            <tr>
+              <td><strong>Python AST Recon (5 files, 3,637 LOC)</strong></td>
+              <td style="color: var(--red);">130,567 (32,642)</td>
+              <td style="color: var(--green);"><strong>8,977 (2,244)</strong></td>
+              <td style="color: var(--green);"><strong>-93.1%</strong></td>
+              <td>17.46–17.96 ms</td>
             </tr>
           </tbody>
         </table>
@@ -1146,23 +1062,28 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
           <tbody>
             <tr>
               <td><code>compress_terminal_log</code></td>
-              <td>Compresses pytest, compiler, and shell logs, isolating only failed assertions and tracebacks</td>
-              <td style="color: var(--green);"><strong>80% – 97%</strong></td>
+              <td>Compresses pytest, compiler, and shell logs while preserving failing assertions and tracebacks</td>
+              <td style="color: var(--green);"><strong>-94.5% to -99.7%</strong></td>
             </tr>
             <tr>
               <td><code>extract_ast_skeleton</code></td>
-              <td>Extracts class/function signatures, docstrings, and line bounds with 0 LLM tokens</td>
-              <td style="color: var(--cyan);"><strong>100% (0 tokens)</strong></td>
+              <td>Extracts Python class/function signatures, docstrings, and line bounds with 0 LLM tokens</td>
+              <td style="color: var(--cyan);"><strong>-93.1% (0 LLM tokens)</strong></td>
             </tr>
             <tr>
               <td><code>select_frugal_model</code></td>
-              <td>Evaluates task heaviness/irreversibility and routes between Flash & Frontier reasoners</td>
-              <td style="color: var(--green);"><strong>50% – 90%</strong></td>
+              <td>Evaluates task heaviness and irreversibility to route between lightweight and frontier models</td>
+              <td style="color: var(--green);"><strong>Deterministic Routing</strong></td>
             </tr>
             <tr>
               <td><code>check_circuit_breaker</code></td>
-              <td>Enforces hourly/daily token quotas, automatically killing runaway agent retry loops</td>
+              <td>Enforces daily token quotas in SQLite to stop runaway agent retry loops</td>
               <td style="color: var(--amber);"><strong>Protects Budgets</strong></td>
+            </tr>
+            <tr>
+              <td><code>run_release_preflight_audit</code></td>
+              <td>Audits repository artifacts for version alignment, Polar links, and release readiness</td>
+              <td style="color: var(--cyan);"><strong>Release Gate</strong></td>
             </tr>
           </tbody>
         </table>
@@ -1173,10 +1094,10 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
     <section id="gateway">
       <div class="container">
         <div class="section-header">
-          <span class="section-eyebrow">Rate Limit Armor & Reverse Proxy</span>
-          <h2 class="section-title">iktisad Frugal Gateway</h2>
+          <span class="section-eyebrow">Rate Limit Armor &amp; Reverse Proxy</span>
+          <h2 class="section-title">iktisad Frugal Gateway &amp; CLI</h2>
           <p class="section-desc">
-            A drop-in reverse proxy that intercepts outbound LLM API requests, silently strips terminal noise, enforces local SQLite token velocity, and protects against HTTP 429 cascades.
+            A drop-in local proxy and CLI suite that strips terminal noise, enforces local SQLite token budgets, and exports client presets.
           </p>
         </div>
 
@@ -1185,31 +1106,31 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
             <div class="feature-icon">🛡️</div>
             <h3>Reverse Proxy Interceptor</h3>
             <p>
-              Point your agents to <code>http://localhost:8000/v1</code>. Compatible with OpenAI, Anthropic, and Gemini wire protocols. Automatically strips raw test logs before forwarding upstream.
+              Point your agents to <code>http://&lt;gateway-host&gt;:8000/v1</code>. Compatible with OpenAI, Anthropic, and Gemini wire protocols. Strips raw test logs before forwarding upstream.
             </p>
-            <div class="command-box" style="margin-top: 16px;" onclick="copySnippet('iktisad --serve-gateway --port 8000', this)">
+            <div class="command-box" style="margin-top: 16px;" onclick="copySnippet('iktisad gateway --port 8000', this)">
               <span class="command-prefix">$</span>
-              <code>iktisad --serve-gateway --port 8000</code>
+              <code>iktisad gateway --port 8000</code>
             </div>
           </div>
 
           <div class="feature-card">
             <div class="feature-icon">⚡</div>
-            <h3>Runaway Loop Circuit Breaker</h3>
+            <h3>CLI Runner, Quota &amp; Presets</h3>
             <p>
-              If an autonomous agent is caught in an infinite error-fix loop consuming tokens without moving the needle, iktisad trips the breaker and stops the bleed before your card gets billed.
+              Wrap commands with <code>iktisad run -- &lt;cmd&gt;</code>, pipe logs via <code>iktisad compress -</code>, inspect <code>iktisad github-app --manifest</code>, or export presets with <code>iktisad --export-presets</code>.
             </p>
-            <div class="command-box" style="margin-top: 16px;" onclick="copySnippet('iktisad --circuit-status', this)">
+            <div class="command-box" style="margin-top: 16px;" onclick="copySnippet('iktisad --bandwidth-usage', this)">
               <span class="command-prefix">$</span>
-              <code>iktisad --circuit-status</code>
+              <code>iktisad --bandwidth-usage</code>
             </div>
           </div>
 
           <div class="feature-card">
             <div class="feature-icon">🗺️</div>
-            <h3>Zero-Token AST Skeletonizer</h3>
+            <h3>Zero-Token Python AST Skeletonizer</h3>
             <p>
-              Extract class definitions, method signatures, and line boundaries in pure Python AST. Read 2,000-line repositories in 30 lines without ingesting entire files into LLM context.
+              Extract class definitions, method signatures, and line boundaries using pure Python <code>ast</code>. Read 5 Python modules (3,637 LOC) in 8,977 chars instead of 130,567 chars.
             </p>
             <div class="command-box" style="margin-top: 16px;" onclick="copySnippet('iktisad --ast-skeleton my_file.py', this)">
               <span class="command-prefix">$</span>
@@ -1224,37 +1145,37 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
     <section>
       <div class="container">
         <div class="pro-banner">
-          <h2>Ready to Deploy Autonomous Frugality?</h2>
+          <h2>MIT Open-Source Core &amp; Polar Pro ($10/mo)</h2>
           <p>
-            Open-source under MIT. Upgrade to the Polar Pro Tier ($10/mo) for enterprise commercial clearance and dedicated developer support:
+            Core CLI, Python AST skeletonizer, and stdio MCP server are free under the MIT License (85 passing tests). Upgrade to Polar Pro ($10/mo) for commercial convenience and priority support:
           </p>
           <div class="pro-benefits-grid">
             <div class="pro-benefit-item">
               <span class="pro-benefit-icon">⚖️</span>
               <div>
-                <strong>Commercial Team Usage License</strong>
-                <p>Legal clearance for proprietary enterprise codebases and professional client workflows.</p>
+                <strong>Commercial Team Convenience</strong>
+                <p>Clean team onboarding and commercial deployment convenience via <code>iktisad --pro</code>.</p>
               </div>
             </div>
             <div class="pro-benefit-item">
               <span class="pro-benefit-icon">⚡</span>
               <div>
                 <strong>Direct Priority Developer Support</strong>
-                <p>Direct priority support via <code>kenzailabs@gmail.com</code> with &lt;24h turnaround time.</p>
+                <p>Direct priority engineering support via <code>kenzailabs@gmail.com</code> with &lt;24h turnaround.</p>
               </div>
             </div>
             <div class="pro-benefit-item">
               <span class="pro-benefit-icon">🛠️</span>
               <div>
                 <strong>Custom Gateway Proxy Presets</strong>
-                <p>Local JSON configurations and optimized prompt filters for Cursor, Claude Code, and Windsurf.</p>
+                <p>Curated local JSON presets via <code>iktisad --export-presets</code> for Cursor, Claude Code, Windsurf, and Gateway.</p>
               </div>
             </div>
             <div class="pro-benefit-item">
               <span class="pro-benefit-icon">🎯</span>
               <div>
                 <strong>Priority GitHub Issue &amp; Feature Queue</strong>
-                <p>Fast-tracked triage, bug resolution, and prioritized community feature requests.</p>
+                <p>Fast-tracked bug reproduction, benchmark validation, and prioritized GitHub issue queue.</p>
               </div>
             </div>
           </div>
@@ -1301,294 +1222,121 @@ SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug 
 
     const visualizerPresets = {
       pytest: {
-        rawBadge: "Tokens: ~1,820 tokens (~$0.027 per loop)",
-        afterBadge: "Tokens: ~110 tokens (~$0.001 per loop) — 94.0% Reduction",
-        rawTokens: "~1,820",
-        afterTokens: "~110",
-        savings: "94.0%",
-        cost: "~$0.026",
-        beforeHtml: `<span class=\"code-dim\">============================= test session starts ==============================
-platform linux -- Python 3.13.2, pytest-9.2.0, pluggy-1.7.0 -- /home/agent/.venv/bin/python
+        rawBadge: "21,842 chars (~5,460 est. tokens)",
+        afterBadge: "1,194 chars (~298 est. tokens) — -94.5% Reduction",
+        rawTokens: "21,842",
+        afterTokens: "1,194",
+        savings: "94.5%",
+        cost: "1.59 ms",
+        beforeHtml: `<span class="code-dim">============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0 -- /opt/venv/bin/python
 cachedir: .pytest_cache
-rootdir: /home/agent/workspace/enterprise-core
-configfile: pyproject.toml
-plugins: anyio-4.4.0, asyncio-0.24.0, cov-5.0.0, test-3.14.0, xdist-3.6.1
-created: 4/4 workers
-[gw0] linux -- [gw1] linux -- [gw2] linux -- [gw3] linux
-scheduling tests via LoadScheduling
+rootdir: /workspace/enterprise-core
+collected 100 items
 
-tests/unit/test_config.py::test_env_parser_valid [gw0] PASSED            [  2%]
-tests/unit/test_config.py::test_env_override [gw0] PASSED                [  4%]
-tests/unit/test_crypto.py::test_argon2_hashing [gw1] PASSED              [  6%]
-tests/unit/test_crypto.py::test_jwt_ed25519_sign [gw1] PASSED            [  8%]
-tests/unit/test_telemetry.py::test_otlp_batcher [gw2] PASSED             [ 10%]
-tests/unit/test_telemetry.py::test_span_propagation [gw2] PASSED         [ 12%]
-tests/unit/test_cache.py::test_redis_cluster_failover [gw3] PASSED       [ 14%]
-tests/unit/test_cache.py::test_lru_eviction_policy [gw3] PASSED          [ 16%]
-tests/unit/test_rate_limiter.py::test_token_bucket_burst [gw0] PASSED    [ 18%]
-tests/unit/test_rate_limiter.py::test_sliding_window_counter [gw0] PASSED [ 20%]
-tests/unit/test_storage.py::test_s3_multipart_upload [gw1] PASSED        [ 22%]
-tests/unit/test_storage.py::test_s3_presigned_url [gw1] PASSED           [ 24%]
-tests/unit/test_queue.py::test_sqs_fifo_ordering [gw2] PASSED            [ 26%]
-tests/unit/test_queue.py::test_dead_letter_replay [gw2] PASSED           [ 28%]
-tests/unit/test_audit.py::test_immutable_ledger_hash [gw3] PASSED        [ 30%]
-tests/unit/test_audit.py::test_tamper_evident_signature [gw3] PASSED     [ 32%]
-tests/unit/test_session.py::test_cookie_same_site_strict [gw0] PASSED    [ 34%]
-tests/unit/test_session.py::test_session_invalidation [gw0] PASSED       [ 36%]
-tests/unit/test_database.py::test_connection_pool_saturation [gw1] PASSED [ 38%]
-tests/unit/test_database.py::test_read_replica_routing [gw1] PASSED      [ 40%]
-tests/unit/test_health.py::test_readiness_probe [gw2] PASSED             [ 42%]
-tests/unit/test_health.py::test_liveness_circuit_breaker [gw2] PASSED   [ 44%]
-tests/unit/test_rbac.py::test_role_hierarchy_admin [gw3] PASSED          [ 46%]
-tests/unit/test_rbac.py::test_permission_deny_default [gw3] PASSED       [ 48%]
-tests/unit/test_events.py::test_kafka_schema_registry [gw0] PASSED      [ 50%]
-tests/unit/test_events.py::test_idempotent_consumer [gw0] PASSED         [ 52%]
-tests/unit/test_webhook.py::test_hmac_sha256_verification [gw1] PASSED   [ 54%]
-tests/unit/test_webhook.py::test_exponential_backoff [gw1] PASSED        [ 56%]
-tests/unit/test_metrics.py::test_prometheus_counter_increment [gw2] PASSED [ 58%]
-tests/unit/test_metrics.py::test_histogram_quantiles [gw2] PASSED        [ 60%]
-tests/unit/test_tokens.py::test_refresh_token_rotation [gw3] PASSED      [ 62%]
-tests/unit/test_tokens.py::test_blacklisted_jti [gw3] PASSED             [ 64%]
-tests/unit/test_parser.py::test_ast_statement_extraction [gw0] PASSED   [ 66%]
-tests/unit/test_parser.py::test_cst_comment_preservation [gw0] PASSED    [ 68%]
-tests/unit/test_workers.py::test_celery_task_concurrency [gw1] PASSED    [ 70%]
-tests/unit/test_workers.py::test_priority_queue_drain [gw1] PASSED       [ 72%]
-tests/unit/test_pricing.py::test_seat_based_proration [gw2] PASSED       [ 74%]
-tests/unit/test_pricing.py::test_usage_tier_calculation [gw2] PASSED     [ 76%]
-tests/unit/test_email.py::test_dkim_header_signing [gw3] PASSED          [ 78%]
-tests/unit/test_email.py::test_template_injection_escaping [gw3] PASSED  [ 80%]
-tests/unit/test_authz.py::test_jwt_claims_tenant_isolation [gw0] PASSED  [ 82%]
-tests/unit/test_authz.py::test_impersonation_audit_trail [gw0] PASSED   [ 84%]
-tests/unit/test_logging.py::test_json_structured_formatter [gw1] PASSED  [ 86%]
-tests/unit/test_logging.py::test_pii_masking_filter [gw1] PASSED         [ 88%]
-tests/unit/test_graphql.py::test_depth_limit_protection [gw2] PASSED    [ 90%]
-tests/unit/test_graphql.py::test_dataloader_batching [gw2] PASSED        [ 92%]
-tests/unit/test_crypto_vault.py::test_kms_envelope_encryption [gw3] PASSED [ 94%]
-tests/unit/test_zero_knowledge_proof [gw3] PASSED [ 96%]</span>
-<span class=\"code-err\">tests/billing/test_subscription_gate.py::test_active_customer_access [gw0] FAILED [ 98%]</span>
-<span class=\"code-dim\">tests/billing/test_subscription_gate.py::test_enterprise_seat_cap [gw1] PASSED [100%]
-
-==================================== WARNINGS ===================================
-/home/agent/.venv/lib/python3.13/site-packages/pydantic/_internal/_fields.py:201: PydanticDeprecatedSince20: Using extra keyword arguments on Field is deprecated.
-/home/agent/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py:1099: InsecureRequestWarning: Unverified HTTPS request to host \x27internal-vault\x27.
-/home/agent/.venv/lib/python3.13/site-packages/sqlalchemy/orm/session.py:1942: SAWarning: Object already exists in session; this will be an error in 2.1.
-/home/agent/.venv/lib/python3.13/site-packages/pytest_asyncio/plugin.py:734: PytestDeprecationWarning: @pytest.fixture is being applied to an async function.
-[... 28 additional framework deprecation warnings suppressed by python runtime ...]</span>
+tests/test_suite.py::test_pass_001 PASSED                                [  1%]
+tests/test_suite.py::test_pass_002 PASSED                                [  2%]
+... [78 additional PASSED progress lines suppressed in preview] ...</span>
+<span class="code-err">tests/test_suite.py::test_fail_001 FAILED                                [ 81%]
+tests/test_suite.py::test_fail_020 FAILED                                [100%]</span>
 
 =================================== FAILURES ====================================
-<span class=\"code-err\">_______________________ test_active_customer_access ____________________________
-[gw0] linux -- Python 3.13.2 /home/agent/.venv/bin/python
+<span class="code-err">_______________________________ test_fail_001 ___________________________________
+    def test_fail_001():
+        left = "expected-value-from-service-0"
+        right = "actual-value-from-service-0"
+&gt;       assert left == right
+E       AssertionError: assert 'expected-value-from-service-0' == 'actual-value-from-service-0'
+tests/test_suite.py:18: AssertionError
+[... 19 additional failure blocks ...]</span>
+<span class="code-dim">=========================== short test summary info ============================
+FAILED tests/test_suite.py::test_fail_001 - AssertionError
+... [20 failed, 80 passed in 0.48s — total raw stdout: 21,842 chars]</span>`,
+        afterHtml: `<span class="code-cyan"># [iktisad firewall] 21,842 chars -&gt; 1,194 chars (-94.5% Reduction in 1.59–1.61 ms)
+# est. tokens = chars / 4 (~5,460 -&gt; ~298 est. tokens)</span>
 
-self = &lt;tests.billing.test_subscription_gate.TestSubscriptionGate object at 0x7f9a2d3e1100&gt;
-client = &lt;starlette.testclient.TestClient object at 0x7f9a2d3e1450&gt;
-db_session = &lt;sqlalchemy.orm.session.Session object at 0x7f9a2d3e1890&gt;
-stub_stripe = &lt;unittest.fixture.MagicStub object at 0x7f9a2d3e1dd0&gt;
+<span class="code-ok">=== FAILURES ===</span>
+<span class="code-err">_______________________________ test_fail_001 ___________________________________</span>
+    def test_fail_001():
+&gt;       assert left == right
+<span class="code-err">E       AssertionError: assert 'expected-value-from-service-0' == 'actual-value-from-service-0'</span>
+<span class="code-dim">tests/test_suite.py:18: AssertionError</span>
 
-    @pytest.mark.asyncio
-    async def test_active_customer_access(self, client, db_session, stub_stripe):
-        user = await create_test_tenant(db_session, plan=\"pro\", status=\"trial_expired\")
-        entitlement_svc = EntitlementService(db=db_session, stripe=stub_stripe)
-&gt;       entitlement = await entitlement_svc.check_entitlement(user.id, feature=\"mcp_unlimited\")
-
-tests/billing/test_subscription_gate.py:84: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-src/billing/service.py:142: in check_entitlement
-    return self._evaluate_status(user, feature)
-src/billing/service.py:189: in _evaluate_status
-    assert user.subscription.is_active is True
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
-user = &lt;User id=\x27usr_99x8\x27 email=\x27dev@customer.io\x27 tier=\x27pro\x27 grace_period=0&gt;
-feature = \x27mcp_unlimited\x27
-
-&gt;   assert user.subscription.is_active is True
-E   AssertionError: assert False is True
-E    +  where False = &lt;Subscription id=\x27sub_092a\x27 status=\x27trial_expired\x27 is_active=False&gt;.is_active
-
-src/billing/service.py:189: AssertionError</span>
-<span class=\"code-dim\">----------------------------- Captured stdout call -----------------------------
-2026-11-10T19:42:01.104Z [DEBUG] (billing.service): Resolving tenant entitlement for usr_99x8
-2026-11-10T19:42:01.108Z [DEBUG] (db.pool): Checkout connection &lt;Connection 0x7f9a2d120a&gt; (pool size=10, checked_out=3)
-2026-11-10T19:42:01.112Z [DEBUG] (sql.echo): SELECT users.id, subscriptions.status FROM users LEFT JOIN subscriptions ON users.id = subscriptions.user_id WHERE users.id = \x27usr_99x8\x27
-2026-11-10T19:42:01.115Z [DEBUG] (billing.cache): Redis cache miss on key \x27entitlement:usr_99x8:mcp_unlimited\x27
-2026-11-10T19:42:01.119Z [WARN]  (billing.service): Tenant usr_99x8 has status \x27trial_expired\x27 with grace_period=0
------------------------------ Captured stderr call -----------------------------
-[urllib3.connectionpool] Resetting dropped connection: internal-vault
-[opentelemetry.trace] Non-recording span created for parent_id=None
-=========================== short test summary info ============================
-FAILED tests/billing/test_subscription_gate.py::test_active_customer_access - AssertionError: assert False is True
-================== 1 failed, 48 passed, 32 warnings in 14.82s ===================</span>`,
-        afterHtml: `<span class=\"code-cyan\"># [iktisad firewall] Distilled ~1,820 tokens -&gt; ~110 tokens (-94.0% Context Reduction)
-# Cost per loop: ~$0.001 (saved ~$0.026 per agentic retry iteration)</span>
-
-<span class=\"code-ok\">SUMMARY: 1 failed, 48 passed, 32 warnings in 14.82s
-SUPPRESSED: 48 passed tests, 32 deprecation warnings, 12 internal db/pool debug traces</span>
-
-<span class=\"code-err\">FAIL: tests/billing/test_subscription_gate.py::test_active_customer_access</span>
-<span class=\"code-dim\">File \"src/billing/service.py\", line 189, in _evaluate_status</span>
-    assert user.subscription.is_active is True
-<span class=\"code-err\">AssertionError: assert False is True
- + where False = &lt;Subscription id=\x27sub_092a\x27 status=\x27trial_expired\x27 is_active=False&gt;.is_active</span>
-
-<span class=\"code-cyan\"># Isolated Root Cause &amp; Actionable Context:</span>
-• <span class=\"code-ok\">Target:</span> src/billing/service.py:189 in _evaluate_status()
-• <span class=\"code-ok\">Cause:</span> user.subscription status is \x27trial_expired\x27 with grace_period=0, causing is_active=False.
-• <span class=\"code-ok\">Clean Fix:</span> Handle \x27trial_expired\x27 in entitlement fallback logic or verify test fixture setup.
-• <span class=\"code-ok\">Preserved:</span> Zero CoT reasoning token bloat, zero passing test distraction.`
+<span class="code-cyan">... [middle failure blocks packed within max_chars=1200 default budget] ...</span>
+<span class="code-err">FAILED tests/test_suite.py::test_fail_020 - AssertionError</span>
+<span class="code-ok">20 failed, 80 passed in 0.48s</span>`
       },
-      traceback: {
-        rawBadge: "Tokens: ~2,850 tokens (~$0.043 per loop)",
-        afterBadge: "Tokens: ~95 tokens (~$0.001 per loop) — 96.7% Reduction",
-        rawTokens: "~2,850",
-        afterTokens: "~95",
-        savings: "96.7%",
-        cost: "~$0.042",
-        beforeHtml: `<span class=\"code-dim\">Traceback (most recent call last):
-  File \"/usr/local/lib/python3.13/site-packages/starlette/routing.py\", line 705, in app
-    await response(scope, receive, send)
-  File \"/usr/local/lib/python3.13/site-packages/starlette/responses.py\", line 273, in __call__
-    await run_in_threadpool(self.background)
-  File \"/usr/local/lib/python3.13/site-packages/starlette/concurrency.py\", line 40, in run_in_threadpool
-    return await anyio.to_thread.run_sync(func, *args)
-  File \"/usr/local/lib/python3.13/site-packages/anyio/to_thread.py\", line 56, in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-  File \"/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py\", line 2176, in run_sync_in_worker_thread
-    return await future
-  File \"/usr/local/lib/python3.13/site-packages/anyio/_backends/_asyncio.py\", line 859, in run
-    result = context.run(func, *args)
-  File \"/usr/local/lib/python3.13/site-packages/starlette/middleware/base.py\", line 191, in call_next
-    return await response_sent.wait()
-  File \"/usr/local/lib/python3.13/site-packages/starlette/middleware/errors.py\", line 164, in __call__
-    await self.app(scope, receive, _send)
-  File \"/usr/local/lib/python3.13/site-packages/starlette/middleware/cors.py\", line 93, in __call__
-    await self.simple_response(scope, receive, send, request_headers=headers)
-  File \"/usr/local/lib/python3.13/site-packages/starlette/middleware/gzip.py\", line 24, in __call__
-    await self.app(scope, receive, send)
-  File \"/usr/local/lib/python3.13/site-packages/starlette/middleware/authentication.py\", line 67, in __call__
-    response = await self.app(scope, receive, send)
-  File \"/usr/local/lib/python3.13/site-packages/fastapi/applications.py\", line 1054, in __call__
-    await super().__call__(scope, receive, send)
-  File \"/usr/local/lib/python3.13/site-packages/fastapi/routing.py\", line 291, in app
-    raw_response = await run_endpoint_function(
-  File \"/usr/local/lib/python3.13/site-packages/fastapi/routing.py\", line 198, in run_endpoint_function
-    return await dependant.call(**values)
-  File \"/home/agent/workspace/enterprise-core/src/api/v2/billing_router.py\", line 87, in execute_charge
-    return await BillingDispatcher.process_invoice_payment(invoice_id, idempotency_key)
-  File \"/home/agent/workspace/enterprise-core/src/billing/dispatcher.py\", line 152, in process_invoice_payment
-    settlement = await PaymentRail.dispatch_settlement(payload)
-  File \"/home/agent/workspace/enterprise-core/src/billing/rails.py\", line 74, in dispatch_settlement
-    token = VaultSigner.decrypt_secret_envelope(payload.encrypted_blob)
-  File \"/home/agent/workspace/enterprise-core/src/crypto/jwt.py\", line 58, in decrypt_secret_envelope
-    raise InvalidSignatureError(\"Algorithm RS256 required, received HS256 in header: alg=HS256\")</span>
-<span class=\"code-err\">src.crypto.jwt.InvalidSignatureError: Algorithm RS256 required, received HS256 in header: alg=HS256</span>
+      passing: {
+        rawBadge: "8,256 chars (~2,064 est. tokens)",
+        afterBadge: "22 chars (~6 est. tokens) — -99.7% Reduction",
+        rawTokens: "8,256",
+        afterTokens: "22",
+        savings: "99.7%",
+        cost: "0.19 ms",
+        beforeHtml: `<span class="code-dim">============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0 -- /opt/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /workspace/enterprise-core
+collected 99 items
 
-<span class=\"code-dim\">[Local Scope Variable Inspection Dump: 0x7f9a2d3e1980]
-payload = &lt;InvoicePayload id=\x27inv_882\x27 amount=4900 currency=\x27USD\x27 status=\x27pending\x27 retries=3&gt;
-headers = {\x27content-type\x27: \x27application/json\x27, \x27authorization\x27: \x27Bearer eyJhbGciOi...\x27, \x27x-request-id\x27: \x27req_01j9\x27}
-db_state = &lt;EngineSession postgresql://user:***@10.0.8.12:5432/core_prod connected=True in_transaction=True&gt;
-thread_pool = &lt;ThreadPoolExecutor max_workers=32 active_threads=14 queue_depth=2&gt;
-memory_arena_stats: malloc_trim=0 rss_mb=642.1 vms_mb=1820.4 shared_mb=88.2</span>`,
-        afterHtml: `<span class=\"code-cyan\"># [iktisad firewall] 24 Starlette / FastAPI / AnyIO framework frames collapsed
-# Distilled ~2,850 tokens -&gt; ~95 tokens (-96.7% Context Reduction)
-# Cost per loop: ~$0.001 (saved ~$0.042 per agentic retry iteration)</span>
+tests/test_suite.py::test_pass_001 PASSED                                [  1%]
+tests/test_suite.py::test_pass_002 PASSED                                [  2%]
+tests/test_suite.py::test_pass_003 PASSED                                [  3%]
+... [95 additional PASSED lines omitted in preview] ...
+tests/test_suite.py::test_pass_099 PASSED                                [100%]
 
-<span class=\"code-err\">FAIL: src/billing/rails.py:74 -&gt; src/crypto/jwt.py:58 in decrypt_secret_envelope()</span>
-<span class=\"code-dim\">File \"src/crypto/jwt.py\", line 58, in decrypt_secret_envelope</span>
-    raise InvalidSignatureError(\"Algorithm RS256 required, received HS256 in header: alg=HS256\")
-<span class=\"code-err\">InvalidSignatureError: Algorithm RS256 required, received HS256 in header: alg=HS256</span>
+============================== 99 passed in 0.41s ===============================
+[total raw stdout: 8,256 chars (~2,064 est. tokens)]</span>`,
+        afterHtml: `<span class="code-cyan"># [iktisad firewall] 8,256 chars -&gt; 22 chars (-99.7% Reduction in 0.19 ms)
+# est. tokens = chars / 4 (~2,064 -&gt; ~6 est. tokens)</span>
 
-<span class=\"code-cyan\"># Isolated Root Cause &amp; Actionable Context:</span>
-• <span class=\"code-ok\">Key Mismatch:</span> Envelope signed with symmetric HMAC (HS256), but VaultSigner requires asymmetric RSA (RS256).
-• <span class=\"code-ok\">Framework noise stripped:</span> 24 middleware wrappers and 640MB memory arena dumps excluded.
-• <span class=\"code-ok\">Preserved:</span> Exact caller-callee line bounds and cryptographic exception.`
+<span class="code-ok">OK: 99 passed in 0.41s</span>`
       },
       monorepo: {
-        rawBadge: "Tokens: ~3,850 tokens (~$0.058 per loop)",
-        afterBadge: "Tokens: ~140 tokens (~$0.002 per loop) — 96.4% Reduction",
-        rawTokens: "~3,850",
-        afterTokens: "~140",
-        savings: "96.4%",
-        cost: "~$0.056",
-        beforeHtml: `<span class=\"code-cyan\"># === Ingestion of Monorepo Module: src/enterprise/billing/monolith_engine.py ===
-# Loading raw code buffer into LLM context window (~3,850 tokens)...</span>
+        rawBadge: "130,567 chars (~32,642 est. tokens)",
+        afterBadge: "8,977 chars (~2,244 est. tokens) — -93.1% Reduction",
+        rawTokens: "130,567",
+        afterTokens: "8,977",
+        savings: "93.1%",
+        cost: "17.46 ms",
+        beforeHtml: `<span class="code-cyan"># === Raw Ingestion: iktisad/*.py (5 Python files, 3,637 LOC) ===
+# Full source files: 130,567 chars (~32,642 est. tokens)</span>
 
-<span class=\"code-dim\">import asyncio
-import datetime
-import hashlib
-import json
-import logging
-import os
-import re
-from typing import Any, Callable, Dict, List, Optional
-import asyncpg
-import pydantic
-import redis.asyncio as aioredis
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+<span class="code-dim"># iktisad/core.py
+# iktisad/cli.py
+# iktisad/gateway.py
+# iktisad/mcp_server.py
+# iktisad/__init__.py
 
-logger = logging.getLogger(\"enterprise.billing.monolith\")
+# 3,637 lines of implementation loops, regex patterns, SQL queries,
+# and HTTP handlers loaded verbatim into prompt context...</span>`,
+        afterHtml: `<span class="code-cyan"># [iktisad AST skeletonizer] 130,567 chars -&gt; 8,977 chars (-93.1% Reduction in 17.46–17.96 ms)
+# 5 Python files (3,637 LOC) | est. tokens = chars / 4 (~32,642 -&gt; ~2,244 est. tokens) | 0 LLM tokens</span>
 
-class MonolithEngineConfig:
-    def __init__(self, host: str, port: int, pool_size: int = 50, timeout: float = 30.0):
-        self.host = host
-        self.port = port
-        self.pool_size = pool_size
-        self.timeout = timeout
-        self.retry_policy = {\"max_attempts\": 5, \"backoff_multiplier\": 1.5, \"jitter\": True}
-        # [45 lines of private config schema validations omitted]
+<span class="code-ok">Module: iktisad/core.py [L1-L960]</span>
+├── <span class="code-cyan">def compress_cli_observation</span>(raw_output: str, max_chars: int = 1200) -&gt; ObservationResult <span class="code-dim">[L142-L230]</span>
+├── <span class="code-cyan">def extract_python_ast_skeleton</span>(file_path: str | Path) -&gt; AstSkeleton <span class="code-dim">[L232-L348]</span>
+├── <span class="code-cyan">def select_model_dynamically</span>(...) -&gt; ModelRoutingDecision <span class="code-dim">[L350-L435]</span>
+└── <span class="code-ok">class BandwidthGuard</span> <span class="code-dim">[L640-L820]</span>
 
-class LedgerTransactionManager:
-    # [380 lines of nested ledger state machine, raw SQL queries, transaction commit hooks]
-    async def commit_double_entry_ledger(self, debit_account: str, credit_account: str, amount: int):
-        # [85 lines of debit/credit balance checks, lock acquisition, deadlock retry handlers]
-        pass
-
-class SubscriptionLifecycleCoordinator:
-    # [520 lines of Stripe, Polar, PayPal webhook event parsing and state machines]
-    async def reconcile_unpaid_invoices(self, tenant_id: str, grace_period_days: int = 7):
-        # [140 lines of reconciliation algorithms, invoice re-issuance, email notifications]
-        pass
-
-class UsageMeterAggregator:
-    # [480 lines of Prometheus, Datadog, OpenTelemetry gauge and histogram streaming]
-    def calculate_billable_units(self, events: List[Dict[str, Any]]) -> int:
-        # [95 lines of tier math, proration, volume discounts]
-        pass
-
-# [1,200 additional lines of internal loops, private helpers, and raw SQL queries...]</span>`,
-        afterHtml: `<span class=\"code-cyan\"># [iktisad AST skeletonizer] 1,850 lines compressed to structural signatures
-# Distilled ~3,850 tokens -&gt; ~140 tokens (-96.4% Context Reduction)
-# Cost per loop: ~$0.002 (saved ~$0.056 per agentic retry iteration)</span>
-
-<span class=\"code-ok\">Module: src/enterprise/billing/monolith_engine.py (Lines 1 - 1850)</span>
-
-<span class=\"code-dim\">Classes &amp; Exported Signatures:</span>
-├── <span class=\"code-ok\">class MonolithEngineConfig</span>(host: str, port: int, pool_size: int = 50) <span class=\"code-dim\">[L28-L75]</span>
-├── <span class=\"code-ok\">class LedgerTransactionManager</span> <span class=\"code-dim\">[L77-L457]</span>
-│   └── <span class=\"code-cyan\">async def commit_double_entry_ledger</span>(debit_account: str, credit_account: str, amount: int) -&gt; LedgerEntry <span class=\"code-dim\">[L112-L197]</span>
-├── <span class=\"code-ok\">class SubscriptionLifecycleCoordinator</span> <span class=\"code-dim\">[L459-L979]</span>
-│   ├── <span class=\"code-cyan\">async def handle_webhook_event</span>(payload: bytes, signature: str) -&gt; bool <span class=\"code-dim\">[L512-L580]</span>
-│   └── <span class=\"code-cyan\">async def reconcile_unpaid_invoices</span>(tenant_id: str, grace_period_days: int = 7) -&gt; ReconcileResult <span class=\"code-dim\">[L820-L960]</span>
-└── <span class=\"code-ok\">class UsageMeterAggregator</span> <span class=\"code-dim\">[L981-L1461]</span>
-    └── <span class=\"code-cyan\">def calculate_billable_units</span>(events: list[dict[str, Any]]) -&gt; int <span class=\"code-dim\">[L1140-L1235]</span>
-
-<span class=\"code-cyan\"># Semantic Structural Context:</span>
-• <span class=\"code-ok\">Complete structural AST map available with exact line numbers for agent navigation.</span>
-• <span class=\"code-ok\">Agents read method interfaces without burning ~3,850 tokens on private loops.</span>`
+<span class="code-cyan"># Semantic Structural Context:</span>
+• <span class="code-ok">Exact symbol signatures, docstrings, and line bounds extracted via stdlib ast.</span>
+• <span class="code-ok">Agents inspect target line ranges instead of reading all 3,637 lines.</span>`
       }
     };
 
     function switchVisualizerTab(presetKey, btn) {
-      document.querySelectorAll(\x27.tab-btn\x27).forEach(b =&gt; b.classList.remove(\x27active\x27));
-      btn.classList.add(\x27active\x27);
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
       const data = visualizerPresets[presetKey];
-      document.getElementById(\x27before-badge\x27).innerText = data.rawBadge;
-      document.getElementById(\x27after-badge\x27).innerText = data.afterBadge;
-      document.getElementById(\x27before-box\x27).innerHTML = data.beforeHtml;
-      document.getElementById(\x27after-box\x27).innerHTML = data.afterHtml;
-      document.getElementById(\x27m-raw\x27).innerText = data.rawTokens;
-      document.getElementById(\x27m-filtered\x27).innerText = data.afterTokens;
-      document.getElementById(\x27m-savings\x27).innerText = data.savings;
-      document.getElementById(\x27m-cost\x27).innerText = data.cost;
+      document.getElementById('before-badge').innerText = data.rawBadge;
+      document.getElementById('after-badge').innerText = data.afterBadge;
+      document.getElementById('before-box').innerHTML = data.beforeHtml;
+      document.getElementById('after-box').innerHTML = data.afterHtml;
+      document.getElementById('m-raw').innerText = data.rawTokens;
+      document.getElementById('m-filtered').innerText = data.afterTokens;
+      document.getElementById('m-savings').innerText = data.savings;
+      document.getElementById('m-cost').innerText = data.cost;
     }
 
     const mcpConfigs = {
