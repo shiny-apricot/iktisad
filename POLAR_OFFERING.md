@@ -20,23 +20,25 @@ Autonomous AI agent workflows (SWE-bench agents, coding assistants, CI/CD autode
 
 ---
 
-## 2. Polar.sh Tier Matrix
+## 2. Polar.sh Tier Matrix & Honest Licensing Model
 
-| Tier | Price | Monthly Token Defense | Gateway & Forwarding | Ast Skeletonizer & CLI Firewall | Support & SLA |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Open-Source Community** | **$0 / mo** (Free) | Self-hosted (unlimited) | Self-hosted local proxy | Full standard library access via `pip install iktisad` | Best-effort GitHub Discussions |
-| **Pro Developer (Recommended)** | **$10 / mo** | Unlimited local defense | Local Gateway Proxy Presets (`http://127.0.0.1:8000/v1`) | Commercial Team License + Real-time AST pruning + Quota circuit breaker | Priority email & GitHub triage (<24h SLA) |
-| **Enterprise / Custom** | **$99 / mo** | Unlimited local defense | Custom local gateway presets + multi-agent configs | Multi-language AST filters (Python, TypeScript, Go) | Bilateral SLA, custom circuit breakers & direct support |
+> **100% Free OSS Core (MIT)**: The `iktisad` CLI, Python AST skeletonizer, terminal log firewall, and all 5 native MCP tools (`compress_terminal_log`, `extract_ast_skeleton`, `select_frugal_model`, `check_circuit_breaker`, `run_release_preflight_audit`) are **100% free and open-source under the MIT License** (`$0`, zero artificial paywalls on local CLI flags).
+
+| Tier | Price | Scope & Deliverables | Support & Delivery |
+| :--- | :--- | :--- | :--- |
+| **Open-Source Core (MIT)** | **$0 / mo** (Free) | Full local CLI (`iktisad`), Python stdlib AST skeletonizer, deterministic pytest/terminal firewall, SQLite circuit breaker, and 5-tool stdio MCP server | `pip install iktisad` / Community GitHub Discussions |
+| **Polar Pro (Commercial Convenience & Support)** | **$10 / mo** | Commercial team convenience, curated local gateway & IDE policy presets, and priority issue/email engineering support | Instant Polar access + **<24h SLA** via `kenzailabs@gmail.com` |
+| **Hosted Gateway & CI Guard *(Roadmap)*** | **$15–$50 / mo** *(Hosted)* / **5% MoR** *(GitHub App)* | Planned managed hosted gateway policy presets and upcoming GitHub Marketplace CI Guard App (*not yet billed — roadmap only*) | Future opt-in cloud/CI add-on |
 
 ---
 
-## 3. "Pro Developer" Tier Details ($10 / month)
+## 3. "Polar Pro" Tier Details ($10 / month)
 
 ### Core Benefits
-1. **Commercial Team Usage License**:
-   - Legal clearance for proprietary enterprise codebases and commercial client deployments.
-2. **Local Gateway Proxy Presets & Prompt Filters**:
-   - Pre-configured JSON presets and optimized prompt filters for Cursor, Claude Code, and Windsurf running against your local `iktisad --serve-gateway` instance:
+1. **Commercial Team Convenience & Governance Clearance**:
+   - Streamlined procurement receipt and commercial support coverage for engineering teams deploying `iktisad` across proprietary workflows.
+2. **Curated Policy Presets & Local Gateway Configurations**:
+   - Ready-to-use JSON policy presets and proxy defaults for Cursor, Claude Code, Windsurf, and your local `iktisad --serve-gateway` instance:
      ```python
      from openai import OpenAI
 
@@ -46,10 +48,10 @@ Autonomous AI agent workflows (SWE-bench agents, coding assistants, CI/CD autode
      )
      ```
 3. **Deterministic Context Token Defense**:
-   - Intercepts noisy terminal outputs, stripping ANSI escape codes, duplicate tracebacks, and progress bars.
-   - Zero-token AST code skeletonization for codebase context reduction.
-4. **Direct Priority Developer Support**:
-   - Guaranteed <24-hour response turnaround via `kenzailabs@gmail.com` and prioritized GitHub issues.
+   - Intercepts noisy terminal outputs, stripping ANSI escape codes, passing-test boilerplate, and duplicate stack frames while preserving assertion tracebacks.
+   - Zero-LLM-token Python AST code skeletonization via Python's standard library `ast` module.
+4. **Priority Developer Support (<24h SLA)**:
+   - Guaranteed <24-hour response turnaround via `kenzailabs@gmail.com` and prioritized GitHub issue triage.
 
 ---
 

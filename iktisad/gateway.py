@@ -78,6 +78,7 @@ class GatewayConfig:
     default_fallback_model: str = "gemini-1.5-flash"
     license_key: str = ""
     require_license: bool = False
+    allow_test_prefixes: bool = False
     max_budget_usd: float | None = None
     alert_webhook: str | None = None
     max_prompt_tokens: int = 32_000
@@ -304,8 +305,13 @@ def verify_polar_license(
     cache_dir: Path | None = None,
     offline_grace_seconds: int = 86_400,  # 24 hours
     validation_url: str = "https://api.polar.sh/v1/customer-portal/license-keys/validate",
+    allow_test_prefixes: bool = False,
 ) -> LicenseStatus:
-    """Validate a Polar license key supporting 24h offline grace caching and deterministic local verification."""
+    """Validate a Polar license key supporting 24h offline grace caching.
+
+    Synthetic test prefixes ('polar_test_', 'polar_live_', 'iktisad_pro_', 'test_')
+    are rejected in production by default unless allow_test_prefixes=True is passed explicitly.
+    """
     if not license_key or not license_key.strip():
         return LicenseStatus(
             valid=False,
@@ -319,8 +325,8 @@ def verify_polar_license(
     key_hash = hashlib.sha256(key.encode("utf-8")).hexdigest()[:16]
     cache_file = target_cache_dir / f"polar_license_{key_hash}.json"
 
-    # Deterministic local check for test suites or offline development
-    if key.startswith(("polar_test_", "polar_live_", "iktisad_pro_", "test_")):
+    # Deterministic local check ONLY when explicitly opted in for test suites
+    if allow_test_prefixes and key.startswith(("polar_test_", "polar_live_", "iktisad_pro_", "test_")):
         lowered = key.lower()
         if "expired" in lowered:
             return LicenseStatus(
@@ -1013,7 +1019,10 @@ def process_chat_completion(
 
     # 2. License Verification Gate (Polar Pro/Enterprise)
     if config.require_license or config.license_key:
-        lic = verify_polar_license(config.license_key)
+        lic = verify_polar_license(
+            config.license_key,
+            allow_test_prefixes=config.allow_test_prefixes,
+        )
         if not lic.valid:
             return GatewayCompletionResult(
                 status_code=401,

@@ -47,44 +47,61 @@ from iktisad.gateway import (
 
 
 def test_verify_polar_license_deterministic_valid() -> None:
-    """Verify deterministic validation for valid Polar test/live keys."""
-    res = verify_polar_license("polar_test_valid_key_123")
+    """Verify deterministic validation for valid Polar test/live keys when opted in."""
+    res = verify_polar_license("polar_test_valid_key_123", allow_test_prefixes=True)
     assert res.valid is True
     assert res.status == "active"
     assert res.plan == "pro"
     assert res.customer_id is not None
     assert "verified" in res.message.lower()
 
-    res_live = verify_polar_license("polar_live_production_999")
+    res_live = verify_polar_license("polar_live_production_999", allow_test_prefixes=True)
     assert res_live.valid is True
     assert res_live.status == "active"
 
-    res_pro = verify_polar_license("iktisad_pro_subscriber_abc")
+    res_pro = verify_polar_license("iktisad_pro_subscriber_abc", allow_test_prefixes=True)
     assert res_pro.valid is True
     assert res_pro.status == "active"
 
 
 def test_verify_polar_license_deterministic_expired() -> None:
-    """Verify deterministic rejection for expired keys."""
-    res = verify_polar_license("polar_test_expired_key")
+    """Verify deterministic rejection for expired keys when opted in."""
+    res = verify_polar_license("polar_test_expired_key", allow_test_prefixes=True)
     assert res.valid is False
     assert res.status == "expired"
     assert "expired" in res.message.lower()
 
 
 def test_verify_polar_license_deterministic_revoked() -> None:
-    """Verify deterministic rejection for revoked keys."""
-    res = verify_polar_license("polar_test_revoked_key")
+    """Verify deterministic rejection for revoked keys when opted in."""
+    res = verify_polar_license("polar_test_revoked_key", allow_test_prefixes=True)
     assert res.valid is False
     assert res.status == "revoked"
     assert "revoked" in res.message.lower()
 
 
 def test_verify_polar_license_deterministic_invalid() -> None:
-    """Verify deterministic rejection for invalid keys."""
-    res = verify_polar_license("polar_test_invalid_token")
+    """Verify deterministic rejection for invalid keys when opted in."""
+    res = verify_polar_license("polar_test_invalid_token", allow_test_prefixes=True)
     assert res.valid is False
     assert res.status == "invalid"
+
+
+def test_verify_polar_license_rejects_test_prefixes_by_default(tmp_path: Path) -> None:
+    """Production default (allow_test_prefixes=False) must fail closed on synthetic prefix keys."""
+    for candidate in (
+        "iktisad_pro_anything",
+        "polar_test_anything",
+        "polar_live_anything",
+        "test_anything",
+    ):
+        res = verify_polar_license(
+            candidate,
+            cache_dir=tmp_path,
+            validation_url="http://127.0.0.1:59999/unreachable",
+        )
+        assert res.valid is False
+        assert res.status == "unreachable"
 
 
 def test_verify_polar_license_empty_or_none() -> None:
@@ -335,6 +352,7 @@ def test_process_chat_completion_license_enforcement(tmp_path: Path) -> None:
         db_path=db_file,
         license_key="polar_test_invalid_license",
         require_license=True,
+        allow_test_prefixes=True,
     )
     res_invalid = process_chat_completion(payload, cfg_invalid)
     assert res_invalid.status_code == 401
@@ -345,6 +363,7 @@ def test_process_chat_completion_license_enforcement(tmp_path: Path) -> None:
         db_path=db_file,
         license_key="polar_test_valid_key_001",
         require_license=True,
+        allow_test_prefixes=True,
     )
     res_valid = process_chat_completion(payload, cfg_valid)
     assert res_valid.status_code == 200
@@ -436,8 +455,6 @@ def test_cli_gateway_subcommand_flags(tmp_path: Path) -> None:
             "gateway",
             "--port",
             "8991",
-            "--license-key",
-            "polar_test_live_commercial",
             "--max-budget-usd",
             "25.50",
             "--alert-webhook",
@@ -479,6 +496,7 @@ def test_http_server_commercial_integration(tmp_path: Path) -> None:
         port=0,  # Dynamic open port
         db_path=db_file,
         license_key="polar_test_pro_valid",
+        allow_test_prefixes=True,
         max_budget_usd=10.0,
     )
 

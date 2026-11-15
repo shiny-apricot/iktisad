@@ -99,6 +99,57 @@ def test_compress_cli_observation_truncation() -> None:
     assert "[... truncated by iktisad ...]" in obs.pruned_text
 
 
+def test_compress_cli_observation_preserves_failing_pytest_tracebacks() -> None:
+    """Long failing pytest runs with passing tests must retain assertion/traceback context."""
+    passing_lines = "\n".join(f"tests/test_mod.py::test_pass_{i:03d} PASSED [ {i}%]" for i in range(1, 81))
+    failing_progress = "\n".join(f"tests/test_mod.py::test_fail_{i:03d} FAILED [ {80 + i}%]" for i in range(1, 21))
+    failure_blocks = "\n".join(
+        f"________________________________ test_fail_{i:03d} _________________________________\n"
+        f"    def test_fail_{i:03d}():\n"
+        f"        result = compute({i})\n"
+        f">       assert result == {i + 1}\n"
+        f"E       AssertionError: assert {i} == {i + 1}\n"
+        f"E       +  where {i} = compute({i})\n"
+        f"tests/test_mod.py:{10 + i}: AssertionError\n"
+        for i in range(1, 21)
+    )
+    summary_lines = "\n".join(
+        f"FAILED tests/test_mod.py::test_fail_{i:03d} - AssertionError: assert {i} == {i + 1}"
+        for i in range(1, 21)
+    )
+    raw = (
+        "============================= test session starts ==============================\n"
+        "collected 100 items\n"
+        f"{failing_progress}\n"
+        f"{passing_lines}\n"
+        "=================================== FAILURES ===================================\n"
+        f"{failure_blocks}\n"
+        "=========================== short test summary info ============================\n"
+        f"{summary_lines}\n"
+        "======================== 20 failed, 80 passed in 0.42s =========================\n"
+    )
+    obs = compress_cli_observation(raw, max_chars=1200)
+    assert obs.has_error is True
+    assert len(obs.pruned_text) <= 1200
+    assert "=== FAILURES ===" in obs.pruned_text
+    assert "E       AssertionError:" in obs.pruned_text
+    assert "tests/test_mod.py:11: AssertionError" in obs.pruned_text
+    assert "20 failed, 80 passed" in obs.pruned_text
+    assert "test_pass_001 PASSED" not in obs.pruned_text
+
+
+def test_bandwidth_guard_default_500mb_limit(tmp_path: Path) -> None:
+    """Default BandwidthGuard daily limit should be 500.0 MB while allowing explicit overrides."""
+    db_file = str(tmp_path / "bw_default.db")
+    default_guard = BandwidthGuard(db_path=db_file)
+    assert default_guard.daily_limit_mb == 500.0
+    assert default_guard.get_usage().max_daily_megabytes == 500.0
+
+    strict_guard = BandwidthGuard(db_path=db_file, daily_limit_mb=15.0)
+    assert strict_guard.daily_limit_mb == 15.0
+    assert strict_guard.get_usage().max_daily_megabytes == 15.0
+
+
 # ---------------------------------------------------------------------------
 # 2. Python AST Skeletonizer Tests
 # ---------------------------------------------------------------------------

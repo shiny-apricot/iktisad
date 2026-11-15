@@ -25,6 +25,10 @@
     {
       "name": "check_circuit_breaker",
       "description": "Inspects token burn and trips a safety circuit breaker before budget overruns occur."
+    },
+    {
+      "name": "run_release_preflight_audit",
+      "description": "Audits repository and package artifacts for version alignment, Polar.sh link integrity, canonical pricing ($10/mo), and release readiness before deployment."
     }
   ]
 }

@@ -233,6 +233,84 @@ _ZERO_TOKEN_TASKS: frozenset[str] = frozenset({
 # ---------------------------------------------------------------------------
 
 
+_PASSED_PROGRESS_PATTERN = re.compile(r"(?:^|\s)PASSED(?:\s+\[\s*\d+%\])?$")
+_FAILURE_SIGNAL_PATTERN = re.compile(
+    r"(?:^=+\s*(?:FAILURES|ERRORS|short test summary info)\s*=+|^_+ .+ _+$|^E\s|^>\s|"
+    r"^Traceback \(most recent call last\):|^\s*File \".+\", line \d+|"
+    r":\d+:\s*\w*(?:Error|Exception)\b|AssertionError|\w+Error:|\w+Exception:|"
+    r"^FAILED\s|^ERROR\s)"
+)
+
+
+def _pack_failing_observation(filtered_lines: list[str], max_chars: int) -> str:
+    """Preserve failure headers, assertions, tracebacks, and final summary within max_chars."""
+    marker = "\n\n[... truncated by iktisad ...]\n\n"
+    if max_chars <= len(marker) + 40:
+        joined = "\n".join(filtered_lines)
+        half = max(10, max_chars // 2 - 20)
+        return f"{joined[:half]}{marker}{joined[-half:]}"
+
+    # Prefer starting from === FAILURES === / === ERRORS === / Traceback if present
+    start_idx = 0
+    for idx, line in enumerate(filtered_lines):
+        stripped = line.strip()
+        if (
+            "=== FAILURES ===" in stripped
+            or "=== ERRORS ===" in stripped
+            or stripped.startswith("Traceback (most recent call last):")
+        ):
+            start_idx = idx
+            break
+
+    candidate_lines = filtered_lines[start_idx:] if start_idx < len(filtered_lines) else filtered_lines
+
+    # Keep high-signal traceback/assertion/summary lines when failure body is large
+    signal_lines = [
+        line for line in candidate_lines
+        if _FAILURE_SIGNAL_PATTERN.search(line.strip())
+        or re.search(r"\b(?:\d+ passed|\d+ failed|\d+ error)", line)
+    ]
+    if not signal_lines:
+        signal_lines = candidate_lines
+
+    signal_joined = "\n".join(signal_lines)
+    if len(signal_joined) <= max_chars:
+        return signal_joined
+
+    # Reserve tail budget for final summary + trailing FAILED/error lines
+    tail_budget = min(320, max(120, max_chars // 3))
+    tail_lines: list[str] = []
+    tail_len = 0
+    for line in reversed(signal_lines):
+        add_len = len(line) + (1 if tail_lines else 0)
+        if tail_lines and (tail_len + add_len) > tail_budget:
+            break
+        tail_lines.append(line)
+        tail_len += add_len
+    tail_lines.reverse()
+    tail_text = "\n".join(tail_lines)
+
+    head_budget = max_chars - len(marker) - len(tail_text)
+    head_lines: list[str] = []
+    head_len = 0
+    tail_start_idx = len(signal_lines) - len(tail_lines)
+    for line in signal_lines[:tail_start_idx]:
+        add_len = len(line) + (1 if head_lines else 0)
+        if head_lines and (head_len + add_len) > head_budget:
+            break
+        if not head_lines and len(line) > head_budget:
+            head_lines.append(line[: max(20, head_budget)])
+            break
+        head_lines.append(line)
+        head_len += add_len
+
+    head_text = "\n".join(head_lines)
+    if not head_text:
+        half = max(10, (max_chars - len(marker)) // 2)
+        return f"{signal_joined[:half]}{marker}{signal_joined[-half:]}"
+    return f"{head_text}{marker}{tail_text}"
+
+
 def compress_cli_observation(
     raw_output: str,
     max_chars: int = 1200,
@@ -241,6 +319,7 @@ def compress_cli_observation(
 
     Strips ANSI color sequences, spinners, pip/pytest headers, and collapses
     clean passing runs to single summary lines with >80% token savings.
+    For failing runs, prioritizes assertion lines, file:line markers, and tracebacks.
     """
     raw_chars = len(raw_output)
     if raw_chars == 0:
@@ -283,7 +362,7 @@ def compress_cli_observation(
             continue
         if re.match(r"^collected \d+ items", stripped):
             continue
-        if "PASSED" in stripped and not has_error:
+        if "PASSED" in stripped and (not has_error or _PASSED_PROGRESS_PATTERN.search(stripped)):
             continue
 
         if stripped.startswith("File ") and stripped == last_frame:
@@ -299,8 +378,11 @@ def compress_cli_observation(
 
     pruned_joined = "\n".join(filtered_lines)
     if len(pruned_joined) > max_chars:
-        half = max_chars // 2 - 30
-        pruned_joined = f"{pruned_joined[:half]}\n\n[... truncated by iktisad ...]\n\n{pruned_joined[-half:]}"
+        if has_error:
+            pruned_joined = _pack_failing_observation(filtered_lines, max_chars=max_chars)
+        else:
+            half = max_chars // 2 - 30
+            pruned_joined = f"{pruned_joined[:half]}\n\n[... truncated by iktisad ...]\n\n{pruned_joined[-half:]}"
 
     comp_chars = len(pruned_joined)
     savings = round(100.0 * (1.0 - comp_chars / max(1, raw_chars)), 2)
@@ -663,7 +745,7 @@ def record_bandwidth_usage(
 def get_daily_usage(
     db_path: str,
     date_str: str | None = None,
-    max_daily_mb: float = 15.0,
+    max_daily_mb: float = 500.0,
 ) -> BandwidthUsageSummary:
     """Compute bandwidth usage and remaining allowance for a calendar date."""
     init_bandwidth_db(db_path)
@@ -706,7 +788,7 @@ def get_daily_usage(
 def check_quota_available(
     db_path: str,
     anticipated_bytes: int,
-    max_daily_mb: float = 15.0,
+    max_daily_mb: float = 500.0,
     date_str: str | None = None,
 ) -> None:
     """Raise QuotaExceededError if adding anticipated_bytes would breach daily limit."""
@@ -823,7 +905,7 @@ def store_cache_entry(
 def fetch_url_efficiently(
     url: str,
     db_path: str = ".cache/iktisad_cache.db",
-    max_daily_mb: float = 15.0,
+    max_daily_mb: float = 500.0,
     headers: dict[str, str] | None = None,
     ttl_seconds: int = 86400,
     force_refresh: bool = False,
@@ -898,7 +980,7 @@ class BandwidthGuard:
     """Zero-waste bandwidth circuit breaker and local SQLite cache manager."""
 
     db_path: str = ".cache/iktisad_cache.db"
-    daily_limit_mb: float = 15.0
+    daily_limit_mb: float = 500.0
     single_request_cap_mb: float = 2.5
     profile_name: str = "DEFAULT"
 

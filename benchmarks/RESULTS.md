@@ -1,10 +1,10 @@
 # iktisad Benchmark Results
 
-- Command: `python benchmarks/run_benchmark.py` (run from `products/iktisad`)
-- Python: Python 3.13.2 (/home/yasin/miniconda3/bin/python)
-- Date: 2026-11-11T21:39:51Z
-- Host: Linux 6.18.33.2-microsoft-standard-WSL2
-- Commit measured: 8550ce8 + benchmarks/run_benchmark.py
+- Command: `/home/yasin/GSM-to-python/venv/bin/python benchmarks/run_benchmark.py` (run from `products/iktisad`)
+- Python: Python 3.12.3 (`/home/yasin/GSM-to-python/venv/bin/python`)
+- Date: 2026-11-15T14:42:02Z
+- Host: Linux (WSL2)
+- Base Commit + Remediation: `91c8dd0` + `BM-021` `GAP-01..05` & failing-traceback preservation patch
 
 ## Method / caveats
 
@@ -15,47 +15,45 @@
   Char counts were identical across all 3 runs; timings vary by a few percent.
 - Raw pytest char counts depend on environment (pytest version, interpreter path in the header line).
   AST numbers change whenever `iktisad/*.py` changes.
-- **Failing-run compression is a head/tail truncation** to `max_chars=1200` (default): the summary
-  `FAILED ...` lines and final count are kept, but individual tracebacks are dropped.
-- AST skeleton output is not free: it is 8,796 chars (est. 2,199 tokens) of signatures, line ranges
-  and docstring summaries. It is computed locally with zero LLM calls.
+- **Failing-run compression preserves failure headers, assertions, and tracebacks** (`=== FAILURES ===`, `> assert ...`, `E   AssertionError`, `file:line` traceback markers) plus the trailing `FAILED` / test-count summary within the `max_chars=1200` default budget (dropping `PASSED` progress noise and only truncating excess middle failure blocks when >1,200 chars).
+- AST skeleton output is not free: it is 8,977 chars (est. 2,244 tokens) of signatures, line ranges
+  and docstring summaries across 5 Python modules (`3,637` LOC). It is computed locally with zero LLM calls.
 
 ## Run 1
 
 ```
-Python 3.13.2 | pytest 9.2.0 | Linux
+Python 3.12.3 | pytest 9.0.2 | Linux
 est. tokens = chars / 4 (estimate, no tokenizer); time = median of 50 runs of compression/skeleton only
 
 | Scenario | Raw chars (est. tokens) | iktisad chars (est. tokens) | Reduction | Time |
 | :--- | ---: | ---: | ---: | ---: |
-| pytest -v: 20 failing + 80 passing tests | 22,474 (5,618) | 1,174 (294) | -94.8% | 1.06 ms |
-| pytest -v: 99 passing tests | 8,248 (2,062) | 22 (6) | -99.7% | 0.21 ms |
-| AST recon: iktisad/*.py (5 files, 3,534 LOC) | 126,447 (31,612) | 8,796 (2,199) | -93.0% | 14.08 ms |
+| pytest -v: 20 failing + 80 passing tests | 21,842 (5,460) | 1,194 (298) | -94.5% | 1.59 ms |
+| pytest -v: 99 passing tests | 8,256 (2,064) | 22 (6) | -99.7% | 0.19 ms |
+| AST recon: iktisad/*.py (5 files, 3,637 LOC) | 130,567 (32,642) | 8,977 (2,244) | -93.1% | 17.96 ms |
 ```
 
 ## Run 2
 
 ```
-Python 3.13.2 | pytest 9.2.0 | Linux
+Python 3.12.3 | pytest 9.0.2 | Linux
 est. tokens = chars / 4 (estimate, no tokenizer); time = median of 50 runs of compression/skeleton only
 
 | Scenario | Raw chars (est. tokens) | iktisad chars (est. tokens) | Reduction | Time |
 | :--- | ---: | ---: | ---: | ---: |
-| pytest -v: 20 failing + 80 passing tests | 22,474 (5,618) | 1,174 (294) | -94.8% | 1.11 ms |
-| pytest -v: 99 passing tests | 8,248 (2,062) | 22 (6) | -99.7% | 0.21 ms |
-| AST recon: iktisad/*.py (5 files, 3,534 LOC) | 126,447 (31,612) | 8,796 (2,199) | -93.0% | 14.87 ms |
+| pytest -v: 20 failing + 80 passing tests | 21,842 (5,460) | 1,194 (298) | -94.5% | 1.59 ms |
+| pytest -v: 99 passing tests | 8,256 (2,064) | 22 (6) | -99.7% | 0.19 ms |
+| AST recon: iktisad/*.py (5 files, 3,637 LOC) | 130,567 (32,642) | 8,977 (2,244) | -93.1% | 17.46 ms |
 ```
 
 ## Run 3
 
 ```
-Python 3.13.2 | pytest 9.2.0 | Linux
+Python 3.12.3 | pytest 9.0.2 | Linux
 est. tokens = chars / 4 (estimate, no tokenizer); time = median of 50 runs of compression/skeleton only
 
 | Scenario | Raw chars (est. tokens) | iktisad chars (est. tokens) | Reduction | Time |
 | :--- | ---: | ---: | ---: | ---: |
-| pytest -v: 20 failing + 80 passing tests | 22,474 (5,618) | 1,174 (294) | -94.8% | 1.08 ms |
-| pytest -v: 99 passing tests | 8,248 (2,062) | 22 (6) | -99.7% | 0.21 ms |
-| AST recon: iktisad/*.py (5 files, 3,534 LOC) | 126,447 (31,612) | 8,796 (2,199) | -93.0% | 15.07 ms |
+| pytest -v: 20 failing + 80 passing tests | 21,842 (5,460) | 1,194 (298) | -94.5% | 1.61 ms |
+| pytest -v: 99 passing tests | 8,256 (2,064) | 22 (6) | -99.7% | 0.19 ms |
+| AST recon: iktisad/*.py (5 files, 3,637 LOC) | 130,567 (32,642) | 8,977 (2,244) | -93.1% | 17.52 ms |
 ```
-
