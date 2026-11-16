@@ -9,7 +9,7 @@
 [![Model Context Protocol](https://img.shields.io/badge/MCP-Native%20Server-purple.svg)](https://modelcontextprotocol.io/)
 [![GitHub Action](https://img.shields.io/badge/GitHub%20Action-iktisad--action-blue.svg)](https://github.com/shiny-apricot/iktisad)
 [![PyPI version](https://img.shields.io/pypi/v/iktisad.svg)](https://pypi.org/project/iktisad/)
-[![Sponsor on Polar](https://img.shields.io/badge/Sponsor-Polar.sh-purple.svg)](https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA)
+[![Inquiries](https://img.shields.io/badge/Inquiries-kenzailab%40gmail.com-blue.svg)](mailto:kenzailab@gmail.com)
 
 ---
 
@@ -163,15 +163,14 @@ if stats.circuit_breaker_tripped:
 
 ---
 
-## 💰 Commercial Tiers & B2B Pricing
+## 💰 Licensing & Commercial Inquiries
 
-| Tier | Price | Licensing & Capabilities | Delivery |
+| Tier | Pricing | Licensing & Capabilities | Delivery |
 | :--- | :--- | :--- | :--- |
-| **Free OSS Core** | **$0** (Free) | MIT License. Unlimited local CLI compression, Python AST skeletonizer, and 5-tool stdio MCP server. | `pip install iktisad` |
-| **Polar Pro** | **[Polar Pro ($10/mo)](https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA)** | Commercial team convenience, priority email & issue support (<24h SLA), and curated policy presets. | Instant Polar Access |
+| **OSS Core (MIT)** | **$0** (100% Free) | MIT License. Core CLI, Python AST Skeletonizer & stdio MCP server (GitHub & Glama MCP Grade A). | `pip install iktisad` |
+| **Commercial / Team Presets** | **Custom Inquiry** | Commercial team presets, custom engineering inquiries, and priority support. *(Polar Pro self-serve temporarily paused pending license key benefit setup.)* | `kenzailab@gmail.com` |
 
-- **Official Polar Checkout**: [Subscribe on Polar Pro ($10/mo)](https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA)
-- **Direct Developer Support**: `kenzailabs@gmail.com`
+- **Commercial Team Presets & Custom Engineering Inquiries**: `kenzailab@gmail.com` *(Polar Pro self-serve temporarily paused pending license key benefit setup)*
 - **Source Repository**: [https://github.com/shiny-apricot/iktisad](https://github.com/shiny-apricot/iktisad)
 
 ---
