@@ -25,6 +25,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import logging
+import os
 from pathlib import Path
 import re
 import sqlite3
@@ -387,7 +388,8 @@ def verify_polar_license(
             cached_record = None
 
     # External Polar network validation
-    req_data = json.dumps({"key": key, "organization_id": "kenz-technologies"}).encode("utf-8")
+    polar_org_id = os.environ.get("POLAR_ORGANIZATION_ID", "kenz")
+    req_data = json.dumps({"key": key, "organization_id": polar_org_id}).encode("utf-8")
     req = urllib.request.Request(
         validation_url,
         data=req_data,
