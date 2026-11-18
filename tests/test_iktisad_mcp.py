@@ -381,11 +381,14 @@ def test_cli_mcp_flag() -> None:
 
 
 def test_cli_pro_and_export_presets_flags(capsys: pytest.CaptureFixture[str]) -> None:
-    """Verify iktisad --pro and --export-presets flags output canonical polar url and presets."""
+    """Verify iktisad --pro reflects paused offering parity and --export-presets outputs presets."""
     code_pro = cli_main(["--pro"])
     assert code_pro == 0
     captured_pro = capsys.readouterr().out
-    assert "https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA" in captured_pro
+    assert "paused_pending_benefits" in captured_pro
+    assert "Polar Pro self-serve temporarily paused pending license key benefit setup" in captured_pro
+    assert "https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA" not in captured_pro
+    assert "kenzailab@gmail.com" in captured_pro
     assert "$10/mo" in captured_pro
     assert "cursor" in captured_pro
     assert "local_gateway" in captured_pro

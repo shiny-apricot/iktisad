@@ -27,7 +27,7 @@ Autonomous AI agent workflows (SWE-bench agents, coding assistants, CI/CD autode
 | Tier | Price | Scope & Deliverables | Support & Delivery |
 | :--- | :--- | :--- | :--- |
 | **Open-Source Core (MIT)** | **$0 / mo** (Free) | Full local CLI (`iktisad`), Python stdlib AST skeletonizer, deterministic pytest/terminal firewall, SQLite circuit breaker, and 5-tool stdio MCP server | `pip install iktisad` / Community GitHub Discussions |
-| **Polar Pro (Commercial Convenience & Support)** | **$10 / mo** | Commercial team convenience, curated local gateway & IDE policy presets, and priority issue/email engineering support | Instant Polar access + **<24h SLA** via `kenzailabs@gmail.com` |
+| **Polar Pro (Commercial Convenience & Support)** | **$10 / mo** | Commercial team convenience, curated local gateway & IDE policy presets, and priority issue/email engineering support | Instant Polar access + **<24h SLA** via `kenzailab@gmail.com` |
 | **Hosted Gateway & CI Guard *(Roadmap)*** | **$15–$50 / mo** *(Hosted)* / **5% MoR** *(GitHub App)* | Planned managed hosted gateway policy presets and upcoming GitHub Marketplace CI Guard App (*not yet billed — roadmap only*) | Future opt-in cloud/CI add-on |
 
 ---
@@ -51,7 +51,7 @@ Autonomous AI agent workflows (SWE-bench agents, coding assistants, CI/CD autode
    - Intercepts noisy terminal outputs, stripping ANSI escape codes, passing-test boilerplate, and duplicate stack frames while preserving assertion tracebacks.
    - Zero-LLM-token Python AST code skeletonization via Python's standard library `ast` module.
 4. **Priority Developer Support (<24h SLA)**:
-   - Guaranteed <24-hour response turnaround via `kenzailabs@gmail.com` and prioritized GitHub issue triage.
+   - Guaranteed <24-hour response turnaround via `kenzailab@gmail.com` and prioritized GitHub issue triage.
 
 ---
 

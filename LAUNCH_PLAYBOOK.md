@@ -1,7 +1,7 @@
 # `iktisad` (v0.2.0) — Open-Source Launch Playbook
 
 > **Positioning**: Zero-dependency Python token defense engine and native MCP server for AI coding agents.  
-> **License & Pricing**: Free MIT Open-Source Core (CLI, Python AST, stdio MCP) + `$10/mo` Polar Pro (`https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA`) for commercial team convenience, curated local presets (`iktisad --export-presets`), and `<24h` priority support (`kenzailabs@gmail.com`).  
+> **License & Pricing**: Free MIT Open-Source Core (CLI, Python AST, stdio MCP) + `$10/mo` Polar Pro (`https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA`) for commercial team convenience, curated local presets (`iktisad --export-presets`), and `<24h` priority support (`kenzailab@gmail.com`).  
 > **Verified Baseline (`benchmarks/RESULTS.md` & live `pytest`)**: `85 passed` in `products/iktisad/tests/`, `-94.5%` failing pytest reduction (`21,842 -> 1,194 chars`, `1.59–1.61 ms`), `-99.7%` passing pytest reduction (`8,256 -> 22 chars`, `0.19 ms`), `-93.1%` Python AST skeleton reduction (`130,567 -> 8,977 chars` across 5 files / `3,637 LOC`, `17.46–17.96 ms`).
 
 ---
@@ -79,7 +79,7 @@ iktisad --ast-skeleton src/main.py
 iktisad --export-presets
 ```
 
-Core CLI, Python AST, and stdio MCP are free under MIT. A `$10/mo` Polar Pro tier is available for commercial team convenience, curated local presets, and `<24h` priority support (`kenzailabs@gmail.com`).
+Core CLI, Python AST, and stdio MCP are free under MIT. A `$10/mo` Polar Pro tier is available for commercial team convenience, curated local presets, and `<24h` priority support (`kenzailab@gmail.com`).
 
 GitHub: https://github.com/shiny-apricot/iktisad  
 Docs & Visualizer: https://shiny-apricot.github.io/iktisad/  
@@ -239,7 +239,7 @@ Verified across 85 passing tests.
 ```text
 Core CLI, Python AST, and stdio MCP are free under the MIT License.
 
-Polar Pro ($10/mo) adds commercial team convenience, curated presets, and <24h support (`kenzailabs@gmail.com`).
+Polar Pro ($10/mo) adds commercial team convenience, curated presets, and <24h support (`kenzailab@gmail.com`).
 
 pip install iktisad
 GitHub: https://github.com/shiny-apricot/iktisad
@@ -289,4 +289,4 @@ iktisad --export-presets
 **A**: Python 3.10+ via the built-in `ast` standard library module. It extracts classes, function signatures, type annotations, docstrings, and line bounds.
 
 ### Q: What is included in MIT Core vs. Polar Pro ($10/mo)?
-**A**: The CLI, Python AST skeletonizer, local gateway, and 5-tool stdio MCP server are free under the MIT License (`85 passed` tests). Polar Pro (`$10/mo`) provides commercial team convenience, curated local presets (`iktisad --export-presets`), and `<24h` priority support via `kenzailabs@gmail.com`.
+**A**: The CLI, Python AST skeletonizer, local gateway, and 5-tool stdio MCP server are free under the MIT License (`85 passed` tests). Polar Pro (`$10/mo`) provides commercial team convenience, curated local presets (`iktisad --export-presets`), and `<24h` priority support via `kenzailab@gmail.com`.

@@ -10,11 +10,18 @@ from typing import Any
 
 from iktisad.core import (
     BandwidthGuard,
+    _is_offering_live_and_verified,
+    _load_verified_offerings_status,
     audit_transcript_health,
     compress_cli_observation,
+    estimate_repo_enterprise_cost_avoidance,
     extract_python_ast_skeleton,
+    fold_cascading_error_logs,
+    generate_cfo_roi_audit_markdown,
     is_media_blocked,
+    record_iktisad_roi_and_check_milestone,
     select_model_dynamically,
+    slice_causal_ast_target,
 )
 from iktisad.gateway import (
     BudgetEnforcer,
@@ -25,7 +32,7 @@ from iktisad.gateway import (
 
 POLAR_PRO_PRICE = "$10/mo"
 POLAR_PRO_CHECKOUT_URL = "https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA"
-POLAR_PRO_SUPPORT_EMAIL = "kenzailabs@gmail.com"
+POLAR_PRO_SUPPORT_EMAIL = "kenzailab@gmail.com"
 
 
 def get_pro_presets() -> dict[str, Any]:
@@ -77,6 +84,22 @@ def build_parser() -> argparse.ArgumentParser:
         "--ast-skeleton",
         metavar="FILE",
         help="Extract compact AST signature skeleton from a Python source file",
+    )
+    parser.add_argument(
+        "--slice-ast",
+        metavar="FILE",
+        help="Slice a Python file keeping full verbatim body of --target-symbol and 1-line stubs for other functions",
+    )
+    parser.add_argument(
+        "--target-symbol",
+        metavar="SYMBOL",
+        default="",
+        help="Target function, class, or Class.method name for --slice-ast",
+    )
+    parser.add_argument(
+        "--fold-errors",
+        metavar="FILE",
+        help="Fold cascading repeated error tracebacks and FAILED summary lines in a log file",
     )
     parser.add_argument(
         "--route-task",
@@ -314,7 +337,66 @@ def build_parser() -> argparse.ArgumentParser:
         help="Run webhook server without blocking main thread",
     )
 
+    # Subcommand: iktisad roi ...
+    roi_parser = subparsers.add_parser(
+        "roi",
+        help="Inspect cumulative token/USD savings and generate expenseable CFO/CTO B2B ROI markdown receipt",
+    )
+    roi_parser.add_argument(
+        "--report",
+        action="store_true",
+        help="Generate 1-page CFO/CTO expenseable markdown ROI audit receipt",
+    )
+    roi_parser.add_argument(
+        "--ledger-path",
+        default=None,
+        help="Path to cumulative ROI JSON ledger (default: .cache/iktisad_roi_ledger.json)",
+    )
+
+    # Subcommand: iktisad audit-repo ...
+    audit_repo_parser = subparsers.add_parser(
+        "audit-repo",
+        help="Audit a local Python repository offline for AST & CI log token cost avoidance",
+    )
+    audit_repo_parser.add_argument(
+        "path",
+        help="Path to local repository directory to scan offline",
+    )
+    audit_repo_parser.add_argument(
+        "--monthly-runs",
+        type=int,
+        default=1500,
+        help="Estimated monthly CI/agent runs (default: 1500)",
+    )
+    audit_repo_parser.add_argument(
+        "--cost-per-million",
+        type=float,
+        default=3.0,
+        help="LLM token cost in USD per 1M tokens (default: 3.0)",
+    )
+    audit_repo_parser.add_argument(
+        "--json",
+        action="store_true",
+        dest="as_json",
+        help="Emit cost-avoidance telemetry as machine-readable JSON",
+    )
+
     return parser
+
+
+def _record_roi_milestone_safely(raw_chars: int, compressed_chars: int) -> None:
+    """Record cumulative CLI compression ROI and print milestone banner only to TTY stderr."""
+    try:
+        milestone_res = record_iktisad_roi_and_check_milestone(
+            raw_chars=raw_chars,
+            compressed_chars=compressed_chars,
+        )
+        if milestone_res.get("milestone_triggered") and sys.stderr.isatty():
+            banner = milestone_res.get("stderr_milestone_banner", "")
+            if banner:
+                print(banner, file=sys.stderr)
+    except Exception:
+        pass
 
 
 def main(args: list[str] | None = None) -> int:
@@ -324,12 +406,25 @@ def main(args: list[str] | None = None) -> int:
 
     if parsed_args.pro:
         presets = get_pro_presets()
+        offerings = _load_verified_offerings_status()
+        pro_live = _is_offering_live_and_verified(offerings, "iktisad-pro")
+        pro_entry = offerings.get("iktisad-pro", {})
+        pro_status = str(pro_entry.get("status") or "paused_pending_benefits")
+        checkout_url = str(pro_entry.get("checkout_url") or POLAR_PRO_CHECKOUT_URL)
+
         print("======================================================================")
         print("⚡ Kenz Labs — iktisad Polar Pro Tier ($10/mo)")
         print("======================================================================")
         print("Plan: Polar Pro Tier ($10/mo)")
-        print("Status: Active & Available Worldwide")
-        print(f"Checkout URL: {POLAR_PRO_CHECKOUT_URL}")
+        if pro_live:
+            print("Status: Active & Available Worldwide")
+            print(f"Checkout URL: {checkout_url}")
+        else:
+            print(
+                f"Status: Paused ({pro_status}) — "
+                "Polar Pro self-serve temporarily paused pending license key benefit setup"
+            )
+            print(f"Checkout URL: Paused (early access & commercial inquiries: {POLAR_PRO_SUPPORT_EMAIL})")
         print("\nIncluded Pro Benefits:")
         print("  ✓ Commercial Team Usage License: Full commercial enterprise deployment clearance")
         print(f"  ✓ Direct Priority Support: Direct developer support via {POLAR_PRO_SUPPORT_EMAIL}")
@@ -404,6 +499,7 @@ def main(args: list[str] | None = None) -> int:
         proc = subprocess.run(cmd_args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         raw_output = proc.stdout or ""
         obs = compress_cli_observation(raw_output)
+        _record_roi_milestone_safely(obs.raw_chars, obs.compressed_chars)
         print(f"[iktisad:run] {obs.raw_chars:,} chars -> {obs.compressed_chars:,} chars ({obs.savings_pct:.1f}% context savings | exit: {proc.returncode})")
         print(obs.pruned_text)
         return proc.returncode
@@ -438,6 +534,67 @@ def main(args: list[str] | None = None) -> int:
         parser.parse_args(["github-app", "--help"])
         return 0
 
+    if parsed_args.subcommand == "roi":
+        report_md = generate_cfo_roi_audit_markdown(ledger_path=parsed_args.ledger_path)
+        print(report_md)
+        return 0
+
+    if parsed_args.subcommand == "audit-repo":
+        target = Path(parsed_args.path)
+        if not target.exists() or not target.is_dir():
+            print(f"Error: repository directory not found: {parsed_args.path}", file=sys.stderr)
+            return 1
+        report = estimate_repo_enterprise_cost_avoidance(
+            repo_path=target,
+            monthly_ci_runs=parsed_args.monthly_runs,
+            cost_per_million_tokens_usd=parsed_args.cost_per_million,
+        )
+        if parsed_args.as_json:
+            print(json.dumps(report, indent=2))
+        else:
+            print("======================================================================")
+            print("Kenz Labs / iktisad — Enterprise Token & CI Cost-Avoidance Audit")
+            print("======================================================================")
+            print(f"Repository:           {report['repo_path']}")
+            print(f"Python Files Scanned: {report['files_scanned']:,}")
+            print(
+                f"AST Code Size:        {report['raw_code_bytes']:,} bytes -> "
+                f"{report['compressed_code_bytes']:,} bytes ({report['ast_compression_pct']:.2f}% savings)"
+            )
+            print(
+                f"CI Log Compression:   {report['log_compression_pct']:.2f}% savings "
+                f"({report['avg_log_chars_per_run']:,} chars/run)"
+            )
+            print(f"Monthly CI Runs:      {report['monthly_ci_runs']:,}")
+            print(f"Monthly Tokens Saved: {report['monthly_tokens_saved']:,} tokens")
+            print(f"Monthly USD Saved:    ${report['monthly_usd_saved']:,.2f} USD")
+            print(f"Annual USD Saved:     ${report['annual_usd_saved']:,.2f} USD")
+            print(f"Recommended Tier:     {report['recommended_tier']}")
+            print("======================================================================")
+        return 0
+
+    if parsed_args.slice_ast:
+        path = Path(parsed_args.slice_ast)
+        if not path.is_file():
+            print(f"Error: file not found: {parsed_args.slice_ast}", file=sys.stderr)
+            return 1
+        source = path.read_text(encoding="utf-8", errors="replace")
+        sliced = slice_causal_ast_target(source, parsed_args.target_symbol)
+        print(sliced)
+        return 0
+
+    if parsed_args.fold_errors:
+        if parsed_args.fold_errors == "-":
+            raw = sys.stdin.read()
+        else:
+            path = Path(parsed_args.fold_errors)
+            if not path.is_file():
+                print(f"Error: file not found: {parsed_args.fold_errors}", file=sys.stderr)
+                return 1
+            raw = path.read_text(encoding="utf-8", errors="replace")
+        print(fold_cascading_error_logs(raw))
+        return 0
+
     if parsed_args.compress_log:
         if parsed_args.compress_log == "-":
             raw = sys.stdin.read()
@@ -448,6 +605,7 @@ def main(args: list[str] | None = None) -> int:
                 return 1
             raw = path.read_text(encoding="utf-8", errors="replace")
         obs = compress_cli_observation(raw)
+        _record_roi_milestone_safely(obs.raw_chars, obs.compressed_chars)
         print(f"Original: {obs.raw_chars:,} chars -> Compressed: {obs.compressed_chars:,} chars ({obs.savings_pct:.1f}% savings)")
         print("-" * 50)
         print(obs.pruned_text)

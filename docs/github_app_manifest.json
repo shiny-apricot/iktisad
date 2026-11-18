@@ -2,8 +2,8 @@
   "name": "iktisad-ci-guard",
   "url": "https://shiny-apricot.github.io/iktisad/",
   "hook_attributes": {
-    "url": "https://iktisad-guard.example.com/webhook",
-    "active": true
+    "url": "https://shiny-apricot.github.io/iktisad/",
+    "active": false
   },
   "redirect_url": "https://shiny-apricot.github.io/iktisad/setup",
   "public": true,

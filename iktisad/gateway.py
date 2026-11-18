@@ -388,7 +388,7 @@ def verify_polar_license(
             cached_record = None
 
     # External Polar network validation
-    polar_org_id = os.environ.get("POLAR_ORGANIZATION_ID", "kenz")
+    polar_org_id = os.environ.get("POLAR_ORGANIZATION_ID", "825f534b-1492-42ee-9651-96418f53a0ed")
     req_data = json.dumps({"key": key, "organization_id": polar_org_id}).encode("utf-8")
     req = urllib.request.Request(
         validation_url,

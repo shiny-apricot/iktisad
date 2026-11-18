@@ -416,7 +416,8 @@ def post_github_check_run(
 
 def build_github_app_manifest(
     base_url: str = "https://shiny-apricot.github.io/iktisad/",
-    webhook_url: str = "https://iktisad-guard.example.com/webhook",
+    webhook_url: str = "https://shiny-apricot.github.io/iktisad/",
+    webhook_active: bool = False,
 ) -> dict[str, Any]:
     """Return the canonical GitHub App manifest dictionary."""
     return {
@@ -424,7 +425,7 @@ def build_github_app_manifest(
         "url": base_url,
         "hook_attributes": {
             "url": webhook_url,
-            "active": True,
+            "active": webhook_active,
         },
         "redirect_url": f"{base_url.rstrip('/')}/setup",
         "public": True,
