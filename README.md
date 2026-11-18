@@ -9,6 +9,7 @@
 [![Model Context Protocol](https://img.shields.io/badge/MCP-Native%20Server-purple.svg)](https://modelcontextprotocol.io/)
 [![GitHub Action](https://img.shields.io/badge/GitHub%20Action-iktisad--action-blue.svg)](https://github.com/shiny-apricot/iktisad)
 [![PyPI version](https://img.shields.io/pypi/v/iktisad.svg)](https://pypi.org/project/iktisad/)
+[![Polar Pro ($10/mo)](https://img.shields.io/badge/Polar%20Pro-%2410%2Fmo-purple.svg)](https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA)
 [![Inquiries](https://img.shields.io/badge/Inquiries-kenzailab%40gmail.com-blue.svg)](mailto:kenzailab@gmail.com)
 
 ---
@@ -163,14 +164,15 @@ if stats.circuit_breaker_tripped:
 
 ---
 
-## 💰 Licensing & Commercial Inquiries
+## 💰 Licensing & Polar Pro ($10/mo)
 
 | Tier | Pricing | Licensing & Capabilities | Delivery |
 | :--- | :--- | :--- | :--- |
 | **OSS Core (MIT)** | **$0** (100% Free) | MIT License. Core CLI, Python AST Skeletonizer & stdio MCP server (GitHub & Glama MCP Grade A). | `pip install iktisad` |
-| **Commercial / Team Presets** | **Custom Inquiry** | Commercial team presets, custom engineering inquiries, and priority support. *(Polar Pro self-serve temporarily paused pending license key benefit setup.)* | `kenzailab@gmail.com` |
+| **Polar Pro** | **[Polar Pro ($10/mo)](https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA)** | Commercial team presets (`iktisad --export-presets`), automated Polar license key fulfillment, and priority support (<24h SLA). | Instant Polar License Key |
 
-- **Commercial Team Presets & Custom Engineering Inquiries**: `kenzailab@gmail.com` *(Polar Pro self-serve temporarily paused pending license key benefit setup)*
+- **Official Polar Pro Checkout**: [Subscribe on Polar Pro ($10/mo)](https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA)
+- **Commercial Team Presets & Direct Support**: `kenzailab@gmail.com`
 - **Source Repository**: [https://github.com/shiny-apricot/iktisad](https://github.com/shiny-apricot/iktisad)
 
 ---
