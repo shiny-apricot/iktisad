@@ -1,4 +1,4 @@
-# `iktisad` (v0.2.0) — Open-Source Launch Playbook
+# `iktisad` (v0.3.0) — Open-Source Launch Playbook
 
 > **Positioning**: Zero-dependency Python token defense engine and native MCP server for AI coding agents.  
 > **License & Pricing**: Free MIT Open-Source Core (CLI, Python AST, stdio MCP) + `$10/mo` Polar Pro (`https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11bpqcA`) for commercial team convenience, curated local presets (`iktisad --export-presets`), and `<24h` priority support (`kenzailab@gmail.com`).  
@@ -20,8 +20,8 @@
 ## 1. Launch Strategy & Distribution Sequencing
 
 1. **Release Gate**:
-   - Confirm GitHub release tag `v0.2.0` and MIT `LICENSE` are live on `https://github.com/shiny-apricot/iktisad`.
-   - Confirm PyPI `pip install iktisad` (`0.2.0`) and `products/iktisad/tests/` (`85 passed`) pass cleanly.
+   - Confirm GitHub release tag `v0.3.0` and MIT `LICENSE` are live on `https://github.com/shiny-apricot/iktisad`.
+   - Confirm PyPI `pip install iktisad` (`0.3.0`) and `products/iktisad/tests/` (`85 passed`) pass cleanly.
 2. **Wave 1 (Show HN)**:
    - Publish **Show HN** focusing on deterministic terminal log compression, Python AST skeletons, and native stdio MCP tools.
 3. **Wave 2 (r/LocalLLaMA & r/Python)**:
@@ -37,7 +37,7 @@
 
 ### Post Title
 ```text
-Show HN: iktisad (v0.2.0) – Zero-dependency log compressor & MCP server for coding agents
+Show HN: iktisad (v0.3.0) – Zero-dependency log compressor & MCP server for coding agents
 ```
 
 ### URL
@@ -50,7 +50,7 @@ https://github.com/shiny-apricot/iktisad
 ```markdown
 Hi HN,
 
-I built **iktisad** (`v0.2.0`, MIT License), a zero-dependency Python CLI and native MCP server that filters terminal noise and extracts Python AST skeletons before prompts reach your LLM.
+I built **iktisad** (`v0.3.0`, MIT License), a zero-dependency Python CLI and native MCP server that filters terminal noise and extracts Python AST skeletons before prompts reach your LLM.
 
 ### Why I Built It
 Coding agents (Claude Code, Cursor, Windsurf, Aider) repeatedly dump thousands of characters of passing test lines, ANSI escape codes, and full source files into prompts. In reasoning models, every noisy line inflates context pressure, triggers 429 rate limits, and crowds out architectural instructions.
@@ -105,7 +105,7 @@ When running local coding agents with Ollama, vLLM, or llama.cpp on 8k or 32k co
 
 A single pytest run with 20 failures and 80 passes outputs `21,842` chars (~`5,460` est. tokens at `chars / 4`). Dumping raw source files to inspect a single signature wastes tens of thousands more chars.
 
-I built **`iktisad`** (`v0.2.0`, MIT License), a pure Python 3.10+ stdlib CLI and native MCP server with zero external dependencies.
+I built **`iktisad`** (`v0.3.0`, MIT License), a pure Python 3.10+ stdlib CLI and native MCP server with zero external dependencies.
 
 ### Key Features
 1. **Terminal Log Compression (`iktisad run -- pytest` or `pytest | iktisad compress -`)**:
@@ -140,7 +140,7 @@ PyPI: https://pypi.org/project/iktisad/
 
 ### Post Title
 ```text
-iktisad v0.2.0: Zero-dependency Python stdlib log compressor, AST skeletonizer & MCP server
+iktisad v0.3.0: Zero-dependency Python stdlib log compressor, AST skeletonizer & MCP server
 ```
 
 ### Post Body
@@ -148,7 +148,7 @@ iktisad v0.2.0: Zero-dependency Python stdlib log compressor, AST skeletonizer &
 ```markdown
 Hi r/Python!
 
-I built **`iktisad`** (`v0.2.0`, MIT License) using only the Python 3.10+ standard library (`ast`, `re`, `sqlite3`, `dataclasses`, `argparse`, `json`) to prevent AI coding agents from flooding context windows with raw pytest stdout and full source files.
+I built **`iktisad`** (`v0.3.0`, MIT License) using only the Python 3.10+ standard library (`ast`, `re`, `sqlite3`, `dataclasses`, `argparse`, `json`) to prevent AI coding agents from flooding context windows with raw pytest stdout and full source files.
 
 ### Highlights
 - **Zero External Dependencies**: Installs cleanly via `pip install iktisad` with `dependencies = []`.
@@ -177,7 +177,7 @@ Visualizer: https://shiny-apricot.github.io/iktisad/
 ```text
 AI coding agents waste huge context budgets on raw pytest stdout and full-file reads.
 
-We released iktisad v0.2.0 (MIT): a zero-dependency Python CLI & native MCP server.
+We released iktisad v0.3.0 (MIT): a zero-dependency Python CLI & native MCP server.
 
 Verified in benchmarks/RESULTS.md:
 - Failing pytest: -94.5% chars (1.59 ms)
@@ -252,7 +252,7 @@ Polar Pro: https://buy.polar.sh/polar_cl_yzz3PkDzy0RGI5tD7PCly2oMkieyP5jUPKrF11b
 ## 6. GitHub README Hero Section
 
 ```markdown
-# iktisad (v0.2.0)
+# iktisad (v0.3.0)
 
 Deterministic, zero-dependency context firewall, Python AST skeletonizer, and native MCP server for AI coding agents.
 

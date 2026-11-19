@@ -46,7 +46,7 @@ Drop `iktisad` directly into any GitHub Actions CI workflow to compress failing 
 
 ```yaml
 - name: Run Pytest with iktisad Token Defense
-  uses: shiny-apricot/iktisad@v0.2.0
+  uses: shiny-apricot/iktisad@v0.3.0
   with:
     run: pytest tests/ -v
 ```

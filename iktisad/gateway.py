@@ -393,7 +393,7 @@ def verify_polar_license(
     req = urllib.request.Request(
         validation_url,
         data=req_data,
-        headers={"Content-Type": "application/json", "User-Agent": "iktisad-gateway/0.2.0"},
+        headers={"Content-Type": "application/json", "User-Agent": "iktisad-gateway/0.3.0"},
         method="POST",
     )
 
@@ -505,7 +505,7 @@ def dispatch_alert_webhook(
     req = urllib.request.Request(
         webhook_url,
         data=data,
-        headers={"Content-Type": "application/json", "User-Agent": "iktisad-gateway/0.2.0"},
+        headers={"Content-Type": "application/json", "User-Agent": "iktisad-gateway/0.3.0"},
         method="POST",
     )
     try:
@@ -1274,7 +1274,7 @@ def create_gateway_handler(
                 body: dict[str, Any] = {
                     "status": "healthy",
                     "service": "kenz-cloud-gateway",
-                    "version": "0.2.0",
+                    "version": "0.3.0",
                     "daily_stats": asdict(stats),
                 }
                 if enforcer is not None:
@@ -1365,7 +1365,7 @@ def serve_gateway(
     cfg = config or GatewayConfig()
     server = create_gateway_server(cfg, forwarder, enforcer)
     actual_port = server.server_address[1]
-    print(f"[{datetime.now().strftime('%H:%M:%S')}] Kenz Cloud Gateway v0.2.0 active on http://{cfg.host}:{actual_port}")
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] Kenz Cloud Gateway v0.3.0 active on http://{cfg.host}:{actual_port}")
     print(f"  Frugality Engine: CLI compression={cfg.enable_cli_compression}, AST skeleton={cfg.enable_ast_skeleton}")
     print(f"  Daily Token Budget: {cfg.daily_token_budget:,} tokens (Circuit Breaker armed)")
     if cfg.max_budget_usd is not None:

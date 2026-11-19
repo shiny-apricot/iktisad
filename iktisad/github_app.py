@@ -405,7 +405,7 @@ def post_github_check_run(
             "Accept": "application/vnd.github+json",
             "Authorization": f"Bearer {installation_token}",
             "Content-Type": "application/json",
-            "User-Agent": "iktisad-ci-guard/0.2.0",
+            "User-Agent": "iktisad-ci-guard/0.3.0",
         },
     )
     with urllib.request.urlopen(req, timeout=timeout_sec) as resp:

@@ -46,7 +46,7 @@ from iktisad.gateway import (
 MCP_PROTOCOL_VERSION = "2024-11-05"
 SERVER_INFO = {
     "name": "iktisad-mcp",
-    "version": "0.2.0",
+    "version": "0.3.0",
 }
 
 # ---------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 # Kenz Cloud Gateway — Polar.sh Commercial Offering & Halal Commercial Tier
 
-> **Product**: `iktisad` (v0.2.0) / Kenz Cloud Gateway  
+> **Product**: `iktisad` (v0.3.0) / Kenz Cloud Gateway  
 > **Vendor**: Kenz Technologies (Kenz Labs)  
 > **Corporate Doctrine**: *"Kırk Düşün, Bir Kes"* (Measure 40 times, cut once) — Autonomous Frugality & Zero-Waste Compute  
 > **Governance Milestone**: `TASK-ECON-004` (Halal Commercialization & Polar.sh Listing)

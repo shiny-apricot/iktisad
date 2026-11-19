@@ -513,7 +513,7 @@ def test_http_server_commercial_integration(tmp_path: Path) -> None:
         with urllib.request.urlopen(f"{base_url}/v1/health", timeout=3.0) as resp:
             assert resp.status == 200
             data = json.loads(resp.read().decode("utf-8"))
-            assert data["version"] == "0.2.0"
+            assert data["version"] == "0.3.0"
             assert "budget_enforcer" in data
             assert data["budget_enforcer"]["max_budget_usd"] == 10.0
             assert data["budget_enforcer"]["circuit_breaker_tripped"] is False

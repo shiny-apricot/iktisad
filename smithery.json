@@ -3,7 +3,7 @@
   "name": "iktisad",
   "displayName": "iktisad: Frugal AI Agent MCP Server",
   "description": "Zero-waste terminal log compressor and AST code skeletonizer cutting up to 92% of token waste in AI coding agents.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "startCommand": {
     "type": "stdio",
     "command": "iktisad-mcp",

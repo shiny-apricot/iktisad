@@ -76,7 +76,7 @@ from iktisad.gateway import (
     verify_polar_license,
 )
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 _LAZY_MCP_EXPORTS: dict[str, str] = {
     "MCP_AVAILABLE_TOOLS": "iktisad.mcp_server",
